@@ -56,7 +56,7 @@ def test_prepare_record3d_data(output_metadata_path=None):
 if __name__ == "__main__":
     print("Testing data_utils...")
 
-    images_dir = "scans/basement_kitchen_test_3/object_1/images"
+    images_dir = "store/basement_kitchen_test_3/object_1/state_1"
     # test_data = test_prepare_record3d_data(output_metadata_path="data.pkl")
     test_data = test_prepare_record3d_data()
     frame_indices = [get_number(os.path.splitext(p)[0]) for p in os.listdir(images_dir)]
