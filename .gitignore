@@ -196,3 +196,5 @@ cython_debug/
 # Custom gitignore entries
 scans/
 store/
+pcds/
+aa_pcds/
