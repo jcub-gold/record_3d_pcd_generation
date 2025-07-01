@@ -8,7 +8,7 @@ TODO: add comments on erics portion of the code, update readme with full directi
 ```bash
 git clone https://github.com/jcub-gold/record_3d_pcd_generation
 ```
-### . Install requirements
+### 2. Install requirements
 ```bash
 pip install -r requirements.txt
 ```
