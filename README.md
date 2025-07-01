@@ -8,7 +8,7 @@ TODO: add comments on erics portion of the code, update readme with full directi
 
 1. Setup the data structure for the scene
 ```bash
-python3 -m real2code2real/setup_structure --scene_name={the name of your scene} --num_objects={the number of objects in your scene} --num_states={number of states per object}
+python3 -m real2code2real/setup_structure --scene_name='example scene' --num_objects=1 --num_states=1
 ```
 Scan video with Record3d
 Export as EXR + JPG
