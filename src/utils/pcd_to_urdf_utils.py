@@ -5,6 +5,7 @@ from scene_synthesizer import procedural_assets as pa
 from tqdm import tqdm
 import copy
 import os
+import re
 
 
 """
@@ -40,12 +41,16 @@ def prepare_pcd_data(pcds_path):
             # save the aligned pcd
             aa_pcd_path = os.path.join(aa_pcds_path, filename)
             o3d.io.write_point_cloud(aa_pcd_path, pcd)
+            match = re.search(r'object_(\d+)_state', aa_pcd_path)
+            assert match is not None, f"Filename {filename} does not match expected pattern."
+            object_number = int(match.group(1))
             dict_data = {
                 "pcd_path": aa_pcd_path,
                 "pcd": pcd,
                 "aabb": pcd.get_axis_aligned_bounding_box(),
                 "center": pcd.get_center(),
-                "label": input(f"Enter label for {filename}: ")
+                "label": input(f"Enter label for {filename}: "),
+                "object_number": object_number
             }
             pcd_data.append(dict_data)
 
@@ -67,7 +72,7 @@ def align_pcd_scene_via_object_aabb_minimization(pcds):
     best_angle = 0
     min_total_volume = float("inf")
 
-    for deg in tqdm(np.arange(-45, 45.01, 0.5)):
+    for deg in tqdm(np.arange(-45, 45.01, 0.5), desc="Rotating degrees"):
         rad = np.deg2rad(deg)
         total_volume = 0
 
@@ -90,11 +95,101 @@ def align_pcd_scene_via_object_aabb_minimization(pcds):
 
     return best_R, combined_pcd_center
 
+# translation plus recurrent nature of placing assets
+def pcd_to_urdf_simple_geometries(pcd_data, output_dir=None):
+    s = synth.Scene()
+    assert len(pcd_data) > 0, "No PCD data provided."
+
+    unplaced_assets = pcd_data.copy()
+    placed_assets = []
+
+    parent_asset = unplaced_assets.pop()
+    extents = parent_asset['aabb'].get_extent()
+    width, depth, height = extents[0], extents[1], extents[2]
+    func_name = f"get_{parent_asset['label']}_asset"
+    asset_func = globals()[func_name]
+    s.add_object(asset_func(width, height, depth), f"{parent_asset['label']}_{width}_{height}_{depth}_object_{parent_asset["object_number"]}")
+    print(parent_asset["object_number"])
+
+    placed_assets.append(parent_asset)
 
 
-# pcds = []
-# combined_pcd = o3d.geometry.PointCloud()
-# for pcd_path in pcd_paths:
-#     pcd = o3d.io.read_point_cloud(pcd_path)
-#     combined_pcd += pcd
-#     pcds.append(pcd)
+    while len(unplaced_assets) > 0:
+        for potential_parent in placed_assets:
+            pp_half_box = get_half_aabb_box(potential_parent)
+            for potential_child in unplaced_assets:
+                potential_child_half_box = get_half_aabb_box(potential_child)
+                if aabbs_overlap_xy(pp_half_box, potential_child_half_box):
+                    return
+                if aabbs_overlap_yz(pp_half_box, potential_child_half_box):
+                    return
+                
+
+    s.show()
+    
+    
+def get_half_aabb_box(asset):
+    extents = asset['aabb'].get_extent()
+    width, height, depth = extents[0], extents[1], extents[2]
+    center = asset['center']
+    quarter_extents = np.array([width, height, depth]) / 4.0
+    min_bound = center - quarter_extents
+    max_bound = center + quarter_extents
+    small_box = o3d.geometry.AxisAlignedBoundingBox(min_bound, max_bound)
+    return small_box
+
+def aabbs_overlap_xy(aabb1, aabb2):
+    return _aabbs_overlap_2d(aabb1, aabb2, axes=(0, 1))
+
+def aabbs_overlap_xz(aabb1, aabb2):
+    return _aabbs_overlap_2d(aabb1, aabb2, axes=(0, 2))
+
+def aabbs_overlap_yz(aabb1, aabb2):
+    return _aabbs_overlap_2d(aabb1, aabb2, axes=(1, 2))
+
+def _aabbs_overlap_2d(aabb1, aabb2, axes):
+    min1, max1 = aabb1.get_min_bound(), aabb1.get_max_bound()
+    min2, max2 = aabb2.get_min_bound(), aabb2.get_max_bound()
+
+    for axis in axes:
+        if max1[axis] < min2[axis] or max2[axis] < min1[axis]:
+            return False
+    return True
+
+
+
+
+
+
+
+### asset generation functions
+def get_drawer_asset(width, height, depth):
+    return pa.BaseCabinetAsset(
+        width=width, 
+        height=height, 
+        depth=depth, 
+        num_drawers_horizontal=1,
+        include_cabinet_doors=False,
+        include_foot_panel=False)
+
+def get_lower_left_cabinet_asset(width, height, depth):
+    return pa.BaseCabinetAsset(width=width, 
+        height=height, 
+        depth=depth, 
+        num_drawers_vertical=0,
+        include_cabinet_doors=True,
+        include_foot_panel=False,
+        lower_compartment_types=("door_right",),
+        handle_offset=(height * 0.35, width * 0.05))
+
+def get_lower_right_cabinet_asset(width, height, depth):
+    return pa.BaseCabinetAsset(width=width, 
+        height=height, 
+        depth=depth, 
+        num_drawers_vertical=0,
+        include_cabinet_doors=True,
+        include_foot_panel=False,
+        upper_compartment_types=("door_left",),
+        handle_offset=(height * 0.35, width * 0.05))
+
+

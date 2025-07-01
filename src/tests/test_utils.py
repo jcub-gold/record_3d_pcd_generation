@@ -1,6 +1,6 @@
 from src.utils.data_utils import prepare_record3d_data
 from src.utils.align_utils import create_pcd_from_frame
-from src.utils.pcd_to_urdf_utils import align_pcd_scene_via_object_aabb_minimization, prepare_pcd_data
+from src.utils.pcd_to_urdf_utils import align_pcd_scene_via_object_aabb_minimization, prepare_pcd_data, pcd_to_urdf_simple_geometries
 import os
 import open3d as o3d
 import pickle
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     # samples = 10000
     # visualize_pcd_from_frames(test_data, frame_indices, samples, remove_outliers=True)
 
-    ### testing prepare_record3d_data
+    # ## testing visualize_pcd_aabb_and_center
     # print("Testing visualize_pcd_aabb_and_center...")
     # ply_paths = []
     # root_path = "pcds"
@@ -124,7 +124,14 @@ if __name__ == "__main__":
     # visualize_pcd_aabb_and_center(ply_paths=ply_paths)
 
     ### testing test_prepare_pcd_data
-    print("Testing test_prepare_pcd_data...")
-    pcd_data = test_prepare_pcd_data()
+    # print("Testing test_prepare_pcd_data...")
+    # pcd_data = test_prepare_pcd_data()
+
+    ## testing pcd_to_urdf_simple_geometries
+    print("Testing pcd_to_urdf_simple_geometries...")
+    pcds_path = "pcds"
+    pcd_data = prepare_pcd_data(pcds_path)
+    pcd_to_urdf_simple_geometries(pcd_data)
+
 
     
