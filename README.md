@@ -93,4 +93,4 @@ scene_name/
 └── new_metadata.json
 ```
 
-### 3. Mesh Generation
+### 4. Mesh Generation
