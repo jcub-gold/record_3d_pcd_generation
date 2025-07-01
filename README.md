@@ -54,5 +54,43 @@ python3 -m src.real2code2real.get_masks -s /path/to/scene_directory --dataset_si
     - start_frame end_frame
     - frame1 frame_state pixel1X pixel1Y pixel2X pixel2Y …
     - frame2 frame_state pixel1X pixel1Y …
+    - Double enter once done filling in the current object
+    - frame_state = 1 means points are positive and will be included. frame_state = -1 means do not include any instance of the specified object in the segmented mas.draw boxes with pairs of points using frame_state = 0 (frame_state = 0 NOT recommended)
+    - Can check the pixels using labeled directory or using Jacob’s pixel selector
 
+Example Run:
 ![Example run](example.png)
+
+- At the end of generation, the input directory will look like:
+```
+scene_name/
+├── depth/
+├── input/
+│   ├── 0.jpg
+│   ├── 1.jpg
+│   └── ...
+├── input_depth/
+│   ├── [m].exr
+│   ├── [m+1].exr
+│   └── ...
+├── labeled/
+│   ├── 0.jpg
+│   ├── 1.jpg
+│   └── ...
+├── object_1/
+│   ├── images/
+│   │   ├── [m].png
+│   │   ├── [m+1].png
+│   │   └── ...
+│   ├── input/
+│   │   ├── [m].jpg
+│   │   ├── [m+1].jpg
+│   │   └── ...
+│   ├── output/
+│   │   └── masked_video.mp4
+├── rgb/
+├── metadata.json
+└── new_metadata.json
+```
+
+### 3. Mesh Generation
