@@ -19,7 +19,7 @@ python3 -m real2code2real/setup_structure --scene_name=example_scene --num_objec
 - Export as EXR + JPG
 - Go to Files app and transfer to computer, the output folder should contain format:
 ```
-scene_name/
+data/scene_name/record3d_input/
 ├── depth/
 │   ├── 0.exr
 │   ├── 1.exr
@@ -36,7 +36,9 @@ scene_name/
 python3 real2code2real/get_masks.py -s /path/to/scene_directory --dataset_size 1200
 ```
 - dataset_size specifies how many input frames to down-sample and use
-Run get_masks.py with the new dataset size and how many objects to segment. Then for each object, enter in:
-start_frame end_frame
-frame1 frame_state pixel1X pixel1Y pixel2X pixel2Y …
-frame2 frame_state pixel1X pixel1Y …
+- Run real2code2real/get_masks.py with the new dataset size and how many objects to segment. Then for each object, enter in:
+    - start_frame end_frame
+    - frame1 frame_state pixel1X pixel1Y pixel2X pixel2Y …
+    - frame2 frame_state pixel1X pixel1Y …
+
+![Alt text](relative/or/absolute/path/to/image.png)
