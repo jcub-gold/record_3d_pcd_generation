@@ -33,59 +33,22 @@ def copy_dataset(input_directory, output_directory, dataset_size):
 
     return frame_correspondance
 
-def restructure_files(input_dir):
-    # Create new subdirectories
-    os.makedirs(os.path.join(input_dir, 'calibrated_metadata'), exist_ok=True)
-    os.makedirs(os.path.join(input_dir, 'images_depth'), exist_ok=True)
-    os.makedirs(os.path.join(input_dir, 'images_original'), exist_ok=True)
+def rewrite_json(json_dir, output_dir, frame_correspondance, rewrite_categories):
+    with open(json_dir, 'r') as file:
+        data = json.load(file)
+    
+    new_json = {}
 
-    # Move and rename metadata files
-    for file_name in os.listdir(input_dir):
-        if file_name.startswith('calib_') and file_name.endswith('.json'):
-            new_name = file_name.replace('calib_', '')
-            shutil.move(
-                os.path.join(input_dir, file_name),
-                os.path.join(input_dir, 'calibrated_metadata', new_name)
-            )
+    for key in data:
+        if key not in rewrite_categories:
+            new_json[key] = data[key]
+            continue
 
-    # Move and rename depth images
-    for file_name in os.listdir(input_dir):
-        if file_name.startswith('depth_') and file_name.endswith('.exr'):
-            new_name = file_name.replace('depth_', '')
-            shutil.move(
-                os.path.join(input_dir, file_name),
-                os.path.join(input_dir, 'images_depth', new_name)
-            )
-
-    # Move and rename jpeg images
-    for file_name in os.listdir(input_dir):
-        if file_name.startswith('frame_') and file_name.endswith('.jpg'):
-            new_name = file_name.replace('frame_', '')
-            shutil.move(
-                os.path.join(input_dir, file_name),
-                os.path.join(input_dir, 'images_original', new_name)
-            )
-
-    # Rename files in images_resized subdirectory
-    resized_dir = os.path.join(input_dir, 'images_resized')
-    if os.path.exists(resized_dir):
-        for file_name in os.listdir(resized_dir):
-            if file_name.startswith('frame_') and file_name.endswith('.jpg'):
-                new_name = file_name.replace('frame_', '')
-                os.rename(
-                    os.path.join(resized_dir, file_name),
-                    os.path.join(resized_dir, new_name)
-                )
-
-    os.rename(resized_dir, os.path.join(input_dir, 'rgb'))
-
-    # Rename files in optimized_poses subdirectory
-    poses_dir = os.path.join(input_dir, 'optimized_poses')
-    if os.path.exists(poses_dir):
-        for file_name in os.listdir(poses_dir):
-            if file_name.startswith('frame_') and file_name.endswith('.json'):
-                new_name = file_name.replace('frame_', '')
-                os.rename(
-                    os.path.join(poses_dir, file_name),
-                    os.path.join(poses_dir, new_name)
-                )
+        new_values = []
+        for new_frame in frame_correspondance:
+            new_values.append(data[key][frame_correspondance[new_frame]])
+        
+        new_json[key] = new_values
+    
+    with open(output_dir, 'w') as file:
+        json.dump(new_json, file)
