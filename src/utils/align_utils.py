@@ -1,7 +1,7 @@
 import open3d as o3d
 import numpy as np
 
-def remove_outliers_largest_cluster(pcd, eps=0.05, min_points=10):
+def remove_outliers_largest_cluster(pcd, eps=0.03, min_points=15):
 
     if len(np.asarray(pcd.points)) < min_points:
         return pcd
@@ -60,8 +60,9 @@ def create_pcd_from_frame(data, frame_index, samples=5000, remove_outliers=True)
     pcd = pcd.remove_duplicated_points()
     
     if remove_outliers:
+        print("removing outliers")
         pcd = remove_outliers_largest_cluster(pcd)
-        cl, ind = pcd.remove_statistical_outlier(nb_neighbors=10, std_ratio=3)
+        cl, ind = pcd.remove_statistical_outlier(nb_neighbors=20, std_ratio=1.5)
         pcd = pcd.select_by_index(ind)
     
     return pcd
