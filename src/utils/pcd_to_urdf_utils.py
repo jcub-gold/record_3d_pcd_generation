@@ -41,7 +41,7 @@ def prepare_pcd_data(pcds_path):
             # save the aligned pcd
             aa_pcd_path = os.path.join(aa_pcds_path, filename)
             o3d.io.write_point_cloud(aa_pcd_path, pcd)
-            match = re.search(r'object_(\d+)_state', aa_pcd_path)
+            match = re.search(r'object_(\d+)', aa_pcd_path)
             assert match is not None, f"Filename {filename} does not match expected pattern."
             object_number = int(match.group(1))
 
@@ -53,14 +53,17 @@ def prepare_pcd_data(pcds_path):
                 "aabb": pcd.get_axis_aligned_bounding_box(),
                 "center": pcd.get_center(),
                 "label": input(f"Enter label for {filename}: "),
-                "object_number": object_number
+                "object_number": object_number,
+                "width": pcd.get_axis_aligned_bounding_box().get_extent()[0],
+                "height": pcd.get_axis_aligned_bounding_box().get_extent()[1],
+                "depth": pcd.get_axis_aligned_bounding_box().get_extent()[2]
             }
+            # print(dict_data['aabb'].get_extent())
 
-            extents = dict_data['aabb'].get_extent()
-            width, depth, height = extents[0], extents[1], extents[2]
+            width, height, depth = dict_data['width'], dict_data['height'], dict_data['depth']
             func_name = f"get_{dict_data['label']}_asset"
             asset_func = globals()[func_name]
-            asset_name = f"{dict_data['label']}_{width}_{height}_{depth}_object_{dict_data["object_number"]}"
+            asset_name = f"{dict_data['label']}_{width:.3f}_{height:.3f}_{depth:.3f}_object_{dict_data["object_number"]}"
 
             dict_data["asset_func"] = asset_func
             dict_data["asset_name"] = asset_name
@@ -117,53 +120,65 @@ def pcd_to_urdf_simple_geometries(pcd_data, output_dir=None):
     placed_assets = []
 
     parent_asset = unplaced_assets.pop()
-    extents = parent_asset['aabb'].get_extent()
-    width, depth, height = extents[0], extents[1], extents[2]
+    width, height, depth = parent_asset['width'], parent_asset['height'], parent_asset['depth']
 
     s.add_object(parent_asset["asset_func"](width, height, depth), parent_asset['asset_name'])
-    print(parent_asset["object_number"])
 
     placed_assets.append(parent_asset)
 
+    pbar = tqdm(total=len(unplaced_assets))
 
     while len(unplaced_assets) > 0:
         placed = False
 
         for potential_parent in placed_assets:
             pp_half_box = get_half_aabb_box(potential_parent)
+            print(f"looking to find a child for object {potential_parent['object_number']}")
             for potential_child in unplaced_assets:
                 potential_child_half_box = get_half_aabb_box(potential_child)
                 # if the width and depth of the child are centered around the parent and it is directly next to the parent (there is height overlap in the pcd)
-                if aabbs_overlap_xy(pp_half_box, potential_child_half_box) and check_overlap(axis=2, child_center=potential_child['center'], 
+                if aabbs_overlap_xz(pp_half_box, potential_child_half_box) and check_overlap(axis=1, child_center=potential_child['center'], 
                                                                                                         parent_center=potential_parent['center'], 
                                                                                                         child_extents=potential_child['aabb'].get_extent(), 
                                                                                                         parent_extents=potential_parent['aabb'].get_extent()):
-                    depth, width = potential_parent['aabb'].get_extent()[1], potential_parent['aabb'].get_extent()[0]
-                    height = potential_child['aabb'].get_extent()[2]
+                    print(f"Placing object {potential_child['object_number']} on object {potential_parent['object_number']}")
+                    potential_child['depth'], potential_child['width'] = potential_parent['depth'], potential_parent['width']
+
+                    print(f"object {potential_child['object_number']} width {potential_child['width']} height {potential_child['height']} depth {potential_child['depth']}")
+                    print(f"object {potential_parent['object_number']} width {potential_parent['width']} height {potential_parent['height']} depth {potential_parent['depth']}")
                 
+                    print("placing vertically")
                     place_top_or_bottom_asset(s=s,
                                               parent_asset=potential_parent,
                                               child_asset=potential_child,
-                                              child_width=width,
-                                              child_height=height,
-                                              child_depth=depth)
+                                              child_width=potential_child['width'],
+                                              child_height=potential_child['height'],
+                                              child_depth=potential_child['depth'])
+                    print("placed")
 
                     placed_assets.append(potential_child)
                     unplaced_assets.remove(potential_child)
                     placed = True
                     break  # break inner for loop
 
-                if aabbs_overlap_yz(pp_half_box, potential_child_half_box):
-                    depth, height = potential_parent['aabb'].get_extent()[1], potential_parent['aabb'].get_extent()[2]
-                    width = potential_child['aabb'].get_extent()[0]
+                if aabbs_overlap_yz(pp_half_box, potential_child_half_box) and check_overlap(axis=0, child_center=potential_child['center'], 
+                                                                                                        parent_center=potential_parent['center'], 
+                                                                                                        child_extents=potential_child['aabb'].get_extent(), 
+                                                                                                        parent_extents=potential_parent['aabb'].get_extent()):
+                    print(f"Placing object {potential_child['object_number']} on object {potential_parent['object_number']}")
+                    potential_child['depth'], potential_child['height'] = potential_parent['depth'], potential_parent['height']
 
+                    print(f"object {potential_child['object_number']} width {potential_child['width']} height {potential_child['height']} depth {potential_child['depth']}")
+                    print(f"object {potential_parent['object_number']} width {potential_parent['width']} height {potential_parent['height']} depth {potential_parent['depth']}")
+                
+                    print("placing laterally")
                     place_left_or_right_asset(s=s,
                                               parent_asset=potential_parent,
                                               child_asset=potential_child,
-                                              child_width=width,
-                                              child_height=height,
-                                              child_depth=depth)
-
+                                              child_width=potential_child['width'],
+                                              child_height=potential_child['height'],
+                                              child_depth=potential_child['depth'])
+                    print("placed\n")
                     placed_assets.append(potential_child)
                     unplaced_assets.remove(potential_child)
                     placed = True
@@ -171,7 +186,12 @@ def pcd_to_urdf_simple_geometries(pcd_data, output_dir=None):
                 
             if placed:
                 break  # break outer for loop
-
+        else:
+            # If we reach here, it means no placement was made
+            print("No suitable placement found for remaining assets.")
+            break
+        pbar.update(1)
+    pbar.close()
     s.show()
 
 
@@ -198,15 +218,15 @@ def place_top_or_bottom_asset(s, parent_asset, child_asset, child_width, child_h
                     connect_obj_anchor=('left', 'back', 'top'))
         
 def place_left_or_right_asset(s, parent_asset, child_asset, child_width, child_height, child_depth):
-    # place on top of the parent asset
-    if (child_asset['center'][0] > parent_asset['center'][0]):
+    # place on left of the parent asset
+    if (child_asset['center'][0] < parent_asset['center'][0]):
         s.add_object(child_asset["asset_func"](child_width, child_height, child_depth), 
                     child_asset['asset_name'],
                     connect_parent_id=parent_asset['asset_name'],
                     connect_parent_anchor=('left', 'back', 'top'), 
                     connect_obj_anchor=('right', 'back', 'top'))
         
-    # place on bottom of the parent asset
+    # place on right of the parent asset
     else:
         s.add_object(child_asset["asset_func"](child_width, child_height, child_depth), 
                     child_asset['asset_name'],
@@ -285,7 +305,7 @@ def get_lower_right_cabinet_asset(width, height, depth):
         num_drawers_vertical=0,
         include_cabinet_doors=True,
         include_foot_panel=False,
-        upper_compartment_types=("door_left",),
+        lower_compartment_types=("door_left",),
         handle_offset=(height * 0.35, width * 0.05))
 
 

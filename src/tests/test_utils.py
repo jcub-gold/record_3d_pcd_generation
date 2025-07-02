@@ -1,6 +1,7 @@
 from src.utils.data_utils import prepare_record3d_data, get_number
 from src.utils.align_utils import create_pcd_from_frame
 from src.utils.pcd_to_urdf_utils import align_pcd_scene_via_object_aabb_minimization, prepare_pcd_data, pcd_to_urdf_simple_geometries
+from src.utils.pcd_to_urdf_utils import pcd_to_urdf_simple_geometries
 import os
 import open3d as o3d
 import pickle
@@ -97,6 +98,17 @@ def test_prepare_pcd_data():
     assert len(pcd_data) > 0, "No PCD data found."
     return pcd_data
 
+def test_pcd_to_urdf_simple_geometries():
+    print("Testing pcd_to_urdf_simple_geometries...")
+
+    pcds_path = "data/basement_base_cabinet/pcds"
+    pcd_data = prepare_pcd_data(pcds_path)
+
+    assert len(pcd_data) > 0, "No PCD data found."
+    
+    pcd_to_urdf_simple_geometries(pcd_data)
+    print("PCD to URDF conversion completed successfully.")
+
 if __name__ == "__main__":
     # ## testign data_utils and create_pcd_from_frame
     # print("Testing data_utils and create_pcd_from_frame...")
@@ -132,6 +144,9 @@ if __name__ == "__main__":
     # pcds_path = "pcds"
     # pcd_data = prepare_pcd_data(pcds_path)
     # pcd_to_urdf_simple_geometries(pcd_data)
+
+    ## testing pcd_to_urdf_simple_geometries with specific data
+    test_pcd_to_urdf_simple_geometries()
 
 
     
