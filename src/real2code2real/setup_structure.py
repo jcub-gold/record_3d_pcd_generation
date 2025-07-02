@@ -9,6 +9,7 @@ def create_scene_dirs(scene_name):
         path = os.path.join(base_path, subdir)
         os.makedirs(path, exist_ok=True)
         print(f"Created: {path}")
+        
 def create_multiview_dirs(scene_name, num_objects, num_states):
     input_dir = os.path.join("data", scene_name, "multiview")
     os.makedirs(input_dir, exist_ok=True)
