@@ -98,30 +98,30 @@ def test_prepare_pcd_data():
     return pcd_data
 
 if __name__ == "__main__":
-    ## testign data_utils and create_pcd_from_frame
-    print("Testing data_utils and create_pcd_from_frame...")
+    # ## testign data_utils and create_pcd_from_frame
+    # print("Testing data_utils and create_pcd_from_frame...")
 
-    images_dir = "store/basement_kitchen_test_3/object_1/state_1"
-    # test_data = test_prepare_record3d_data(output_metadata_path="data.pkl")
-    test_data = test_prepare_record3d_data()
-    frame_indices = [get_number(os.path.splitext(p)[0]) for p in os.listdir(images_dir)]
-    frame_indices.sort()
-    samples = 5000
-    visualize_pcd_from_frames(test_data, frame_indices, samples, remove_outliers=True)
+    # images_dir = "store/basement_kitchen_test_3/object_1/state_1"
+    # # test_data = test_prepare_record3d_data(output_metadata_path="data.pkl")
+    # test_data = test_prepare_record3d_data()
+    # frame_indices = [get_number(os.path.splitext(p)[0]) for p in os.listdir(images_dir)]
+    # frame_indices.sort()
+    # samples = 5000
+    # visualize_pcd_from_frames(test_data, frame_indices, samples, remove_outliers=True)
 
-    # ## testing visualize_pcd_aabb_and_center
-    # print("Testing visualize_pcd_aabb_and_center...")
-    # ply_paths = []
-    # root_path = "pcds"
+    ## testing visualize_pcd_aabb_and_center
+    print("Testing visualize_pcd_aabb_and_center...")
+    ply_paths = []
+    root_path = "data/basement_base_cabinet/pcds" # "pcds"
 
-    # for dirpath, dirnames, filenames in os.walk(root_path):
-    #     for filename in filenames:
-    #         if filename.endswith(".ply"):
-    #             ply_path = os.path.join(dirpath, filename)
-    #             ply_paths.append(ply_path)
+    for dirpath, dirnames, filenames in os.walk(root_path):
+        for filename in filenames:
+            if filename.endswith(".ply"):
+                ply_path = os.path.join(dirpath, filename)
+                ply_paths.append(ply_path)
 
-    # # visualize_pcd_obb_and_center(ply_paths=ply_paths)
-    # visualize_pcd_aabb_and_center(ply_paths=ply_paths)
+    # visualize_pcd_obb_and_center(ply_paths=ply_paths)
+    visualize_pcd_aabb_and_center(ply_paths=ply_paths)
 
     ### testing test_prepare_pcd_data
     # print("Testing test_prepare_pcd_data...")

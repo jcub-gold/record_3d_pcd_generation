@@ -6,8 +6,10 @@ import os
 
 def generate_pcds(scene_name):
     obj_data = {}
-    
+
     pcds_output_path = f"data/{scene_name}/pcds"
+    os.makedirs(pcds_output_path, exist_ok=True)
+
     record3d_input_path = f"data/{scene_name}/record3d_input/"
 
     input_depth_dir = f"data/{scene_name}/record3d_input/input_depth"
@@ -20,16 +22,17 @@ def generate_pcds(scene_name):
                 num_objects += 1
 
     for obj in range(1, num_objects + 1):
-        images_dir = f"data/{scene_name}/object_{obj}/images"
-        obj_data[f'object_{obj}'] = prepare_record3d_data(images_dir, input_depth_dir, new_metadata_path)
+        images_dir = f"data/{scene_name}/record3d_input/object_{obj}/images"
+        obj_data[f'object_{obj}'] = {}
+        obj_data[f'object_{obj}']['data'] = prepare_record3d_data(images_dir, input_depth_dir, new_metadata_path)
+        obj_data[f'object_{obj}']['frames'] = frame_indices = input(f"Enter the frames used for pcd generation for object {obj}: ").split(" ")
 
     for obj in range(1, num_objects + 1):
         obj_name = f"object_{obj}"
-        frame_indices = input(f"Enter the frames used for pcd generation for object {obj}: ").split(" ")
         pcd = o3d.geometry.PointCloud()
-        for frame in frame_indices:
+        for frame in obj_data[obj_name]['frames']:
             frame = int(frame)
-            pcd += create_pcd_from_frame(obj_data[obj_name], frame) 
+            pcd += create_pcd_from_frame(obj_data[obj_name]['data'], frame) 
         pcd_path = os.path.join(pcds_output_path, f"{obj_name}_pcd.ply")
         o3d.io.write_point_cloud(pcd_path, pcd)
 

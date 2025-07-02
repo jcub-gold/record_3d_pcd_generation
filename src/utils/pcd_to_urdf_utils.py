@@ -180,14 +180,6 @@ def pcd_to_urdf_simple_geometries(pcd_data, output_dir=None):
 
 
 
-
-
-
-
-
-
-
-
 def place_top_or_bottom_asset(s, parent_asset, child_asset, child_width, child_height, child_depth):
     # place on top of the parent asset
     if (child_asset['center'][2] > parent_asset['center'][2]):
