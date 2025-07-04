@@ -101,7 +101,7 @@ def test_prepare_pcd_data():
 def test_pcd_to_urdf_simple_geometries():
     print("Testing pcd_to_urdf_simple_geometries...")
 
-    pcds_path = "data/basement_base_cabinet/pcds"
+    pcds_path = "data/basement_base_cabinet_extension/pcds"
     pcd_data = prepare_pcd_data(pcds_path)
 
     assert len(pcd_data) > 0, "No PCD data found."
@@ -110,22 +110,22 @@ def test_pcd_to_urdf_simple_geometries():
     print("PCD to URDF conversion completed successfully.")
 
 if __name__ == "__main__":
-    ## testign data_utils and create_pcd_from_frame
-    print("Testing data_utils and create_pcd_from_frame...")
+    # ## testign data_utils and create_pcd_from_frame
+    # print("Testing data_utils and create_pcd_from_frame...")
 
-    images_dir = "data/basement_base_cabinet/record3d_input"
-    # test_data = test_prepare_record3d_data(output_metadata_path="data.pkl")
-    test_data = test_prepare_record3d_data(dir=images_dir)
-    # frame_indices = [get_number(os.path.splitext(p)[0]) for p in os.listdir(images_dir)]
-    # frame_indices.sort()
-    frame_indices = [24, 124]  # Example frame indices to visualize
-    samples = 5000
-    visualize_pcd_from_frames(test_data, frame_indices, samples, remove_outliers=True)
+    # images_dir = "data/basement_base_cabinet/record3d_input"
+    # # test_data = test_prepare_record3d_data(output_metadata_path="data.pkl")
+    # test_data = test_prepare_record3d_data(dir=images_dir)
+    # # frame_indices = [get_number(os.path.splitext(p)[0]) for p in os.listdir(images_dir)]
+    # # frame_indices.sort()
+    # frame_indices = [24, 124]  # Example frame indices to visualize
+    # samples = 5000
+    # visualize_pcd_from_frames(test_data, frame_indices, samples, remove_outliers=True)
 
-    ## testing visualize_pcd_aabb_and_center
+    # # testing visualize_pcd_aabb_and_center
     # print("Testing visualize_pcd_aabb_and_center...")
     # ply_paths = []
-    # root_path = "data/basement_base_cabinet/pcds" # "pcds"
+    # root_path = "data/basement_base_cabinet_extension/aa_pcds" # "data/basement_base_cabinet/pcds" # "pcds"
 
     # for dirpath, dirnames, filenames in os.walk(root_path):
     #     for filename in filenames:
@@ -147,7 +147,7 @@ if __name__ == "__main__":
     # pcd_to_urdf_simple_geometries(pcd_data)
 
     ## testing pcd_to_urdf_simple_geometries with specific data
-    # test_pcd_to_urdf_simple_geometries()
+    test_pcd_to_urdf_simple_geometries()
 
 
     
