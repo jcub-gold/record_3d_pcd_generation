@@ -101,8 +101,8 @@ def test_prepare_pcd_data():
 def test_pcd_to_urdf_simple_geometries():
     print("Testing pcd_to_urdf_simple_geometries...")
 
-    pcds_path = "data/basement_base_cabinet_extension/pcds"
-    pcd_data = prepare_pcd_data(pcds_path)
+    pcds_path = "data/basement_base_cabinet/pcds"
+    pcd_data = prepare_pcd_data(pcds_path, save_labels=None, use_cached_labels=True)
 
     assert len(pcd_data) > 0, "No PCD data found."
     
@@ -125,7 +125,7 @@ if __name__ == "__main__":
     # # testing visualize_pcd_aabb_and_center
     # print("Testing visualize_pcd_aabb_and_center...")
     # ply_paths = []
-    # root_path = "data/basement_base_cabinet_extension/aa_pcds" # "data/basement_base_cabinet/pcds" # "pcds"
+    # root_path = "pcds" # "data/basement_base_cabinet_extension/aa_pcds" # "data/basement_base_cabinet/pcds" # 
 
     # for dirpath, dirnames, filenames in os.walk(root_path):
     #     for filename in filenames:
@@ -136,7 +136,7 @@ if __name__ == "__main__":
     # # visualize_pcd_obb_and_center(ply_paths=ply_paths)
     # visualize_pcd_aabb_and_center(ply_paths=ply_paths)
 
-    ### testing test_prepare_pcd_data
+    # ## testing test_prepare_pcd_data
     # print("Testing test_prepare_pcd_data...")
     # pcd_data = test_prepare_pcd_data()
 
@@ -146,7 +146,7 @@ if __name__ == "__main__":
     # pcd_data = prepare_pcd_data(pcds_path)
     # pcd_to_urdf_simple_geometries(pcd_data)
 
-    ## testing pcd_to_urdf_simple_geometries with specific data
+    # testing pcd_to_urdf_simple_geometries with specific data
     test_pcd_to_urdf_simple_geometries()
 
 
