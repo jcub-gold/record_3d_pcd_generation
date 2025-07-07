@@ -20,7 +20,7 @@ import json
     the point cloud object, the axis aligned bounding box, and the center 
     coordinates of each object.
 """
-def prepare_pcd_data(pcds_path, save_labels=None, use_cached_labels=False):
+def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
     print(pcds_path)
     pcd_data = []
     pcds = []
@@ -36,7 +36,7 @@ def prepare_pcd_data(pcds_path, save_labels=None, use_cached_labels=False):
     aa_pcds_path = os.path.join(input_path, "aa_pcds")
     os.makedirs(aa_pcds_path, exist_ok=True)
 
-    if use_cached_labels:
+    if load_cached_labels:
         with open(os.path.join(input_path, "cached_labels.json"), 'r') as f:
             cache = json.load(f)
     else:

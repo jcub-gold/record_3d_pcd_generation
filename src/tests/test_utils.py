@@ -102,7 +102,7 @@ def test_pcd_to_urdf_simple_geometries():
     print("Testing pcd_to_urdf_simple_geometries...")
 
     pcds_path = "data/basement_base_cabinet/pcds"
-    pcd_data = prepare_pcd_data(pcds_path, save_labels=None, use_cached_labels=True)
+    pcd_data = prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=True)
 
     assert len(pcd_data) > 0, "No PCD data found."
     
