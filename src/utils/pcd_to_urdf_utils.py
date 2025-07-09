@@ -269,7 +269,8 @@ def pcd_to_urdf_simple_geometries(pcd_data, output_dir=None):
                 break
         pbar.update(1)
     pbar.close()
-    s.show()
+    # s.show()
+    s.export('simple.urdf')
 
 
 

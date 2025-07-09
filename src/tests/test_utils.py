@@ -122,19 +122,19 @@ if __name__ == "__main__":
     # samples = 5000
     # visualize_pcd_from_frames(test_data, frame_indices, samples, remove_outliers=True)
 
-    # # testing visualize_pcd_aabb_and_center
-    # print("Testing visualize_pcd_aabb_and_center...")
-    # ply_paths = []
-    # root_path = "pcds" # "data/basement_base_cabinet_extension/aa_pcds" # "data/basement_base_cabinet/pcds" # 
+    # testing visualize_pcd_aabb_and_center
+    print("Testing visualize_pcd_aabb_and_center...")
+    ply_paths = []
+    root_path = "data/basement_base_cabinet/pcds" # "data/basement_base_cabinet_extension/aa_pcds" # pcds
 
-    # for dirpath, dirnames, filenames in os.walk(root_path):
-    #     for filename in filenames:
-    #         if filename.endswith(".ply"):
-    #             ply_path = os.path.join(dirpath, filename)
-    #             ply_paths.append(ply_path)
+    for dirpath, dirnames, filenames in os.walk(root_path):
+        for filename in filenames:
+            if filename.endswith(".ply"):
+                ply_path = os.path.join(dirpath, filename)
+                ply_paths.append(ply_path)
 
-    # # visualize_pcd_obb_and_center(ply_paths=ply_paths)
-    # visualize_pcd_aabb_and_center(ply_paths=ply_paths)
+    # visualize_pcd_obb_and_center(ply_paths=ply_paths)
+    visualize_pcd_aabb_and_center(ply_paths=ply_paths)
 
     # ## testing test_prepare_pcd_data
     # print("Testing test_prepare_pcd_data...")
@@ -147,7 +147,7 @@ if __name__ == "__main__":
     # pcd_to_urdf_simple_geometries(pcd_data)
 
     # testing pcd_to_urdf_simple_geometries with specific data
-    test_pcd_to_urdf_simple_geometries()
+    # test_pcd_to_urdf_simple_geometries()
 
 
     

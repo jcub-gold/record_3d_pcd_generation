@@ -92,7 +92,7 @@ def prepare_record3d_data(images_dir, depth_dir, metadata_path):
         mask_img = cv2.cvtColor(mask_img, cv2.COLOR_BGRA2RGBA)
 
         depth_img = read_exr_depth(exr_file)
-        depth_img = cv2.resize(depth_img, dsize=(mask_img.shape[1], mask_img.shape[0]), interpolation=cv2.INTER_CUBIC)
+        depth_img = cv2.resize(depth_img, dsize=(mask_img.shape[1], mask_img.shape[0]), interpolation=cv2.INTER_LINEAR)
 
         extrinsics = np.eye(4)
         rotation = Rotation.from_quat(poses_data[frame][:4]).as_matrix()
