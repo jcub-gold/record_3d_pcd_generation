@@ -31,6 +31,12 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
             pcds.append(pcd)
 
     R, combined_pcd_center = align_pcd_scene_via_object_aabb_minimization(pcds)
+
+    # Define additional 90-degree rotation around Y-axis
+    extra_rotation = o3d.geometry.get_rotation_matrix_from_axis_angle([0, np.pi / 2, 0])
+
+    # Apply the extra rotation *after* the original one
+    R = extra_rotation @ R
     
     input_path = os.path.dirname(pcds_path)
     aa_pcds_path = os.path.join(input_path, "aa_pcds")
@@ -130,6 +136,10 @@ def align_pcd_scene_via_object_aabb_minimization(pcds):
 
 # translation plus recurrent nature of placing assets
 def pcd_to_urdf_simple_geometries(pcd_data, output_dir=None):
+    for asset in pcd_data:
+        if 'cabinet' in asset['label']:
+            asset['width'] = (np.sqrt(asset['width']**2 + asset['depth']**2))
+
     s = synth.Scene()
     assert len(pcd_data) > 0, "No PCD data provided."
 
@@ -152,6 +162,7 @@ def pcd_to_urdf_simple_geometries(pcd_data, output_dir=None):
             pp_half_box = get_half_aabb_box(potential_parent)
             print(f"looking to find a child for object {potential_parent['object_number']}")
             for potential_child in unplaced_assets:
+
                 potential_child_half_box = get_half_aabb_box(potential_child)
                 # if the width and depth of the child are centered around the parent and it is directly next to the parent (there is height overlap in the pcd)
                 if aabbs_overlap_xz(pp_half_box, potential_child_half_box) and check_overlap(axis=1, child_center=potential_child['center'], 
@@ -266,6 +277,8 @@ def pcd_to_urdf_simple_geometries(pcd_data, output_dir=None):
             else:
                 # If we reach here, it means no placement was made
                 print("No suitable placement found for remaining assets.")
+                # s.show()
+                s.export('broken.urdf')
                 break
         pbar.update(1)
     pbar.close()
