@@ -28,110 +28,218 @@ extent_labels = ['width', 'height', 'depth']
     coordinates of each object.
 """
 def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
-    print(pcds_path)
-    pcd_data = []
-    pcds = []
-    for dirpath, dirnames, filenames in os.walk(pcds_path):
-        for filename in filenames:
-            pcd_path = os.path.join(dirpath, filename)
-            pcd = o3d.io.read_point_cloud(pcd_path)
-            pcds.append(pcd)
+    def iter_pcd_files(folder):
+        for fn in sorted(os.listdir(folder)):
+            if fn.lower().endswith(".ply"):
+                yield fn, o3d.io.read_point_cloud(os.path.join(folder, fn))
 
-    R, combined_pcd_center = align_pcd_scene_via_object_aabb_minimization(pcds)
-
-    # Define additional 90-degree rotation around Y-axis
-    extra_rotation = o3d.geometry.get_rotation_matrix_from_axis_angle([0, np.pi / 2, 0])
-
-    # Apply the extra rotation *after* the original one
-    R = extra_rotation @ R
-    
-    input_path = os.path.dirname(pcds_path)
+    input_path   = os.path.dirname(pcds_path)
     aa_pcds_path = os.path.join(input_path, "aa_pcds")
-    os.makedirs(aa_pcds_path, exist_ok=True)
+    cache_exists = (
+        os.path.isdir(aa_pcds_path)
+        and any(f.lower().endswith(".ply") for f in os.listdir(aa_pcds_path))
+    )
+
+    if cache_exists:
+        print(f"⚡  Using cached aligned PCDs in: {aa_pcds_path}")
+        files = list(iter_pcd_files(aa_pcds_path))
+    else:
+        print(f"🌀  No cache – aligning PCDs from: {pcds_path}")
+        files = list(iter_pcd_files(pcds_path))
+
+        raw_pcds = [pcd for _, pcd in files]
+        R, center = align_pcd_scene_via_object_aabb_minimization(raw_pcds)
+        extra_R = o3d.geometry.get_rotation_matrix_from_axis_angle([0, np.pi/2, 0])
+        R = extra_R @ R
+
+        os.makedirs(aa_pcds_path, exist_ok=True)
+        for fname, pcd in files:
+            pcd.rotate(R, center=center)
+            o3d.io.write_point_cloud(os.path.join(aa_pcds_path, fname), pcd)
+        print(f"✅  Wrote aligned copies to: {aa_pcds_path}")
+        files = list(iter_pcd_files(aa_pcds_path))
 
     if load_cached_labels:
-        with open(os.path.join(input_path, "cached_labels.json"), 'r') as f:
+        with open(os.path.join(input_path, "cached_labels.json"), "r") as f:
             cache = json.load(f)
     else:
-        print("Either type full label or else a number cooresponding to the following label:\n0: drawer\n1: lower_left_cabinet\n2: lower_right_cabinet\n3: upper_left_cabinet\n4: upper_right_cabinet\n5: box")
+        print("Either type full label or a number for the label list below:\n"
+              "0: drawer\n1: lower_left_cabinet\n2: lower_right_cabinet\n"
+              "3: upper_left_cabinet\n4: upper_right_cabinet\n5: box")
         cache = None
 
-    for dirpath, dirnames, filenames in os.walk(pcds_path):
-        for filename in filenames:
-            pcd_path = os.path.join(dirpath, filename)
-            pcd = o3d.io.read_point_cloud(pcd_path)
-            pcd.rotate(R, center=combined_pcd_center)
-            # save the aligned pcd
-            aa_pcd_path = os.path.join(aa_pcds_path, filename)
-            o3d.io.write_point_cloud(aa_pcd_path, pcd)
-            match = re.search(r'object_(\d+)', aa_pcd_path)
-            assert match is not None, f"Filename {filename} does not match expected pattern."
-            object_number = int(match.group(1))
-
-            
-            if cache is not None:
-                label = cache[f"object_{object_number}"]
-            else:
-                label_input = input(f"Enter label for {filename}: ")
-                try:
-                    index = int(label_input)
-                    if 0 <= index < len(labels):
-                        label = labels[index]
-                    else:
-                        raise ValueError("Index out of range")
-                except ValueError:
-                    if label_input in labels:
-                        label = label_input
-                    else:
-                        raise ValueError("Invalid label or index")
-                if save_labels is not None:
-                    save_labels[f"object_{object_number}"] = label
-
-            dict_data = {
-                "pcd_path": aa_pcd_path,
-                "pcd": pcd,
-                "aabb": pcd.get_axis_aligned_bounding_box(),
-                "center": pcd.get_center(),
-                "label": label,
-                "object_number": object_number,
-                "width": pcd.get_axis_aligned_bounding_box().get_extent()[0],
-                "height": pcd.get_axis_aligned_bounding_box().get_extent()[1],
-                "depth": pcd.get_axis_aligned_bounding_box().get_extent()[2],
-                "relative_alignment": [0, 1, 2]
-            }
-            if 'cabinet' in dict_data['label']:
-                dict_data['width'] = np.sqrt(dict_data['width']**2 + dict_data['depth']**2)
-            # print(dict_data['aabb'].get_extent())
-
-            width, height, depth = dict_data['width'], dict_data['height'], dict_data['depth']
-            func_name = f"get_{dict_data['label']}_asset"
-            asset_func = globals()[func_name]
-            asset_name = f"{dict_data['label']}_{width:.3f}_{height:.3f}_{depth:.3f}_object_{dict_data["object_number"]}"
-
-            dict_data["asset_func"] = asset_func
-            dict_data["asset_name"] = asset_name
-
-            pcd_data.append(dict_data)
-
-    if save_labels is not None:
-        json.dump(save_labels, open(os.path.join(input_path, "cached_labels.json"), 'w'), indent=4)
-    
-    # use function here
+    labels = ['drawer', 'lower_left_cabinet', 'lower_right_cabinet', 'upper_left_cabinet', 'upper_right_cabinet', 'box']
+    label_clusters = [3, 1, 1, 1]
+    extent_labels = ['width', 'height', 'depth']
     label_keywords = ['drawer', 'lower', 'upper', 'box']
     extent_indices = [(0, 1, 2), (1,), (0, 1), (0, 1)]
-    for i in range(len(label_keywords)):
-        label_keyword = label_keywords[i]
-        clusters = label_clusters[i]
-        extent_indice = extent_indices[i]
-        assign_extent_clusters(pcd_data, label_keyword, clusters, extent_indice)
-    
-    for i in range(len(label_keywords)):
-        label_keyword = label_keywords[i]
-        extent_indice = extent_indices[i]
-        set_cluster_fixed_extents(pcd_data, label_keyword, extent_indice)
 
-    # print(pcd_data)
+    pcd_data = []
+    for fname, pcd in files:
+        match = re.search(r'object_(\d+)', fname)
+        assert match, f"Filename {fname} does not match expected pattern."
+        obj_num = int(match.group(1))
+
+        if cache is not None:
+            label = cache[f"object_{obj_num}"]
+        else:
+            label_in = input(f"Enter label for {fname}: ")
+            try:
+                idx = int(label_in)
+                if 0 <= idx < len(labels):
+                    label = labels[idx]
+                else:
+                    raise ValueError
+            except ValueError:
+                if label_in in labels:
+                    label = label_in
+                else:
+                    raise ValueError("Invalid label or index")
+            if save_labels is not None:
+                save_labels[f"object_{obj_num}"] = label
+
+        aabb = pcd.get_axis_aligned_bounding_box()
+        width, height, depth = aabb.get_extent()
+        if 'cabinet' in label:
+            width = np.sqrt(width**2 + depth**2)
+
+        dict_data = {
+            "pcd_path": os.path.join(aa_pcds_path, fname),
+            "pcd": pcd,
+            "aabb": aabb,
+            "center": pcd.get_center(),
+            "label": label,
+            "object_number": obj_num,
+            "width": width,
+            "height": height,
+            "depth": depth,
+            "relative_alignment": [0, 1, 2],
+        }
+
+        func_name = f"get_{label}_asset"
+        dict_data["asset_func"] = globals()[func_name]
+        dict_data["asset_name"] = (
+            f"{label}_{width:.3f}_{height:.3f}_{depth:.3f}_object_{obj_num}"
+        )
+
+        pcd_data.append(dict_data)
+
+    if save_labels is not None:
+        json.dump(save_labels, open(os.path.join(input_path, "cached_labels.json"), "w"), indent=4)
+
+    for kw, clusters, idx in zip(label_keywords, label_clusters, extent_indices):
+        assign_extent_clusters(pcd_data, kw, clusters, idx)
+    for kw, idx in zip(label_keywords, extent_indices):
+        set_cluster_fixed_extents(pcd_data, kw, idx)
+
     return pcd_data
+
+
+# def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
+#     print(pcds_path)
+#     pcd_data = []
+#     pcds = []
+#     for dirpath, dirnames, filenames in os.walk(pcds_path):
+#         for filename in filenames:
+#             pcd_path = os.path.join(dirpath, filename)
+#             pcd = o3d.io.read_point_cloud(pcd_path)
+#             pcds.append(pcd)
+
+#     R, combined_pcd_center = align_pcd_scene_via_object_aabb_minimization(pcds)
+
+#     # Define additional 90-degree rotation around Y-axis
+#     extra_rotation = o3d.geometry.get_rotation_matrix_from_axis_angle([0, np.pi / 2, 0])
+
+#     # Apply the extra rotation *after* the original one
+#     R = extra_rotation @ R
+    
+#     input_path = os.path.dirname(pcds_path)
+#     aa_pcds_path = os.path.join(input_path, "aa_pcds")
+#     os.makedirs(aa_pcds_path, exist_ok=True)
+
+#     if load_cached_labels:
+#         with open(os.path.join(input_path, "cached_labels.json"), 'r') as f:
+#             cache = json.load(f)
+#     else:
+#         print("Either type full label or else a number cooresponding to the following label:\n0: drawer\n1: lower_left_cabinet\n2: lower_right_cabinet\n3: upper_left_cabinet\n4: upper_right_cabinet\n5: box")
+#         cache = None
+
+#     for dirpath, dirnames, filenames in os.walk(pcds_path):
+#         for filename in filenames:
+#             pcd_path = os.path.join(dirpath, filename)
+#             pcd = o3d.io.read_point_cloud(pcd_path)
+#             pcd.rotate(R, center=combined_pcd_center)
+#             # save the aligned pcd
+#             aa_pcd_path = os.path.join(aa_pcds_path, filename)
+#             o3d.io.write_point_cloud(aa_pcd_path, pcd)
+#             match = re.search(r'object_(\d+)', aa_pcd_path)
+#             assert match is not None, f"Filename {filename} does not match expected pattern."
+#             object_number = int(match.group(1))
+
+            
+#             if cache is not None:
+#                 label = cache[f"object_{object_number}"]
+#             else:
+#                 label_input = input(f"Enter label for {filename}: ")
+#                 try:
+#                     index = int(label_input)
+#                     if 0 <= index < len(labels):
+#                         label = labels[index]
+#                     else:
+#                         raise ValueError("Index out of range")
+#                 except ValueError:
+#                     if label_input in labels:
+#                         label = label_input
+#                     else:
+#                         raise ValueError("Invalid label or index")
+#                 if save_labels is not None:
+#                     save_labels[f"object_{object_number}"] = label
+
+#             dict_data = {
+#                 "pcd_path": aa_pcd_path,
+#                 "pcd": pcd,
+#                 "aabb": pcd.get_axis_aligned_bounding_box(),
+#                 "center": pcd.get_center(),
+#                 "label": label,
+#                 "object_number": object_number,
+#                 "width": pcd.get_axis_aligned_bounding_box().get_extent()[0],
+#                 "height": pcd.get_axis_aligned_bounding_box().get_extent()[1],
+#                 "depth": pcd.get_axis_aligned_bounding_box().get_extent()[2],
+#                 "relative_alignment": [0, 1, 2]
+#             }
+#             if 'cabinet' in dict_data['label']:
+#                 dict_data['width'] = np.sqrt(dict_data['width']**2 + dict_data['depth']**2)
+#             # print(dict_data['aabb'].get_extent())
+
+#             width, height, depth = dict_data['width'], dict_data['height'], dict_data['depth']
+#             func_name = f"get_{dict_data['label']}_asset"
+#             asset_func = globals()[func_name]
+#             asset_name = f"{dict_data['label']}_{width:.3f}_{height:.3f}_{depth:.3f}_object_{dict_data["object_number"]}"
+
+#             dict_data["asset_func"] = asset_func
+#             dict_data["asset_name"] = asset_name
+
+#             pcd_data.append(dict_data)
+
+#     if save_labels is not None:
+#         json.dump(save_labels, open(os.path.join(input_path, "cached_labels.json"), 'w'), indent=4)
+    
+#     # use function here
+#     label_keywords = ['drawer', 'lower', 'upper', 'box']
+#     extent_indices = [(0, 1, 2), (1,), (0, 1), (0, 1)]
+#     for i in range(len(label_keywords)):
+#         label_keyword = label_keywords[i]
+#         clusters = label_clusters[i]
+#         extent_indice = extent_indices[i]
+#         assign_extent_clusters(pcd_data, label_keyword, clusters, extent_indice)
+    
+#     for i in range(len(label_keywords)):
+#         label_keyword = label_keywords[i]
+#         extent_indice = extent_indices[i]
+#         set_cluster_fixed_extents(pcd_data, label_keyword, extent_indice)
+
+#     # print(pcd_data)
+#     return pcd_data
 
 """
     Function: align_pcd_scene_via_object_aabb_minimization
@@ -227,28 +335,28 @@ def pcd_to_urdf_simple_geometries(pcd_data, output_dir=None):
     for asset in placed_assets:
         print(asset['object_number'])
 
-    min_corner, max_corner = s.get_bounds()      # scene_synthesizer.scene.Scene 
-    max_x = max_corner[0]                        # the right-most world-x
-    scene_width = max_corner[0] - min_corner[0]
-    for asset in placed_assets:
-        if asset['label'] == 'drawer':
-            height = 0.2 * asset['fixed_height']
-            depth = 1.02 * asset['fixed_depth']
+    # min_corner, max_corner = s.get_bounds()      # scene_synthesizer.scene.Scene 
+    # max_x = max_corner[0]                        # the right-most world-x
+    # scene_width = max_corner[0] - min_corner[0]
+    # for asset in placed_assets:
+    #     if asset['label'] == 'drawer':
+    #         height = 0.2 * asset['fixed_height']
+    #         depth = 1.02 * asset['fixed_depth']
     
-    corner_asset = 6
-    for asset in placed_assets:
-        if asset['object_number'] == corner_asset:
-            corner_asset = asset
-            break
+    # corner_asset = 6
+    # for asset in placed_assets:
+    #     if asset['object_number'] == corner_asset:
+    #         corner_asset = asset
+    #         break
 
-    counter = get_box_asset(scene_width, depth, height)
-    s.add_object(counter, 
-                    'counter',
-                    connect_parent_id=corner_asset['asset_name'],
-                    connect_parent_anchor=('left', 'back', 'top'), 
-                    connect_obj_anchor=('left', 'back', 'bottom'))
+    # counter = get_box_asset(scene_width, depth, height)
+    # s.add_object(counter, 
+    #                 'counter',
+    #                 connect_parent_id=corner_asset['asset_name'],
+    #                 connect_parent_anchor=('left', 'back', 'top'), 
+    #                 connect_obj_anchor=('left', 'back', 'bottom'))
     
-    print(scene_width)
+    # print(scene_width)
     s.export('broken.urdf')
     s.show()
     return
@@ -613,7 +721,7 @@ def get_upper_right_cabinet_asset(width, height, depth):
                                 handle_offset=(height * -0.4, width * 0.05))
 
 def get_box_asset(width, height, depth):
-    return BoxAsset(extents=[width, height, depth])
+    return BoxAsset(extents=[width, depth, height])
 
 
 # TODO: Fix three dimension URDF syncronization
