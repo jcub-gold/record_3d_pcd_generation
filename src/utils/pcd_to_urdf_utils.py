@@ -825,55 +825,15 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
             pc_half_box = get_half_aabb_box(potential_child)
             if not allow_overlap and overlaps_any_placed(potential_child, placed_assets):
                 continue
-            # if (potential_child['object_number'] == 4):
-            #     # s.show()
-            #     continue
-            # if (potential_child['object_number'] == 5):
-            #     # s.show()
-            #     continue
             if axis == 0 and potential_child['object_number'] == 10 and potential_parent['object_number'] == 9:
                 print(_aabbs_overlap_2d(pp_half_box, pc_half_box, axes=(aligned_axis[axes[0]], aligned_axis[axes[1]])))
                 print(check_overlap(axis=aligned_axis[axes[2]],
                                                                                                                       potential_child=potential_child,
                                                                                                                          potential_parent=potential_parent))
-                print(
-                    f"Parent  – center: {potential_parent['center']}, "
-                    f"extents: {potential_parent['aabb'].get_extent()}"
-                )
-                print(
-                    f"Child   – center: {potential_child['center']}, "
-                    f"extents: {potential_child['aabb'].get_extent()}"
-                )
-
-                print(get_translation(potential_parent, potential_child,
-                                          aligned_axis, axis))
-            
+                
             c_o = check_overlap(axis=aligned_axis[axes[2]], potential_child=potential_child, potential_parent=potential_parent)
-            aabbs = _aabbs_overlap_2d(pp_half_box, pc_half_box, axes=(aligned_axis[axes[0]], aligned_axis[axes[1]]))
-            # two_d = half_extent_overlap_2d(potential_parent, potential_child, threshold=1, axes=(aligned_axis[axes[0]], aligned_axis[axes[1]]))
             one_d = half_extent_overlap_2d(potential_parent, potential_child, threshold=1, axes=(aligned_axis[axes[0]],))
             c_depth = same_depth(potential_parent, potential_child, depth_axis=aligned_axis[2], weight=0.2)
-            if axis == 0 and potential_child['object_number'] == 12 and potential_parent['object_number'] == 13:
-                print(_aabbs_overlap_2d(pp_half_box, pc_half_box, axes=(aligned_axis[axes[0]], aligned_axis[axes[1]])))
-                print(check_overlap(axis=aligned_axis[axes[2]],
-                                                                                                                      potential_child=potential_child,
-                                                                                                                         potential_parent=potential_parent))
-                print(
-                    f"Parent  – center: {potential_parent['center']}, "
-                    f"extents: {potential_parent['aabb'].get_extent()}"
-                )
-                print(
-                    f"Child   – center: {potential_child['center']}, "
-                    f"extents: {potential_child['aabb'].get_extent()}"
-                )
-
-                print(get_translation(potential_parent, potential_child,
-                                          aligned_axis, axis))
-                print(c_o)
-                print(c_depth and one_d)
-            if (potential_child['object_number'] == 4):
-                # s.show()
-                print(c_depth and one_d)
             if  c_depth and one_d and c_o:
                 
                 
