@@ -4,6 +4,7 @@ import open3d as o3d
 import argparse
 import os
 import json
+from tqdm import tqdm
 
 def generate_pcds(scene_name, eps=0.05, min_points=10, nb_neighbors=10, std_ratio=3.0, save_frames=None, load_cached_frames=False):
     obj_data = {}
@@ -50,7 +51,7 @@ def generate_pcds(scene_name, eps=0.05, min_points=10, nb_neighbors=10, std_rati
         'nb_neighbors': nb_neighbors,  # Number of neighbors to consider for statistical outlier removal
         'std_ratio': std_ratio  # Standard deviation ratio for statistical outlier removal
     }
-    for obj in range(1, num_objects + 1):
+    for obj in tqdm(range(1, num_objects + 1), desc="generating pcds"):
         obj_name = f"object_{obj}"
         pcd = o3d.geometry.PointCloud()
         for frame in obj_data[obj_name]['frames']:
