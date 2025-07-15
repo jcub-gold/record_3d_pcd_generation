@@ -201,3 +201,9 @@ aa_pcds/
 data/basement_base_cabinet/
 data/basement_base_cabinet_extension/
 simple.urdf
+data/second_floor_test/
+src/utils/simulate_frame_caching_utils.py
+data/example_scene/
+sink/
+quick.py
+testing_scene/

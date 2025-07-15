@@ -70,12 +70,12 @@ def visualize_pcd_aabb_and_center(ply_paths=None):
         pcd = o3d.io.read_point_cloud(pcd_path)
         pcds.append(pcd)
 
-    R, combined_pcd_center = align_pcd_scene_via_object_aabb_minimization(pcds)
+    # R, combined_pcd_center = align_pcd_scene_via_object_aabb_minimization(pcds)
 
     geometries = []
     for ply_path in ply_paths:
         pcd = o3d.io.read_point_cloud(ply_path)
-        pcd.rotate(R, center=combined_pcd_center)
+        # pcd.rotate(R, center=combined_pcd_center)
         aabb = pcd.get_axis_aligned_bounding_box()
         aabb.color = (1, 0, 0)
         center = aabb.get_center()
@@ -125,7 +125,7 @@ if __name__ == "__main__":
     # testing visualize_pcd_aabb_and_center
     print("Testing visualize_pcd_aabb_and_center...")
     ply_paths = []
-    root_path = "data/basement_base_cabinet/pcds" # "data/basement_base_cabinet_extension/aa_pcds" # pcds
+    root_path = "data/second_floor_test/aa_pcds" # "data/basement_base_cabinet/pcds" # "data/basement_base_cabinet_extension/aa_pcds" # pcds
 
     for dirpath, dirnames, filenames in os.walk(root_path):
         for filename in filenames:
