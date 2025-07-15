@@ -42,7 +42,15 @@ def create_pcd_from_frame(data, frame_index, samples=5000, remove_outliers=None)
     else:
         alpha_mask = np.ones(mask_img.shape[:2], dtype=bool)        
 
-    depth_img[~alpha_mask] = 0
+    # depth_img[~alpha_mask] = 0
+
+    # Shrink mask by 5 pixels from each edge
+    shrink = 5
+    alpha_mask_shrunk = np.zeros_like(alpha_mask, dtype=bool)
+    alpha_mask_shrunk[shrink:-shrink, shrink:-shrink] = alpha_mask[shrink:-shrink, shrink:-shrink]
+
+    # Apply the shrunk mask
+    depth_img[~alpha_mask_shrunk] = 0
 
     rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(
         o3d.geometry.Image(mask_img[:, :, :3].astype(np.uint8)),
