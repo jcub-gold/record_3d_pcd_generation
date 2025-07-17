@@ -246,7 +246,7 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, output_dir=None):
     try_to_place_strict(unplaced_assets, 'drawer', placed_assets, pcd_data, s, 0, combined_center)
     for label in labels:
         if 'upper' in label:
-            if try_to_place_upper_no_align(unplaced_assets, label, placed_assets, pcd_data, s):
+            if try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, s):
                 break
 
     for i in range(10):
@@ -343,25 +343,6 @@ def check_overlap(axis, potential_parent, potential_child, threshold = 0.05):
 
     return not (child_max < parent_min - buffer or child_min > parent_max + buffer)
 
-    
-def get_half_aabb_box(asset):
-    extents = asset['aabb'].get_extent()
-    width, height, depth = extents[0], extents[1], extents[2]
-    center = asset['center']
-    quarter_extents = np.array([width, height, depth]) / 4.0
-    min_bound = center - quarter_extents
-    max_bound = center + quarter_extents
-    small_box = o3d.geometry.AxisAlignedBoundingBox(min_bound, max_bound)
-    return small_box
-
-def aabbs_overlap_xy(aabb1, aabb2):
-    return _aabbs_overlap_2d(aabb1, aabb2, axes=(0, 1))
-
-def aabbs_overlap_xz(aabb1, aabb2):
-    return _aabbs_overlap_2d(aabb1, aabb2, axes=(0, 2))
-
-def aabbs_overlap_yz(aabb1, aabb2):
-    return _aabbs_overlap_2d(aabb1, aabb2, axes=(1, 2))
 
 def _aabbs_overlap_2d(aabb1, aabb2, axes):
     min1, max1 = aabb1.get_min_bound(), aabb1.get_max_bound()
@@ -621,7 +602,7 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
             elif allow_overlap and overlaps_any_placed(potential_child, placed_assets):
                 continue
             # elif (for every potential child, parent pair find the one with different 
-            # relative axes and find the one with the least center distance and move those)
+            # relative axes and find the one with the least center distance and move those must have a height overlap too to be a candidate)
 
             c_o     = check_overlap(axis=aligned_axis[axes[2]],
                                     potential_child=potential_child,
@@ -682,7 +663,7 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
             return placed
     return placed
 
-def try_to_place_upper_no_align(unplaced_assets, label, placed_assets, pcd_data, s):
+def try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, s):
     func_name, axes = "place_vertical_asset", [0, 2, 1]
     placement_func = globals()[func_name]
     placed = False
@@ -700,7 +681,7 @@ def try_to_place_upper_no_align(unplaced_assets, label, placed_assets, pcd_data,
                 # print()
                 # print(potential_child['relative_alignment'][0], aligned_axis[0])
             if one_d:
-                depth = get_depth(potential_parent, potential_child, aligned_axis[axes[1]])
+                depth = get_aligned_depth(potential_parent, potential_child, aligned_axis[axes[1]])
                 
                 # print(depth, potential_child['relative_alignment'][0], aligned_axis[0])
                 # print(potential_child['object_number'], potential_parent['object_number'])
@@ -741,9 +722,67 @@ def try_to_place_upper_no_align(unplaced_assets, label, placed_assets, pcd_data,
                     return placed
     return placed
 
+def try_to_place_upper_not_aligned(unplaced_assets, label, placed_assets, pcd_data, s):
+    func_name, axes = "place_vertical_asset", [0, 2, 1]
+    placement_func = globals()[func_name]
+    placed = False
+    for potential_parent in placed_assets:
+        aligned_axis = potential_parent['relative_alignment']
+
+        for potential_child in list(unplaced_assets[label]):
+            # elif (for every potential child, parent pair find the one with different 
+            # relative axes and find the one with the least center distance and move those)
+            one_d   = half_extent_overlap_2d(potential_parent, potential_child,
+                                             threshold=1,
+                                             axes=(aligned_axis[axes[0]],))
+
+            # if potential_child['object_number'] == 1 and potential_parent['object_number'] == 4:
+                # print()
+                # print(potential_child['relative_alignment'][0], aligned_axis[0])
+            if one_d:
+                depth = get_aligned_depth(potential_parent, potential_child, aligned_axis[axes[1]])
+                
+                # print(depth, potential_child['relative_alignment'][0], aligned_axis[0])
+                # print(potential_child['object_number'], potential_parent['object_number'])
+                if depth is not None and potential_child['relative_alignment'][0] == aligned_axis[0]:
+                    for ax in range(3):
+                        print(potential_parent[extent_labels[aligned_axis[ax]]])
+                        print(potential_child[extent_labels[aligned_axis[ax]]])
+                    print(potential_parent[extent_labels[aligned_axis[axes[1]]]])
+                    print(potential_child['aabb'].get_extent())
+                    set_dimension_parent_default(potential_child, aligned_axis, axes[2], pcd_data)
+                    set_dimension_parent_default(potential_child, aligned_axis, axes[0], pcd_data,
+                                         potential_parent=None)
+                    
+                    potential_child[extent_labels[aligned_axis[axes[1]]]] = depth * 1.2 # because of pcd noise
+
+                    translation = get_translation(potential_parent, potential_child, aligned_axis, axes[2])
+                    indices = [0, 2, 1]        # map x/y/z → homogeneous-matrix col
+                    index = indices[aligned_axis[axes[2]]]
+                    transform = np.eye(4)
+                    transform[index, 3] = translation
+
+                    placement_func(
+                        s=s,
+                        parent_asset=potential_parent,
+                        child_asset=potential_child,
+                        child_width=potential_child[extent_labels[aligned_axis[0]]],
+                        child_height=potential_child[extent_labels[aligned_axis[1]]],
+                        child_depth=potential_child[extent_labels[aligned_axis[2]]],
+                        transform=transform,
+                    )
+
+                    placed_assets.append(potential_child)
+                    unplaced_assets[label].remove(potential_child)
+                    print(f"placing object {potential_child['object_number']} on object {potential_parent['object_number']}, {func_name}")
+                    potential_child['relative_alignement'] = aligned_axis
+                    potential_child['weight'] = potential_parent['weight']
+                    placed = True
+                    return placed
+    return placed
 
 ## assume upper is smaller depth than lower
-def get_depth(parent, child, depth_axis,):
+def get_aligned_depth(parent, child, depth_axis,):
     p_s = parent['weight']
     p_depth = parent["aabb"].get_extent()[depth_axis]
     c_depth = child["aabb"].get_extent()[depth_axis]
