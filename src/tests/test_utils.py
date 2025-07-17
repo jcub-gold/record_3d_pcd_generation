@@ -77,6 +77,7 @@ def visualize_pcd_aabb_and_center(ply_paths=None):
         pcd = o3d.io.read_point_cloud(ply_path)
         # pcd.rotate(R, center=combined_pcd_center)
         aabb = pcd.get_axis_aligned_bounding_box()
+        # aabb = pcd.get_oriented_bounding_box()
         aabb.color = (1, 0, 0)
         center = aabb.get_center()
 
