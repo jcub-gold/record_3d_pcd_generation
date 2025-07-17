@@ -344,15 +344,6 @@ def check_overlap(axis, potential_parent, potential_child, threshold = 0.05):
     return not (child_max < parent_min - buffer or child_min > parent_max + buffer)
 
 
-def _aabbs_overlap_2d(aabb1, aabb2, axes):
-    min1, max1 = aabb1.get_min_bound(), aabb1.get_max_bound()
-    min2, max2 = aabb2.get_min_bound(), aabb2.get_max_bound()
-
-    for axis in axes:
-        if max1[axis] < min2[axis] or max2[axis] < min1[axis]:
-            return False
-    return True
-
 def half_extent_overlap_2d(parent: dict,
                            child: dict,
                            threshold=1.0,
@@ -390,34 +381,6 @@ def same_depth(parent, child, depth_axis, weight=0.05):
         return True
     return False
 
-def _half_extent_overlap_2d(parent: dict,
-                           child: dict,
-                           axes: tuple[int, int] = (0, 2)) -> bool:
-    # Gather centres and half-extents (width/2) on the two axes
-    p_c  = parent["center"]
-    c_c  = child ["center"]
-    p_he = parent["aabb"].get_extent() * 0.5   # half-extents vector
-    c_he = child ["aabb"].get_extent() * 0.5
-
-    p = [None, None, None]
-    c = [None, None, None]
-    for ax in axes:
-        p_min = p_c[ax] - p_he[ax]
-        p_max = p_c[ax] + p_he[ax]
-        c_min = c_c[ax] - c_he[ax]
-        c_max = c_c[ax] + c_he[ax]
-
-        p[ax] = [p_min, p_max]
-        c[ax] = [c_min, c_max]
-    
-    for i in range(2):
-        if i == 1:
-            temp = p[axes[0]]
-            p[axes[0]] = c[axes[0]] 
-            c[axes[0]] = temp
-        if compare_axes(p, c, axes) or compare_axes(c, p, axes):
-            return True
-    return False
 
 def compare_axes(fixed, shrink, axes):
     for ax in axes:
