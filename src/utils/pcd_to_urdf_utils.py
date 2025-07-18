@@ -129,6 +129,8 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
         }
         if 'upper' in label:
             dict_data["relative_alignment"] = [2, 1, 0]
+        if obj_num == 35 and obj_num == 36:
+            dict_data["relative_alignment"] = [2, 1, 0]
 
         func_name = f"get_{label}_asset"
         dict_data["asset_func"] = globals()[func_name]
@@ -385,6 +387,7 @@ def half_extent_overlap_2d(parent: dict,
     return is_half_inside(child, parent) or is_half_inside(parent, child)
 
 def same_depth(parent, child, depth_axis, weight=0.05):
+
     p_depth = parent["aabb"].get_extent()[depth_axis]
     c_depth = child["aabb"].get_extent()[depth_axis]
     p_center = parent["center"][depth_axis]
@@ -392,6 +395,9 @@ def same_depth(parent, child, depth_axis, weight=0.05):
     max_depth_threshold = max(p_depth, c_depth) * weight
     p_min = p_center - (p_depth / 2)
     c_min = c_center - (c_depth / 2)
+    if parent['object_number'] == 4 and child['object_number'] == 36:
+        print(p_depth, depth_axis, p_min, c_min)
+        print('look here')
     if abs(p_min - c_min) <= max_depth_threshold:
         return True
     return False
@@ -555,8 +561,18 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
 
         candidates = []
         for potential_child in list(unplaced_assets[label]):
+            # if (potential_child['object_number'] == 36 and potential_parent['object_number'] == 4 and axis == 1):
+            #         print('----')
+            #         print(potential_parent['center'], potential_parent['aabb'].get_extent(),
+            #                                                         potential_child['center'], potential_child['aabb'].get_extent())
+            #         print('----')
             if not allow_overlap and overlaps_any_placed(potential_child, placed_assets):
                 # print(potential_child['object_number'])
+                if (potential_child['object_number'] == 36 and potential_parent['object_number'] == 4 and axis == 1):
+                    print('----')
+                    print(potential_parent['center'], potential_parent['aabb'].get_extent(),
+                                                                    potential_child['center'], potential_child['aabb'].get_extent())
+                    print('----')
                 potential_child['relative_alignment'] = [2, 1, 0]
                 continue
             # if allow_overlap and overlaps_any_placed(potential_child, placed_assets):
@@ -579,19 +595,25 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
                                              threshold=1,
                                              axes=(aligned_axis[axes[0]],))
             c_depth = same_depth(potential_parent, potential_child,
-                                 depth_axis=aligned_axis[axes[1]], weight=0.2)
+                                 depth_axis=aligned_axis[axes[1]], weight=0.3)
             
             # fix since scans were with door open:
             if 'upper' in label and abs(potential_child['object_number'] - potential_parent['object_number']) < 2:
                 c_o = True
-            if (potential_child['object_number'] == 12 and potential_parent['object_number'] == 8 and axis == 0):
+            if (potential_child['object_number'] == 36 and potential_parent['object_number'] == 35 and axis == 0):
                 print('----')
                 print(c_o, one_d, c_depth)
                 print('----')
+            # if (potential_child['object_number'] == 36):
+            #     print('----')
+            #     print(c_o, one_d, c_depth)
+            #     print(potential_parent['center'], potential_parent['aabb'].get_extent(),
+            #                                                         potential_child['center'], potential_child['aabb'].get_extent())
+            #     print('----')
             # print(c_o, one_d, c_depth)
 
 
-            if c_depth and one_d and c_o:
+            if c_depth and one_d and c_o and potential_child['aabb'].get_extent()[aligned_axis[axes[0]]] > potential_parent['aabb'].get_extent()[aligned_axis[axes[0]]] / 4:
                 kw            = potential_parent['label'].split('_')[0]
                 cluster_key   = f"{kw}_cluster_id"
                 label_match   = int(potential_child['label'] == potential_parent['label'])
@@ -799,8 +821,14 @@ def get_aligned_depth(parent, child, depth_axis,):
     c_min = c_center + p_s * (c_depth / 2)
 
     if child['object_number'] == 1:
+        print()
+        print(parent['object_number'])
+        print(p_s)
+        print(depth_axis)
+        print(p_depth)
         print(p_center, c_center)
         print(p_min, c_min)
+        print()
 
     if (p_s == -1 and (p_min > c_min)) or (p_s == 1 and c_min > p_min):
         return p_depth - abs(p_min - c_min)
@@ -869,26 +897,32 @@ def get_cluster_fixed_extents_one_asset(data,
             if o['object_number'] == asset['object_number']:
                 return means[name]
             
-def aabb_overlap_fraction_with_centers(center1, extent1, center2, extent2):
-    def get_bounds(center, extent):
-        center = np.array(center)
-        extent = np.array(extent)
-        return center - extent, center + extent
 
-    def get_overlap_volume(min1, max1, min2, max2):
-        overlap_min = np.maximum(min1, min2)
-        overlap_max = np.minimum(max1, max2)
-        overlap_dims = np.maximum(overlap_max - overlap_min, 0)
-        return np.prod(overlap_dims)
+            # FLAG FOR TOMORROW
+def aabb_overlap_fraction_with_centers(center1, extent1, center2, extent2,
+                                       thresh=0.5):
 
-    min1, max1 = get_bounds(center1, extent1)
-    min2, max2 = get_bounds(center2, extent2)
+    c1, e1 = np.asarray(center1), np.asarray(extent1) / 2.0
+    c2, e2 = np.asarray(center2), np.asarray(extent2) / 2.0
 
-    vol1 = np.prod(max1 - min1)
-    vol2 = np.prod(max2 - min2)
-    overlap_vol = get_overlap_volume(min1, max1, min2, max2)
+    min1, max1 = c1 - e1, c1 + e1
+    min2, max2 = c2 - e2, c2 + e2
 
-    return (overlap_vol >= 0.7 * vol1) or (overlap_vol >= 0.7 * vol2)
+    # Volume of each box
+    vol1 = np.prod(2 * e1)
+    vol2 = np.prod(2 * e2)
+
+    # Overlap bounds
+    overlap_min = np.maximum(min1, min2)
+    overlap_max = np.minimum(max1, max2)
+    overlap_dims = np.clip(overlap_max - overlap_min, 0, None)
+    overlap_vol = np.prod(overlap_dims)
+
+    # Fractions of each box that are overlapped
+    frac1 = overlap_vol / vol1
+    frac2 = overlap_vol / vol2
+
+    return (frac1 >= thresh) or (frac2 >= thresh)
 
 def _effective_extent(asset, axis):
     label = extent_labels[axis]                # e.g. "width"
@@ -911,6 +945,8 @@ def overlaps_any_placed(child: dict, placed_assets: list) -> bool:
         if aabb_overlap_fraction_with_centers(asset["center"],
                                               asset["aabb"].get_extent(),
                                               c_center, c_extent):
+            # if (child['object_number'] == 35) or child['object_number'] == 36:
+            #     print(asset['object_number'])
             return True
     return False
 
