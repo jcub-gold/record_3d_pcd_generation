@@ -93,4 +93,16 @@ scene_name/
 └── new_metadata.json
 ```
 
-### 4. Mesh Generation
+### 4. PCD Generation
+```bash
+python3 -m src.real2code2real.generate_pcds --scene_name=example_scene --eps=0.03 --min_points=15 --nb_neighbors=15 --std_ratio=2 --load_cached_frames=True
+```
+- choose frames for pcd generation or run script to select frames per object to be used for pcd generation (usally the first frame is bad and around 2 frames is recommended)
+
+### 5. Simple URDF Generation
+```bash
+python3 -m src.real2code2real.generate_simple_urdf --scene_name=example_scene --load_cached_labels=True
+```
+- label each object
+
+### 6. Mesh Generation
