@@ -104,6 +104,7 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
 
         aabb = pcd.get_axis_aligned_bounding_box()
         width, height, depth = aabb.get_extent()
+        # not neccesary assuming closed scan and need to set relative axes based on dimensions
         if 'cabinet' in label:
             print(f"Old object {obj_num} width: {width}")
             width = np.sqrt(width**2 + depth**2)
@@ -255,8 +256,22 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, output_dir=None):
                 continue
             while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center)):
                 continue
+
+    for label in labels:
+        if 'upper' in label:
+            if try_to_place_upper_not_aligned(unplaced_assets, label, placed_assets, pcd_data, s, combined_center):
+                break
+
+    for i in range(10):
+        for label in labels:
+            while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 1, combined_center)):
+                continue
+            while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center)):
+                continue
+    
     for asset in placed_assets:
         print(asset['object_number'])
+
 
     s.export('testing_scene/broken.urdf')
     s.show()
@@ -452,14 +467,6 @@ def get_box_asset(width, height, depth):
     return BoxAsset(extents=[width, depth, height])
 
 
-# TODO: Fix three dimension URDF syncronization
-# Either
-# 1. Get a better PCD for dimensions
-# 2. Try and look for neighbors to match the dimensions
-# 3.       Would require some sort of threshold because I want to be able to include multiple heigh objects (i.e. drawers stacked on top of one another)
-
-
-
 
 def assign_extent_clusters(data,
                            label_keyword: str,
@@ -481,8 +488,6 @@ def assign_extent_clusters(data,
     key = f"{label_keyword}_cluster_id"
     for d, cid in zip(matches, kmeans.labels_):
         d[key] = int(cid)
-
-
 
 def set_cluster_fixed_extents(data,
                               label_keyword: str,
@@ -592,6 +597,8 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
                 label_match   = int(potential_child['label'] == potential_parent['label'])
                 cluster_match = int(potential_child.get(cluster_key) ==
                                     potential_parent.get(cluster_key))
+                
+                # if max similarty prioritize extent simiilarity
                 similarity    = 2 * label_match + cluster_match
                 candidates.append((similarity, potential_child))
 
@@ -648,7 +655,7 @@ def try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, 
                 
                 # print(depth, potential_child['relative_alignment'][0], aligned_axis[0])
                 # print(potential_child['object_number'], potential_parent['object_number'])
-                if depth is not None and potential_child['relative_alignment'][0] == aligned_axis[0]:
+                if depth is not None and potential_child['relative_alignment'] == aligned_axis:
                     for ax in range(3):
                         print(potential_parent[extent_labels[aligned_axis[ax]]])
                         print(potential_child[extent_labels[aligned_axis[ax]]])
@@ -685,64 +692,100 @@ def try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, 
                     return placed
     return placed
 
-def try_to_place_upper_not_aligned(unplaced_assets, label, placed_assets, pcd_data, s):
-    func_name, axes = "place_vertical_asset", [0, 2, 1]
-    placement_func = globals()[func_name]
+def try_to_place_upper_not_aligned(unplaced_assets, label, placed_assets, pcd_data, s, scene_center):
     placed = False
+    candidate_pairs = []
     for potential_parent in placed_assets:
-        aligned_axis = potential_parent['relative_alignment']
+        aligned_axis = potential_parent["relative_alignment"]
 
         for potential_child in list(unplaced_assets[label]):
-            # elif (for every potential child, parent pair find the one with different 
-            # relative axes and find the one with the least center distance and move those)
-            one_d   = half_extent_overlap_2d(potential_parent, potential_child,
-                                             threshold=1,
-                                             axes=(aligned_axis[axes[0]],))
+            child_axes = potential_child["relative_alignment"]
+            if child_axes == aligned_axis:
+                continue
+            one_d = half_extent_overlap_2d(
+                potential_parent,
+                potential_child,
+                threshold=1,
+                axes=(child_axes[0],)  # child's width axis
+            )
 
-            # if potential_child['object_number'] == 1 and potential_parent['object_number'] == 4:
-                # print()
-                # print(potential_child['relative_alignment'][0], aligned_axis[0])
             if one_d:
-                depth = get_aligned_depth(potential_parent, potential_child, aligned_axis[axes[1]])
-                
-                # print(depth, potential_child['relative_alignment'][0], aligned_axis[0])
-                # print(potential_child['object_number'], potential_parent['object_number'])
-                if depth is not None and potential_child['relative_alignment'][0] == aligned_axis[0]:
-                    for ax in range(3):
-                        print(potential_parent[extent_labels[aligned_axis[ax]]])
-                        print(potential_child[extent_labels[aligned_axis[ax]]])
-                    print(potential_parent[extent_labels[aligned_axis[axes[1]]]])
-                    print(potential_child['aabb'].get_extent())
-                    set_dimension_parent_default(potential_child, aligned_axis, axes[2], pcd_data)
-                    set_dimension_parent_default(potential_child, aligned_axis, axes[0], pcd_data,
-                                         potential_parent=None)
-                    
-                    potential_child[extent_labels[aligned_axis[axes[1]]]] = depth * 1.2 # because of pcd noise
+                # Compute center distance for ranking
+                dist = np.linalg.norm(np.array(potential_child["center"]) - np.array(potential_parent["center"]))
+                candidate_pairs.append((dist, potential_parent, potential_child))
 
-                    translation = get_translation(potential_parent, potential_child, aligned_axis, axes[2])
-                    indices = [0, 2, 1]        # map x/y/z → homogeneous-matrix col
-                    index = indices[aligned_axis[axes[2]]]
-                    transform = np.eye(4)
-                    transform[index, 3] = translation
+    if not candidate_pairs:
+        return False
 
-                    placement_func(
-                        s=s,
-                        parent_asset=potential_parent,
-                        child_asset=potential_child,
-                        child_width=potential_child[extent_labels[aligned_axis[0]]],
-                        child_height=potential_child[extent_labels[aligned_axis[1]]],
-                        child_depth=potential_child[extent_labels[aligned_axis[2]]],
-                        transform=transform,
-                    )
+    candidate_pairs.sort(key=lambda x: x[0])
+    _, parent_asset, child_asset = candidate_pairs[0]
+    aligned_axis = parent_asset["relative_alignment"]
+    child_axes = child_asset["relative_alignment"]
 
-                    placed_assets.append(potential_child)
-                    unplaced_assets[label].remove(potential_child)
-                    print(f"placing object {potential_child['object_number']} on object {potential_parent['object_number']}, {func_name}")
-                    potential_child['relative_alignement'] = aligned_axis
-                    potential_child['weight'] = potential_parent['weight']
-                    placed = True
-                    return placed
-    return placed
+    print()
+    print(parent_asset['object_number'], child_asset['object_number'], get_not_aligned_depth(parent_asset, child_asset, child_axes[2]))
+    print()
+    # ------------------------------------------------------------
+    # 3. Propagate dimensions
+    # ------------------------------------------------------------
+
+    lateral_axis = aligned_axis[0]
+    sign = -1 if scene_center[lateral_axis] > child_asset["center"][lateral_axis] else 1
+    parent_side = 'left'  if sign == -1 else 'right'
+    child_side  = 'right' if sign == -1 else 'left'
+    print(parent_side, child_side)
+    child_asset['weight'] = sign
+
+
+    set_dimension_parent_default(child_asset, child_axes, 0, pcd_data)
+    set_dimension_parent_default(child_asset, child_axes, 1, pcd_data)
+    child_asset[extent_labels[child_axes[2]]] = get_not_aligned_depth(parent_asset, child_asset, child_axes[2])
+
+    # ------------------------------------------------------------
+    # 4. Build transform: rotate ±90° if misaligned
+    # ------------------------------------------------------------
+    translation = get_translation(parent_asset, child_asset, aligned_axis, 1)
+    indices = [0, 2, 1]       
+    index = indices[aligned_axis[1]]
+    transform = np.eye(4)
+    transform[index, 3] = translation
+
+
+    # Rotate around parent's vertical axis
+    R = o3d.geometry.get_rotation_matrix_from_axis_angle(
+                [0, 0, -1 * sign * np.pi / 2])
+    transform[:3, :3] = R
+
+    child_asset["width"], child_asset["depth"] = child_asset["depth"], child_asset["width"]
+
+    # ------------------------------------------------------------
+    # 5. Place ABOVE the parent (anchors = top/bottom)
+    # ------------------------------------------------------------
+    s.add_object(
+        child_asset["asset_func"](
+            child_asset["width"],
+            child_asset["height"],
+            child_asset["depth"],
+        ),
+        child_asset["asset_name"],
+        connect_parent_id=parent_asset["asset_name"],
+        connect_parent_anchor=(parent_side, "back", "top"),
+        connect_obj_anchor=(child_side, "back", "bottom"),
+        transform=transform
+    )
+
+    # ------------------------------------------------------------
+    # 6. Bookkeeping
+    # ------------------------------------------------------------
+    placed_assets.append(child_asset)
+    unplaced_assets[label].remove(child_asset)
+    print(f"[PLACED NOT ALIGNED] Child {child_asset['object_number']} above Parent {parent_asset['object_number']}")
+    child_asset["width"], child_asset["depth"] = \
+            child_asset["depth"], child_asset["width"]
+    return True
+
+
+
 
 ## assume upper is smaller depth than lower
 def get_aligned_depth(parent, child, depth_axis,):
@@ -761,6 +804,29 @@ def get_aligned_depth(parent, child, depth_axis,):
 
     if (p_s == -1 and (p_min > c_min)) or (p_s == 1 and c_min > p_min):
         return p_depth - abs(p_min - c_min)
+    else:
+        return None
+    
+# input child depth axis
+def get_not_aligned_depth(parent, child, depth_axis):
+    c_s = child['weight']
+    p_depth = parent["aabb"].get_extent()[depth_axis]
+    c_depth = child["aabb"].get_extent()[depth_axis]
+    p_center = parent["center"][depth_axis]
+    c_center = child["center"][depth_axis]
+
+    p_min = p_center + c_s * (p_depth / 2)
+    c_min = c_center + c_s * (c_depth / 2)
+
+    if child['object_number'] == 26:
+        print(c_s)
+        print(depth_axis)
+        print(p_center, c_center)
+        print(p_min, c_min)
+
+    print((c_s == 1 and c_min < p_min))
+    if (c_s == -1 and (p_min < c_min)) or (c_s == 1 and c_min < p_min):
+        return abs(p_min - c_min)
     else:
         return None
 
