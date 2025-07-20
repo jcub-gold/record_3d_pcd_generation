@@ -47,7 +47,7 @@ data/scene_name/record3d_input/
 
 ### 3. Segment frames
 ```bash
-python3 -m src.real2code2real.get_masks -s /path/to/scene_directory --dataset_size 1200
+python3 -m src.real2code2real.get_masks --scene_name=example_scene --dataset_size=1200
 ```
 - dataset_size specifies how many input frames to down-sample and use
 - Run real2code2real/get_masks.py with the new dataset size and how many objects to segment. Then for each object, enter in:

@@ -19,9 +19,10 @@ class bcolors:
 
 parser = ArgumentParser("Get masks and mesh extracts of objects within a scene")
 
-parser.add_argument("--source_path", "-s", required=True, type = str)
+parser.add_argument("--scene_name", "-s", required=True, type = str)
 parser.add_argument("--model_path", "-m", type=str, default=None)
 parser.add_argument("--dataset_size", default = 1100, type = int)
+parser.add_argument("--load_cached_points", default = False, type = bool)
 
 
 args = parser.parse_args(sys.argv[1:])
@@ -30,13 +31,14 @@ if args.model_path:
     os.makedirs(args.model_path, exist_ok=True)
     base_output_dir = os.path.join(args.model_path, time.strftime("%Y%m%d-%H%M%S"))
 
-base_dir = args.source_path
+base_dir = f"data/{args.scene_name}/record3d_input"
 raw_dir = os.path.join(base_dir, "rgb")
 raw_depth_dir = os.path.join(base_dir, "depth")
 input_dir = os.path.join(base_dir, "input")
 depth_dir = os.path.join(base_dir, "input_depth")
 labeled_dir = os.path.join(base_dir, "labeled")
 background_masks_dir = os.path.join(base_dir, "images")
+cached = args.load_cached_points
 
 # Reduce the dataset size
 if not os.path.isdir(input_dir):
@@ -58,13 +60,30 @@ print(bcolors.OKGREEN + f"Labeled dataset successfully created at {labeled_dir}"
 all_object_prompts = {}
 frame_intervals = []
 
-# Get information for each object in order  
-num_objects = int(input("Enter desired number of objects: "))
+# Get information for each object in order
+if cached:
+    with open(f"data/{args.scene_name}/cached_points.txt", "r", encoding="utf-8") as f:
+        cache = f.readlines()
+if not cached:
+    num_objects = int(input("Enter desired number of objects: "))
+else:
+    num_objects = int(cache[0])
+    print(f"Enter desired number of objects: {num_objects}")
 for obj in range(num_objects):
-    frames = input(f"For the reconstruction interval of object {obj + 1}, enter its first and last frame of appearance: ").split(" ")
+    if not cached:
+        frames = input(f"For the reconstruction interval of object {obj + 1}, enter its first and last frame of appearance: ").split(" ")
+    else:
+        raw_frames = cache[obj * 3 + 1]
+        frames = raw_frames.split(" ")
+        print(f"For the reconstruction interval of object {obj + 1}, enter its first and last frame of appearance: {raw_frames}", end="")
     start_frame, end_frame = int(frames[0]), int(frames[1])
 
-    user_input = input(f"For part of object {obj + 1}, enter the its first frame appearance, the type of prompt, and coordinates: ").split(" ")
+    if not cached:
+        user_input = input(f"For part of object {obj + 1}, enter the its first frame appearance, the type of prompt, and coordinates: ").split(" ")
+    else:
+        raw_points = cache[obj * 3 + 2]
+        user_input = raw_points.split(" ")
+        print(f"For part of object {obj + 1}, enter the its first frame appearance, the type of prompt, and coordinates: {raw_points}", end="")
     object_prompts = []
     frame_intervals.append([start_frame, end_frame])
     while len(user_input) > 1:
@@ -76,9 +95,14 @@ for obj in range(num_objects):
         
         object_prompts.append((starting_index - frame_intervals[obj][0], prompts))
 
-        user_input = input(f"For part of object {obj + 1}, enter the its first frame appearance, the type of prompt, and coordinates. Press return once done: ").split(" ")
-
+        if not cached:
+            user_input = input(f"For part of object {obj + 1}, enter the its first frame appearance, the type of prompt, and coordinates. Press return once done: ").split(" ")
+        if cached:
+            raw_points = cache[obj * 3 + 3]
+            user_input = raw_points.split(" ")
+            print(f"For part of object {obj + 1}, enter the its first frame appearance, the type of prompt, and coordinates. Press return once done: {raw_points}", end="")
     all_object_prompts[obj] = object_prompts
+# sys.exit()
 
 
 # Create new directory and calculate masks for each object
