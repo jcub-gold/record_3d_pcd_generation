@@ -45,7 +45,7 @@ def create_pcd_from_frame(data, frame_index, samples=5000, remove_outliers=None)
     # depth_img[~alpha_mask] = 0
 
     # Shrink mask by 5 pixels from each edge
-    shrink = 5
+    shrink = 10
     alpha_mask_shrunk = np.zeros_like(alpha_mask, dtype=bool)
     alpha_mask_shrunk[shrink:-shrink, shrink:-shrink] = alpha_mask[shrink:-shrink, shrink:-shrink]
 

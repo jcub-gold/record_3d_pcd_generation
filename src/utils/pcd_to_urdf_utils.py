@@ -12,13 +12,21 @@ from sklearn.cluster import KMeans
 from collections import defaultdict
 
 
-labels = ['drawer', 'lower_left_cabinet', 'lower_right_cabinet', 'upper_left_cabinet', 'upper_right_cabinet', 'box', 'sink']
-label_clusters = [3, 1, 1, 1, 1]
+labels = ['drawer', 'lower_left_cabinet', 'lower_right_cabinet', 'upper_left_cabinet', 'upper_right_cabinet', 'box']
+
 extent_labels = ['width', 'height', 'depth']
-label_keywords = ['drawer', 'lower', 'upper', 'box', 'sink']
-extent_indices = [(0, 1, 2), (1,), (1,), (0, 1), (0,)]
+label_keywords = ['drawer', 'lower', 'upper', 'box']
+
 default_countertop_thickness = 0.04
 default_drawer_depth = 0.024
+
+"""
+second_floor_test
+label_clusters = [3, 1, 1, 1, 1]
+extent_indices = [(0, 1, 2), (1,), (1,), (0, 1), (0,)]
+"""
+label_clusters = [5, 1, 1, 1, 1]
+extent_indices = [(0, 1, 2), (1,), (1,), (0, 1, 2)]
 
 """
     Function: prepare_pcd_data
@@ -108,7 +116,7 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
         if 'cabinet' in label:
             print(f"Old object {obj_num} width: {width}")
             width = np.sqrt(width**2 + depth**2)
-            depth = width
+            # depth = width
             print(f"New object {obj_num} width: {width}")
 
         if 'box' in label:
@@ -127,10 +135,14 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
             "relative_alignment": [0, 1, 2],
             "weight": 1
         }
-        if 'upper' in label:
-            dict_data["relative_alignment"] = [2, 1, 0]
-        if obj_num == 35 and obj_num == 36:
-            dict_data["relative_alignment"] = [2, 1, 0]
+
+        thin = thin_axis(aabb.get_extent(), ratio_threshold=0.15)
+        if thin is not None:
+            if thin == 0:
+                dict_data["relative_alignment"] = [2, 1, 0]
+                print(f'found thin {obj_num}')
+        # if obj_num == 35 and obj_num == 36:
+        #     dict_data["relative_alignment"] = [2, 1, 0]
 
         func_name = f"get_{label}_asset"
         dict_data["asset_func"] = globals()[func_name]
@@ -209,6 +221,19 @@ def align_pcd_scene_via_object_aabb_minimization(pcds):
     return best_R, combined_pcd_center
 
 
+import numpy as np
+
+def thin_axis(extent, ratio_threshold: float = 0.2):
+    ext = np.asarray(extent, dtype=float)
+    if ext.shape != (3,):
+        raise ValueError("extent must be length-3 (dx, dy, dz)")
+
+    smallest_idx = int(np.argmin(ext))
+    second_smallest = np.partition(ext, 1)[1]   # next-smallest value
+
+    return smallest_idx if ext[smallest_idx] < ratio_threshold * second_smallest else None
+
+
 def pcd_to_urdf_simple_geometries(pcd_data, combined_center, output_dir=None):
     unplaced_assets = {}
     for asset in pcd_data:
@@ -228,36 +253,54 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, output_dir=None):
     s.add_object(parent_asset["asset_func"](width, height, depth), parent_asset['asset_name'])
     placed_assets.append(parent_asset)
 
-    for i in range(10):
-        for label in labels:
+    labels_w_o_upper = []
+    for label in labels:
+        if 'upper' not in label:
+            labels_w_o_upper.append(label)
+
+    for i in range(20):
+        for label in labels_w_o_upper:
             while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 1, combined_center)):
                 continue
             while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center)):
                 continue
-    for asset in placed_assets:
-        if asset['object_number'] == 6:
-            parent = asset
-    for asset in unplaced_assets['drawer']:
-        if asset['object_number'] == 5:
-            child = asset
+    
+    # for asset in placed_assets:
+    #     if asset['object_number'] == 6:
+    #         parent = asset
+    # for asset in unplaced_assets['drawer']:
+    #     if asset['object_number'] == 5:
+    #         child = asset
 
     # place_overlapped_child(s, parent, child, combined_center, pcd_data, placed_assets)
     for label in labels:
         if try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center, allow_overlap=True):
             break
 
-    try_to_place_strict(unplaced_assets, 'drawer', placed_assets, pcd_data, s, 0, combined_center)
-    for label in labels:
-        if 'upper' in label:
-            if try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, s):
-                break
-
-    for i in range(10):
-        for label in labels:
+    for i in range(20):
+        for label in labels_w_o_upper:
             while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 1, combined_center)):
                 continue
             while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center)):
                 continue
+    
+
+    # try_to_place_strict(unplaced_assets, 'drawer', placed_assets, pcd_data, s, 0, combined_center)
+    for j in range(2):
+        for label in labels:
+            if 'upper' in label:
+                if try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, s):
+                    break
+
+        for i in range(10):
+            for label in labels:
+                while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 1, combined_center)):
+                    continue
+                while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center)):
+                    continue
+
+    s.export('testing_basement.urdf')
+    s.show()
 
     for label in labels:
         if 'upper' in label:
@@ -344,7 +387,7 @@ def place_lateral_asset(s, parent_asset, child_asset, child_width, child_height,
                     transform=transform)
 
 # axis: axis along which to check overlap (0 for x, 1 for y, 2 for z)
-def check_overlap(axis, potential_parent, potential_child, threshold = 0.05):
+def check_overlap(axis, potential_parent, potential_child, threshold = 0.1):
 
     child_center=potential_child['center']
     parent_center=potential_parent['center']
@@ -393,8 +436,12 @@ def same_depth(parent, child, depth_axis, weight=0.05):
     p_center = parent["center"][depth_axis]
     c_center = child["center"][depth_axis]
     max_depth_threshold = max(p_depth, c_depth) * weight
-    p_min = p_center - (p_depth / 2)
-    c_min = c_center - (c_depth / 2)
+    if parent['relative_alignment'] == [2, 1, 0] and parent['weight'] == 1:
+        p_min = p_center + (p_depth / 2)
+        c_min = c_center + (c_depth / 2)
+    else:
+        p_min = p_center - (p_depth / 2)
+        c_min = c_center - (c_depth / 2)
     if parent['object_number'] == 4 and child['object_number'] == 36:
         print(p_depth, depth_axis, p_min, c_min)
         print('look here')
@@ -558,6 +605,8 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
     placed = False
     for potential_parent in placed_assets:
         aligned_axis = potential_parent['relative_alignment']
+        if 'upper' in label and 'upper' not in potential_parent['label']:
+            continue
 
         candidates = []
         for potential_child in list(unplaced_assets[label]):
@@ -595,12 +644,12 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
                                              threshold=1,
                                              axes=(aligned_axis[axes[0]],))
             c_depth = same_depth(potential_parent, potential_child,
-                                 depth_axis=aligned_axis[axes[1]], weight=0.3)
+                                 depth_axis=aligned_axis[axes[1]], weight=0.45)
             
             # fix since scans were with door open:
             if 'upper' in label and abs(potential_child['object_number'] - potential_parent['object_number']) < 2:
                 c_o = True
-            if (potential_child['object_number'] == 36 and potential_parent['object_number'] == 35 and axis == 0):
+            if (potential_child['object_number'] == 15 and potential_parent['object_number'] == 14 and axis == 0):
                 print('----')
                 print(c_o, one_d, c_depth)
                 print('----')
@@ -612,8 +661,11 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
             #     print('----')
             # print(c_o, one_d, c_depth)
 
-
-            if c_depth and one_d and c_o and potential_child['aabb'].get_extent()[aligned_axis[axes[0]]] > potential_parent['aabb'].get_extent()[aligned_axis[axes[0]]] / 4:
+            if (potential_child['object_number'] == 21 and potential_parent['object_number'] == 11 and axis == 0):
+                print('----')
+                print(c_o, one_d, c_depth)
+                print('----')
+            if c_depth and one_d and c_o and potential_child['aabb'].get_extent()[aligned_axis[0]] > potential_parent['aabb'].get_extent()[aligned_axis[0]] / 8:
                 kw            = potential_parent['label'].split('_')[0]
                 cluster_key   = f"{kw}_cluster_id"
                 label_match   = int(potential_child['label'] == potential_parent['label'])
@@ -672,8 +724,13 @@ def try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, 
             # if potential_child['object_number'] == 1 and potential_parent['object_number'] == 4:
                 # print()
                 # print(potential_child['relative_alignment'][0], aligned_axis[0])
+            
             if one_d:
                 depth = get_aligned_depth(potential_parent, potential_child, aligned_axis[axes[1]])
+                if (potential_child['object_number'] == 15 and potential_parent['object_number'] == 29):
+                    print('----')
+                    print(one_d, depth, aligned_axis, potential_child['relative_alignment'])
+                    print('----')
                 
                 # print(depth, potential_child['relative_alignment'][0], aligned_axis[0])
                 # print(potential_child['object_number'], potential_parent['object_number'])
@@ -817,6 +874,8 @@ def get_aligned_depth(parent, child, depth_axis,):
     p_center = parent["center"][depth_axis]
     c_center = child["center"][depth_axis]
 
+    if (parent['relative_alignment'] == [0,1,2]):
+        p_s = p_s * -1
     p_min = p_center + p_s * (p_depth / 2)
     c_min = c_center + p_s * (c_depth / 2)
 
@@ -829,6 +888,12 @@ def get_aligned_depth(parent, child, depth_axis,):
         print(p_center, c_center)
         print(p_min, c_min)
         print()
+    if (child['object_number'] == 15 and parent['object_number'] == 29):
+        print('----')
+        print(p_s)
+        print(depth_axis)
+        print(p_depth)
+        print('----')
 
     if (p_s == -1 and (p_min > c_min)) or (p_s == 1 and c_min > p_min):
         return p_depth - abs(p_min - c_min)
