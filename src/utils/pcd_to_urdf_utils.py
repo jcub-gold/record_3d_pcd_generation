@@ -185,6 +185,7 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
 # instead of candidates just including potential children, loop through parents too and find best pair by closet overlap extent
 # may have to use this closest overlap condition to check vertical and lateral anchors
 
+# branch test
 
 """
     Function: align_pcd_scene_via_object_aabb_minimization
