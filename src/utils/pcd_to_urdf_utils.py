@@ -615,6 +615,16 @@ def set_cluster_fixed_extents(data,
                     # print(name, means[name])
 
 
+def _edge_alignment_score(parent, child, axis_idx, *, eps=1e-6):
+    """Return  √(1/closest_edge_difference)  along axis_idx."""
+    pc, pe = parent["center"][axis_idx], parent["aabb"].get_extent()[axis_idx]
+    cc, ce = child ["center"][axis_idx], child ["aabb"].get_extent()[axis_idx]
+
+    p_lo, p_hi = pc - pe/2, pc + pe/2
+    c_lo, c_hi = cc - ce/2, cc + ce/2
+    closest = min(abs(p_lo - c_lo), abs(p_hi - c_hi))
+    return np.sqrt(1.0 / (closest + eps))
+
 '''
 k means cluster for each object
 set fixed heights/widths for each object based off of average in the cluster
@@ -640,7 +650,11 @@ when placing objects:
 
 
 '''
+
+## upper aligneed + anchoring
+
 def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis, center, allow_overlap=False, allow_rotation=False):
+    # allow_overlap = False
     if axis == 1:
         func_name, axes = "place_vertical_asset", [0, 2, 1]
     else:
@@ -648,12 +662,11 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
     placement_func = globals()[func_name]
 
     placed = False
+    best = None
     for potential_parent in placed_assets:
         aligned_axis = potential_parent['relative_alignment']
         if 'upper' in label and 'upper' not in potential_parent['label']:
             continue
-
-        candidates = []
         for potential_child in list(unplaced_assets[label]):
             # if (potential_child['object_number'] == 36 and potential_parent['object_number'] == 4 and axis == 1):
             #         print('----')
@@ -669,11 +682,11 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
                 continue
             if not allow_overlap and overlaps_any_placed(potential_child, placed_assets):
                 # print(potential_child['object_number'])
-                if (potential_child['object_number'] == 36 and potential_parent['object_number'] == 4 and axis == 1):
-                    print('----')
-                    print(potential_parent['center'], potential_parent['aabb'].get_extent(),
-                                                                    potential_child['center'], potential_child['aabb'].get_extent())
-                    print('----')
+                # if (potential_child['object_number'] == 36 and potential_parent['object_number'] == 4 and axis == 1):
+                #     print('----')
+                #     print(potential_parent['center'], potential_parent['aabb'].get_extent(),
+                #                                                     potential_child['center'], potential_child['aabb'].get_extent())
+                #     print('----')
                 potential_child['relative_alignment'] = [2, 1, 0]
                 continue
             # if allow_overlap and overlaps_any_placed(potential_child, placed_assets):
@@ -713,66 +726,81 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
             #     print('----')
             # print(c_o, one_d, c_depth)
 
-            if (potential_child['object_number'] == 18 and potential_parent['object_number'] == 17 and axis == 0):
-                print('----')
-                print('testing here')
-                print(c_o, one_d, c_depth)
-                print('----')
-            if c_depth and one_d and c_o and potential_child['aabb'].get_extent()[aligned_axis[0]] > potential_parent['aabb'].get_extent()[aligned_axis[0]] / 8:
-                kw            = potential_parent['label'].split('_')[0]
-                cluster_key   = f"{kw}_cluster_id"
+            # if (potential_child['object_number'] == 18 and potential_parent['object_number'] == 17 and axis == 0):
+            #     print('----')
+            #     print('testing here')
+            #     print(c_o, one_d, c_depth)
+            #     print('----')
+            if c_depth and one_d and c_o and \
+               potential_child['aabb'].get_extent()[aligned_axis[0]] > \
+               potential_parent ['aabb'].get_extent()[aligned_axis[0]] / 8:
+
+                # --- scoring ------------------------------------------------
+                axis_idx   = aligned_axis[axes[0]]           # edge-comparison axis
+                edge_score = _edge_alignment_score(potential_parent,
+                                                   potential_child,
+                                                   axis_idx)
+
                 label_match   = int(potential_child['label'] == potential_parent['label'])
-                cluster_match = int(potential_child.get(cluster_key) ==
-                                    potential_parent.get(cluster_key))
-                
-                # if max similarty prioritize extent simiilarity
-                similarity    = 2 * label_match + cluster_match
-                candidates.append((similarity, potential_child))
+                cluster_match = int(
+                    potential_child.get(f"{potential_parent['label'].split('_')[0]}_cluster_id")
+                    ==
+                    potential_parent.get(f"{potential_parent['label'].split('_')[0]}_cluster_id")
+                )
+                similarity = 2*label_match + cluster_match
+                print(similarity)
+                print(edge_score)
+                score = edge_score * 0.01 + (1 + similarity)**2        # tweak weighting if desired
 
-        if candidates:
-            candidates.sort(key=lambda x: (-x[0], x[1]['object_number']))
-            _, best_child = candidates[0]
+                if best is None or score > best[0]:
+                    best = (score, potential_parent, potential_child, aligned_axis, axes)
 
-            set_dimension_parent_default(best_child, aligned_axis, axes[0], pcd_data,
-                                         potential_parent=potential_parent)
-            set_dimension_parent_default(best_child, aligned_axis, axes[1], pcd_data,
-                                         potential_parent=potential_parent)
-            set_dimension_parent_default(best_child, aligned_axis, axes[2], pcd_data)
-            if best_child.get("rotation") is not None:
-                transform = best_child['rotation']
-                child_pos  = best_child["center"][aligned_axis[0]] # might need weight here (2 lines below)
-                scene_pos  = center[aligned_axis[0]]
-                if scene_pos * potential_parent['weight'] > child_pos * potential_parent['weight']:
-                    transform = np.linalg.inv(transform)
-                print(transform)
-                depth_clamp = 'front'
-            else:
-                depth_clamp = 'back'
-                transform = np.eye(4)
+    if best is None:
+        return False
 
-            placement_func(
-                s=s,
-                parent_asset=potential_parent,
-                child_asset=best_child,
-                child_width=best_child[extent_labels[aligned_axis[0]]],
-                child_height=best_child[extent_labels[aligned_axis[1]]],
-                child_depth=best_child[extent_labels[aligned_axis[2]]],
-                transform=transform,
-                depth_clamp=depth_clamp
+    _, best_parent, best_child, aligned_axis, axes = best
 
-            )
 
-            placed_assets.append(best_child)
-            unplaced_assets[label].remove(best_child)
-            print(f"placing object {best_child['object_number']} on object {potential_parent['object_number']}, {func_name}")
-            if (best_child['object_number'] == 4):
-                print(aligned_axis)
-                print(potential_parent['object_number'])
-            best_child['relative_alignment'] = aligned_axis
-            best_child['weight'] = potential_parent['weight']
-            placed = True
-            return placed
-    return placed
+
+    set_dimension_parent_default(best_child, aligned_axis, axes[0], pcd_data,
+                                    potential_parent=best_parent)
+    set_dimension_parent_default(best_child, aligned_axis, axes[1], pcd_data,
+                                    potential_parent=best_parent)
+    set_dimension_parent_default(best_child, aligned_axis, axes[2], pcd_data)
+    if best_child.get("rotation") is not None:
+        transform = best_child['rotation']
+        child_pos  = best_child["center"][aligned_axis[0]] # might need weight here (2 lines below)
+        scene_pos  = center[aligned_axis[0]]
+        if scene_pos * best_parent['weight'] > child_pos * best_parent['weight']:
+            transform = np.linalg.inv(transform)
+        print(transform)
+        depth_clamp = 'front'
+    else:
+        depth_clamp = 'back'
+        transform = np.eye(4)
+
+    placement_func(
+        s=s,
+        parent_asset=best_parent,
+        child_asset=best_child,
+        child_width=best_child[extent_labels[aligned_axis[0]]],
+        child_height=best_child[extent_labels[aligned_axis[1]]],
+        child_depth=best_child[extent_labels[aligned_axis[2]]],
+        transform=transform,
+        depth_clamp=depth_clamp
+
+    )
+
+    placed_assets.append(best_child)
+    unplaced_assets[label].remove(best_child)
+    print(f"placing object {best_child['object_number']} on object {best_parent['object_number']}, {func_name}")
+    # if (best_child['object_number'] == 4):
+    #     print(aligned_axis)
+    #     print(potential_parent['object_number'])
+    best_child['relative_alignment'] = aligned_axis
+    best_child['weight'] = best_parent['weight']
+    
+    return True
 
 def try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, s):
     func_name, axes = "place_vertical_asset", [0, 2, 1]
@@ -1182,6 +1210,10 @@ def place_overlapped_child(s,
     child_asset["width"], child_asset["depth"] = \
             child_asset["depth"], child_asset["width"]
     return True
+
+
+
+
 
 
 
