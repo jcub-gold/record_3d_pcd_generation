@@ -208,3 +208,5 @@ sink/
 quick.py
 testing_scene/
 data/basement_test/
+test_pcd/
+testing_basement.urdf
