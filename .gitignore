@@ -210,3 +210,5 @@ testing_scene/
 data/basement_test/
 test_pcd/
 testing_basement.urdf
+second_floor_test/
+basement_test/

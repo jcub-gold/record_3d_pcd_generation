@@ -24,8 +24,12 @@ second_floor_test
 label_clusters = [3, 1, 1, 1, 1]
 extent_indices = [(0, 1, 2), (1,), (1,), (0, 1), (0,)]
 """
+# basement_test
 label_clusters = [5, 1, 1, 1]
 extent_indices = [(0, 1, 2), (0, 1, 2), (1,), (1,), ]
+# # second_floor_test
+# label_clusters = [1, 1, 3, 1, 1]
+# extent_indices = [(1,), (0,), (0, 1, 2), (1,), (0, 1)]
 
 """
     Function: prepare_pcd_data
@@ -115,12 +119,16 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
 
         aabb = pcd.get_axis_aligned_bounding_box()
         width, height, depth = aabb.get_extent()
-        # not neccesary assuming closed scan and need to set relative axes based on dimensions
-        if 'cabinet' in label:
-            # print(f"Old object {obj_num} width: {width}")
-            width = np.sqrt(width**2 + depth**2)
-            # depth = width
-            # print(f"New object {obj_num} width: {width}")
+
+        # # second_floor_test
+        # # not neccesary assuming closed scan and need to set relative axes based on dimensions
+        # if 'cabinet' in label:
+        #     if 'upper' in label:
+        #         print(f"Old object {obj_num} width: {width}")
+        #     width = np.sqrt(width**2 + depth**2)
+        #     depth = width
+        #     if 'upper' in label:
+        #         print(f"New object {obj_num} width: {width}")
 
         # if 'box' in label:
         #     print(aabb)
@@ -142,6 +150,12 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
             prnt = True
         else:
             prnt=False
+
+        # # second_floor_test
+        # if 'upper' in label:
+        #     dict_data["relative_alignment"] = [2, 1, 0]
+
+        # basement_test
         thin = thin_axis(aabb.get_extent(), ratio_threshold=0.15, p=prnt)
         if 'cabinet' in label:
             if thin == 0:
@@ -156,8 +170,8 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
                             [0, 0, -1 * np.pi / 4])
                     transform[:3, :3] = R
                     dict_data['rotation'] = transform
-                # else:
-                #     print(f'No rotation {obj_num}')
+                else:
+                    print(f'No rotation {obj_num}')
 
         # if obj_num == 35 and obj_num == 36:
         #     dict_data["relative_alignment"] = [2, 1, 0]
@@ -264,7 +278,7 @@ def thin_axis(extent, ratio_threshold: float = 0.2, p=False):
     return smallest_idx if ext[smallest_idx] < ratio_threshold * second_smallest else None
 
 
-def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, output_dir=None):
+def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, output_path=None):
     unplaced_assets = {}
     for asset in pcd_data:
         if unplaced_assets.get(asset['label']) is None:
@@ -306,16 +320,16 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, output_dir=
             expand_direct_neighbors(upper_labels, unplaced_assets, placed_assets, pcd_data, s, combined_center)
             place_aligned_top = False
             for label in upper_labels:
-                if 'upper' in label:
-                    if try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, s):
-                        place_aligned_top = True
-                        break
+                if try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, s):
+                    place_aligned_top = True
+                    break
+            if place_aligned_top:
+                continue
             place_not_aligned_top = False
             for label in upper_labels:
-                if 'upper' in label:
-                    if try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, s):
-                        place_not_aligned_top = True
-                        break
+                if try_to_place_upper_not_aligned(unplaced_assets, label, placed_assets, pcd_data, s, combined_center):
+                    place_not_aligned_top = True
+                    break
             expand_top = place_aligned_top or place_not_aligned_top
 
         place_rotated = True
@@ -330,7 +344,7 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, output_dir=
                     place_rotated = True
                     continue
 
-    s.export('testing_basement.urdf')
+    s.export(output_path)
     s.show()
     return
 
@@ -356,7 +370,6 @@ def get_unplaced_assets_length(unplaced_assets, labels):
 
 
 def place_vertical_asset(s, parent_asset, child_asset, child_width, child_height, child_depth, transform=np.eye(4), depth_clamp='back', clamp=-1):
-    clamp = parent_asset['weight'] * clamp
     lateral_anchor = 'left' if clamp == -1 else 'right'
     # lateral_anchor = 'left'
     # place on top of the parent asset
@@ -471,9 +484,9 @@ def same_depth(parent, child, depth_axis, weight=0.05):
     else:
         p_min = p_center - (p_depth / 2)
         c_min = c_center - (c_depth / 2)
-    if parent['object_number'] == 4 and child['object_number'] == 36:
-        print(p_depth, depth_axis, p_min, c_min)
-        print('look here')
+    # if parent['object_number'] == 4 and child['object_number'] == 36:
+    #     print(p_depth, depth_axis, p_min, c_min)
+    #     print('look here')
     if abs(p_min - c_min) <= max_depth_threshold:
         return True
     return False
@@ -699,7 +712,8 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
             c_depth = same_depth(potential_parent, potential_child,
                                  depth_axis=aligned_axis[axes[1]], weight=0.45)
             
-            # fix since scans were with door open:
+            # # fix since scans were with door open:
+            # # second_floor_test
             # if 'upper' in label and abs(potential_child['object_number'] - potential_parent['object_number']) < 2:
             #     c_o = True
             # if (potential_child['object_number'] == 15 and potential_parent['object_number'] == 14 and axis == 0):
@@ -810,6 +824,9 @@ def try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, 
         aligned_axis = potential_parent['relative_alignment']
 
         for potential_child in list(unplaced_assets[label]):
+            if potential_child.get("rotation") is not None:
+                # print(f'skipping {potential_child['object_number']}')
+                continue
             one_d = half_extent_overlap_2d(
                 potential_parent, potential_child,
                 threshold=1,
@@ -840,6 +857,8 @@ def try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, 
         return False
 
     edge_score, depth, parent_asset, child_asset, aligned_axis, clamp = best
+
+    # print(f'\n{clamp}\n')
 
     # print(f"parent {parent_asset['object_number']} found child {child_asset['object_number']}")
 
@@ -894,12 +913,17 @@ def try_to_place_upper_not_aligned(unplaced_assets, label, placed_assets, pcd_da
             child_axes = potential_child["relative_alignment"]
             if child_axes == aligned_axis:
                 continue
+            if potential_child.get("rotation") is not None:
+                # print(f'skipping {potential_child['object_number']}')
+                continue
             one_d = half_extent_overlap_2d(
                 potential_parent,
                 potential_child,
                 threshold=1,
                 axes=(child_axes[0],)  # child's width axis
             )
+            # if potential_parent['object_number'] == 34:
+            #     print(potential_child['object_number'], one_d)
 
             if one_d:
                 # Compute center distance for ranking
@@ -914,9 +938,9 @@ def try_to_place_upper_not_aligned(unplaced_assets, label, placed_assets, pcd_da
     aligned_axis = parent_asset["relative_alignment"]
     child_axes = child_asset["relative_alignment"]
 
-    print()
-    print(parent_asset['object_number'], child_asset['object_number'], get_not_aligned_depth(parent_asset, child_asset, child_axes[2]))
-    print()
+    # print()
+    # print(parent_asset['object_number'], child_asset['object_number'], get_not_aligned_depth(parent_asset, child_asset, child_axes[2]))
+    # print()
     # ------------------------------------------------------------
     # 3. Propagate dimensions
     # ------------------------------------------------------------
@@ -925,7 +949,7 @@ def try_to_place_upper_not_aligned(unplaced_assets, label, placed_assets, pcd_da
     sign = -1 if scene_center[lateral_axis] > child_asset["center"][lateral_axis] else 1
     parent_side = 'left'  if sign == -1 else 'right'
     child_side  = 'right' if sign == -1 else 'left'
-    print(parent_side, child_side)
+    # print(parent_side, child_side)
     child_asset['weight'] = sign
 
 
@@ -971,7 +995,7 @@ def try_to_place_upper_not_aligned(unplaced_assets, label, placed_assets, pcd_da
     # ------------------------------------------------------------
     placed_assets.append(child_asset)
     unplaced_assets[label].remove(child_asset)
-    print(f"[PLACED NOT ALIGNED] Child {child_asset['object_number']} above Parent {parent_asset['object_number']}")
+    print(f"placing object {child_asset['object_number']} on object {child_asset['object_number']}, 90 degree rotation")
     child_asset["width"], child_asset["depth"] = \
             child_asset["depth"], child_asset["width"]
     return True
@@ -1029,13 +1053,13 @@ def get_not_aligned_depth(parent, child, depth_axis):
     p_min = p_center + c_s * (p_depth / 2)
     c_min = c_center + c_s * (c_depth / 2)
 
-    if child['object_number'] == 26:
-        print(c_s)
-        print(depth_axis)
-        print(p_center, c_center)
-        print(p_min, c_min)
+    # if child['object_number'] == 26:
+    #     print(c_s)
+    #     print(depth_axis)
+    #     print(p_center, c_center)
+    #     print(p_min, c_min)
 
-    print((c_s == 1 and c_min < p_min))
+    # print((c_s == 1 and c_min < p_min))
     if (c_s == -1 and (p_min < c_min)) or (c_s == 1 and c_min < p_min):
         return abs(p_min - c_min)
     else:

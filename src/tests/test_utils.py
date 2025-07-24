@@ -126,7 +126,7 @@ if __name__ == "__main__":
     # testing visualize_pcd_aabb_and_center
     print("Testing visualize_pcd_aabb_and_center...")
     ply_paths = []
-    root_path =  "data/basement_test/pcds" # 'test_pcd' # "data/second_floor_test/aa_pcds" # "data/basement_base_cabinet/pcds" # "data/basement_base_cabinet_extension/aa_pcds" # pcds
+    root_path = "data/second_floor_test/aa_pcds" # "data/basement_test/pcds" # 'test_pcd' #  "data/basement_base_cabinet/pcds" # "data/basement_base_cabinet_extension/aa_pcds" # pcds
 
     for dirpath, dirnames, filenames in os.walk(root_path):
         for filename in filenames:
