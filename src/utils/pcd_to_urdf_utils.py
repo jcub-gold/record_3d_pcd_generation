@@ -12,10 +12,9 @@ from sklearn.cluster import KMeans
 from collections import defaultdict
 
 
-labels = ['drawer', 'lower_left_cabinet', 'lower_right_cabinet', 'upper_left_cabinet', 'upper_right_cabinet', 'box']
+possible_labels = ['drawer', 'lower_left_cabinet', 'lower_right_cabinet', 'upper_left_cabinet', 'upper_right_cabinet', 'box', 'sink']
 
 extent_labels = ['width', 'height', 'depth']
-label_keywords = ['drawer', 'lower', 'upper', 'box']
 
 default_countertop_thickness = 0.04
 default_drawer_depth = 0.024
@@ -25,8 +24,8 @@ second_floor_test
 label_clusters = [3, 1, 1, 1, 1]
 extent_indices = [(0, 1, 2), (1,), (1,), (0, 1), (0,)]
 """
-label_clusters = [5, 1, 1, 1, 1]
-extent_indices = [(0, 1, 2), (1,), (1,), (0, 1, 2)]
+label_clusters = [5, 1, 1, 1]
+extent_indices = [(0, 1, 2), (0, 1, 2), (1,), (1,), ]
 
 """
     Function: prepare_pcd_data
@@ -81,12 +80,14 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
         with open(os.path.join(input_path, "cached_labels.json"), "r") as f:
             cache = json.load(f)
     else:
-        print("Either type full label or a number for the label list below:\n"
-              "0: drawer\n1: lower_left_cabinet\n2: lower_right_cabinet\n"
-              "3: upper_left_cabinet\n4: upper_right_cabinet\n5: box")
+        string = "Either type full label or a number for the label list below:\n"
+        for i in range(len(possible_labels)):
+            string += f"{i}: {possible_labels[i]}:\n"
+        print(string)
         cache = None
 
     pcd_data = []
+    labels = []
     for fname, pcd in files:
         match = re.search(r'object_(\d+)', fname)
         assert match, f"Filename {fname} does not match expected pattern."
@@ -98,17 +99,19 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
             label_in = input(f"Enter label for {fname}: ")
             try:
                 idx = int(label_in)
-                if 0 <= idx < len(labels):
-                    label = labels[idx]
+                if 0 <= idx < len(possible_labels):
+                    label = possible_labels[idx]
                 else:
                     raise ValueError
             except ValueError:
-                if label_in in labels:
+                if label_in in possible_labels:
                     label = label_in
                 else:
                     raise ValueError("Invalid label or index")
             if save_labels is not None:
                 save_labels[f"object_{obj_num}"] = label
+        if label not in labels:
+            labels.append(label)
 
         aabb = pcd.get_axis_aligned_bounding_box()
         width, height, depth = aabb.get_extent()
@@ -119,8 +122,8 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
             # depth = width
             # print(f"New object {obj_num} width: {width}")
 
-        if 'box' in label:
-            print(aabb)
+        # if 'box' in label:
+        #     print(aabb)
 
         dict_data = {
             "pcd_path": os.path.join(aa_pcds_path, fname),
@@ -143,18 +146,18 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
         if 'cabinet' in label:
             if thin == 0:
                 dict_data["relative_alignment"] = [2, 1, 0]
-                print(f'90 degree rotation {obj_num}')
+                # print(f'90 degree rotation {obj_num}')
             else:
                 dict_data["relative_alignment"] = [0, 1, 2]
                 if thin == None:
-                    print(f'45 degree degree rotation {obj_num}')
+                    # print(f'45 degree degree rotation {obj_num}')
                     transform = np.eye(4)
                     R = o3d.geometry.get_rotation_matrix_from_axis_angle(
                             [0, 0, -1 * np.pi / 4])
                     transform[:3, :3] = R
                     dict_data['rotation'] = transform
-                else:
-                    print(f'No rotation {obj_num}')
+                # else:
+                #     print(f'No rotation {obj_num}')
 
         # if obj_num == 35 and obj_num == 36:
         #     dict_data["relative_alignment"] = [2, 1, 0]
@@ -170,13 +173,17 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
     if save_labels is not None:
         json.dump(save_labels, open(os.path.join(input_path, "cached_labels.json"), "w"), indent=4)
 
+    label_keywords = []
+    for label in labels:
+        if label.split("_")[0] not in label_keywords:
+            label_keywords.append(label.split("_")[0])
+    
     print(label_keywords, label_clusters, extent_indices)
     for kw, clusters, idx in zip(label_keywords, label_clusters, extent_indices):
         assign_extent_clusters(pcd_data, kw, clusters, idx)
     for kw, idx in zip(label_keywords, extent_indices):
         set_cluster_fixed_extents(pcd_data, kw, idx)
-
-    return pcd_data, center
+    return pcd_data, center, labels, label_keywords
 
 
 # if allow_rotation = false skip asset,
@@ -251,28 +258,13 @@ def thin_axis(extent, ratio_threshold: float = 0.2, p=False):
 
     smallest_idx = int(np.argmin(ext))
     second_smallest = np.partition(ext, 1)[1]   # next-smallest value
-    if p:
-        print(ext[smallest_idx], second_smallest)
+    # if p:
+    #     print(ext[smallest_idx], second_smallest)
 
     return smallest_idx if ext[smallest_idx] < ratio_threshold * second_smallest else None
 
 
-def pcd_to_urdf_simple_geometries(pcd_data, combined_center, output_dir=None):
-    depth_33, depth_20, cab_depth = None, None, None
-    for asset in pcd_data:
-        if asset['object_number'] == 32:
-            depth_33 = asset['center'][0] + asset['aabb'].get_extent()[0] / 2
-            cab_depth = asset['aabb'].get_extent()[0]
-            print(cab_depth)
-        if asset['object_number'] == 19:
-            depth_20 = asset['center'][0] + asset['aabb'].get_extent()[0]
-    cab_depth -= abs (depth_33 - depth_20)
-
-    print(cab_depth, depth_20, depth_33)
-    
-    
-            
-
+def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, output_dir=None):
     unplaced_assets = {}
     for asset in pcd_data:
         if unplaced_assets.get(asset['label']) is None:
@@ -281,94 +273,85 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, output_dir=None):
 
     s = synth.Scene()
     placed_assets = []
+
+    # place the first asset, prioritize a drawer asset for depth calculation
     parent_asset = unplaced_assets['drawer'].pop()
-    # print(parent_asset['object_number'])
     set_dimension_parent_default(parent_asset, aligned_axis=parent_asset['relative_alignment'], target_axis=0, data=pcd_data)
     set_dimension_parent_default(parent_asset, aligned_axis=parent_asset['relative_alignment'], target_axis=1, data=pcd_data)
     set_dimension_parent_default(parent_asset, aligned_axis=parent_asset['relative_alignment'], target_axis=2, data=pcd_data)
-
     width, height, depth = parent_asset['width'], parent_asset['height'], parent_asset['depth']
     s.add_object(parent_asset["asset_func"](width, height, depth), parent_asset['asset_name'])
     placed_assets.append(parent_asset)
 
-    labels_w_o_upper = []
+    upper_labels = []
+    lower_labels = []
     for label in labels:
         if 'upper' not in label:
-            labels_w_o_upper.append(label)
+            lower_labels.append(label)
+        else:
+            upper_labels.append(label)
 
-    for i in range(20):
-        for label in labels_w_o_upper:
-            while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 1, combined_center)):
-                continue
-            while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center)):
-                continue
-    
-    # for asset in placed_assets:
-    #     if asset['object_number'] == 6:
-    #         parent = asset
-    # for asset in unplaced_assets['drawer']:
-    #     if asset['object_number'] == 5:
-    #         child = asset
-
-    # place_overlapped_child(s, parent, child, combined_center, pcd_data, placed_assets)
-    for label in labels:
-        if try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center, allow_overlap=True):
-            break
-
-    for i in range(20):
-        for label in labels_w_o_upper:
-            while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 1, combined_center)):
-                continue
-            while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center)):
-                continue
-    
-
-    # try_to_place_strict(unplaced_assets, 'drawer', placed_assets, pcd_data, s, 0, combined_center)
-    for j in range(2):
-        for label in labels:
-            if 'upper' in label:
-                if try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, s):
+    while get_unplaced_assets_length(unplaced_assets, labels) > 0:
+        expand_bottom = True
+        while expand_bottom:
+            expand_direct_neighbors(lower_labels, unplaced_assets, placed_assets, pcd_data, s, combined_center)
+            expand_bottom = False
+            for label in lower_labels:
+                if try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center, allow_overlap=True):
+                    expand_bottom = True
                     break
+        
+        expand_top = True
+        while expand_top:
+            expand_direct_neighbors(upper_labels, unplaced_assets, placed_assets, pcd_data, s, combined_center)
+            place_aligned_top = False
+            for label in upper_labels:
+                if 'upper' in label:
+                    if try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, s):
+                        place_aligned_top = True
+                        break
+            place_not_aligned_top = False
+            for label in upper_labels:
+                if 'upper' in label:
+                    if try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, s):
+                        place_not_aligned_top = True
+                        break
+            expand_top = place_aligned_top or place_not_aligned_top
 
-        for i in range(10):
+        place_rotated = True
+        while place_rotated:
+            place_rotated = False
             for label in labels:
-                while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 1, combined_center)):
+                # print('trying to place rotated!!!!!!!!!')
+                while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 1, combined_center, allow_rotation=True)):
+                    place_rotated = True
                     continue
-                while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center)):
+                while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center, allow_rotation=True)):
+                    place_rotated = True
                     continue
-    for i in range(10):
-        for label in labels:
-            # print('trying to place rotated!!!!!!!!!')
-            while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 1, combined_center, allow_rotation=True)):
-                continue
-            while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center, allow_rotation=True)):
-                continue
 
     s.export('testing_basement.urdf')
-    s.show()
-
-    for label in labels:
-        if 'upper' in label:
-            if try_to_place_upper_not_aligned(unplaced_assets, label, placed_assets, pcd_data, s, combined_center):
-                break
-
-    for i in range(10):
-        for label in labels:
-            while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 1, combined_center)):
-                continue
-            while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center)):
-                continue
-    
-    for asset in placed_assets:
-        print(asset['object_number'])
-
-
-    s.export('testing_scene/broken.urdf')
     s.show()
     return
 
 
+def expand_direct_neighbors(labels, unplaced_assets, placed_assets, pcd_data, s, combined_center):
+    place_direct_neighbor = True
+    while place_direct_neighbor:
+        place_direct_neighbor = False
+        for label in labels:
+            while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 1, combined_center)):
+                place_direct_neighbor = True
+                continue
+            while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center)):
+                place_direct_neighbor = True
+                continue
 
+def get_unplaced_assets_length(unplaced_assets, labels):
+    length = 0
+    for label in labels:
+        length += len(unplaced_assets[label])
+    return length
 
 
 
@@ -387,7 +370,7 @@ def place_vertical_asset(s, parent_asset, child_asset, child_width, child_height
         
     # place on bottom of the parent asset
     else:
-        print('bottom')
+        # print('bottom')
         transform[2,3] = transform[2,3] * -1
         s.add_object(child_asset["asset_func"](child_width, child_height, child_depth), 
                     child_asset['asset_name'],
@@ -607,7 +590,8 @@ def set_cluster_fixed_extents(data,
         clusters[d[key_cluster]].append(d)
     for cid, objs in clusters.items():
         means = {name: float(np.mean([o[name] for o in objs])) for name in names}
-        print("-------")     
+        if label_keyword =='drawer':
+            print("-------")     
         for o in objs:
             if 'drawer' in o['label']:
                 print(o['object_number'])
@@ -784,9 +768,9 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
         if aligned_axis == [2, 1, 0]:
             tight_translation_weight *= -1
         transform[0, 3] = tight_translation_weight * default_drawer_depth
-        print(f"parent {best_parent['object_number']}")
-        print(aligned_axis)
-        print(transform, tight_translation_weight)
+        # print(f"parent {best_parent['object_number']}")
+        # print(aligned_axis)
+        # print(transform, tight_translation_weight)
         depth_clamp = 'front'
     else:
         depth_clamp = 'back'
@@ -857,14 +841,14 @@ def try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, 
 
     edge_score, depth, parent_asset, child_asset, aligned_axis, clamp = best
 
-    print(f"parent {parent_asset['object_number']} found child {child_asset['object_number']}")
+    # print(f"parent {parent_asset['object_number']} found child {child_asset['object_number']}")
 
     # (Optional) recompute to be robust if anything changed:
     depth = get_aligned_depth(parent_asset, child_asset, aligned_axis[axes[1]])
     if depth is None:
         return False
     
-    print(depth)
+    # print(depth)
 
     # Dimension propagation
     set_dimension_parent_default(child_asset, aligned_axis, axes[2], pcd_data)
@@ -1019,15 +1003,15 @@ def get_aligned_depth(parent, child, depth_axis,):
     #     print(p_center, c_center)
     #     print(p_min, c_min)
     #     print()
-    if (child['object_number'] == 14 and parent['object_number'] == 22):
-        print('----')
-        print(p_s)
-        print(depth_axis)
-        print(p_center, c_center)
-        print(p_min, c_min)
-        print(p_depth)
-        print(p_fixed_depth - abs(p_min - c_min))
-        print('----')
+    # if (child['object_number'] == 14 and parent['object_number'] == 22):
+    #     print('----')
+    #     print(p_s)
+    #     print(depth_axis)
+    #     print(p_center, c_center)
+    #     print(p_min, c_min)
+    #     print(p_depth)
+    #     print(p_fixed_depth - abs(p_min - c_min))
+    #     print('----')
 
     if (p_s == -1 and (p_min > c_min)) or (p_s == 1 and c_min > p_min):
         return p_fixed_depth - abs(p_min - c_min)
@@ -1192,7 +1176,7 @@ def place_overlapped_child(s,
     child_asset['weight'] = side_sign
     transform = np.eye(4)
 
-    print(side_sign, parent_side, child_side)
+    # print(side_sign, parent_side, child_side)
 
     if aligned_c != aligned_p:
         # (i) ± 90° yaw so the *new* front faces the scene centre
@@ -1218,6 +1202,8 @@ def place_overlapped_child(s,
         vertical_anchor = 'top'
         dz = default_countertop_thickness
         transform[2, 3] += dz if child_asset['label'] == 'sink' else -dz
+    
+    print(f"placing object {child_asset['object_number']} on object {parent_asset['object_number']}, 90 degree rotation")
 
     s.add_object(
         child_asset["asset_func"](

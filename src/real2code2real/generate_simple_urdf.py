@@ -14,5 +14,5 @@ if __name__ == "__main__":
         sl = None
 
     pcds_path = f"data/{args.scene_name}/pcds"
-    pcd_data, center = prepare_pcd_data(pcds_path, save_labels=sl, load_cached_labels=args.load_cached_labels)
-    pcd_to_urdf_simple_geometries(pcd_data, center)
+    pcd_data, center, labels, label_keywords = prepare_pcd_data(pcds_path, save_labels=sl, load_cached_labels=args.load_cached_labels)
+    pcd_to_urdf_simple_geometries(pcd_data, center, labels)
