@@ -52,3 +52,33 @@ def rewrite_json(json_dir, output_dir, frame_correspondance, rewrite_categories)
     
     with open(output_dir, 'w') as file:
         json.dump(new_json, file)
+
+def copy_cached_frames(scene_name):
+    record3d_input_path = f"data/{scene_name}/record3d_input/"
+    multiview_output_path = f"data/{scene_name}/multiview/"
+    dests = ['generation_state', 'state_1']
+
+    num_objects = 0
+    for dirpath, dirnames, filenames in os.walk(record3d_input_path):
+        for dirname in dirnames:
+            if dirname.startswith("object_"):
+                num_objects += 1
+
+    with open(f'data/{scene_name}/cached_frames.json') as f:
+        cache = json.load(f)
+
+    for obj in range(1, num_objects + 1):
+        images_dir = f"data/{scene_name}/record3d_input/object_{obj}/images"
+        frame_indices = cache[f'object_{obj}']
+
+        for root, dirs, files in os.walk(images_dir):
+            for file in files:
+                if file.split('.')[0] in frame_indices:
+                    source_path = os.path.join(root, file)
+                    for dest in dests:
+                        dest_path = os.path.join(multiview_output_path, f"object_{obj}",dest, file)
+                        shutil.copy2(source_path, dest_path)
+
+if __name__ == "__main__":
+    copy_cached_frames("basement_test")
+    copy_cached_frames("second_floor_test")

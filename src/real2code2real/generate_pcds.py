@@ -24,7 +24,7 @@ def generate_pcds(scene_name, eps=0.05, min_points=10, nb_neighbors=10, std_rati
                 num_objects += 1
 
     if load_cached_frames:
-        with open(f'data/{scene_name}/cached_pcd_frames.json') as f:
+        with open(f'data/{scene_name}/cached_frames.json') as f:
             cache = json.load(f)
     else:
         cache = None
@@ -42,7 +42,7 @@ def generate_pcds(scene_name, eps=0.05, min_points=10, nb_neighbors=10, std_rati
             save_frames[f'object_{obj}'] = frame_indices
 
     if save_frames is not None:
-        save_frames_path = f'data/{scene_name}/cached_pcd_frames.json'
+        save_frames_path = f'data/{scene_name}/cached_frames.json'
         json.dump(save_frames, open(save_frames_path, 'w'), indent=4)
     
     remove_outliers = {
