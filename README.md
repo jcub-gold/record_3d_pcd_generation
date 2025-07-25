@@ -106,3 +106,6 @@ python3 -m src.real2code2real.generate_simple_urdf --scene_name=example_scene --
 - label each object
 
 ### 6. Mesh Generation
+
+
+test
