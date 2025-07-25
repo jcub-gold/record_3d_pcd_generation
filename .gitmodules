@@ -4,3 +4,6 @@
 [submodule "submodules/scene_synthesizer"]
 	path = submodules/scene_synthesizer
 	url = https://github.com/jcub-gold/modified_scene_synthesizer
+[submodule "submodules/TRELLIS"]
+	path = submodules/TRELLIS
+	url = https://github.com/microsoft/TRELLIS/
