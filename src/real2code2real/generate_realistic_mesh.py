@@ -1,8 +1,10 @@
 import os
+os.environ.setdefault("ATTN_BACKEND", "xformers")
 from argparse import ArgumentParser
 from PIL import Image
 from submodules.TRELLIS.trellis.pipelines import TrellisImageTo3DPipeline
 from src.utils.mesh_utils import save_object
+
 
 def load_images(img_dir):
     exts = {".png", ".jpg", ".jpeg"}
@@ -47,6 +49,7 @@ def main():
             print(f"[skip] {obj_name}: no images found in {img_dir}")
             continue
         
+        
         if len(images) == 1:
             output = pipe.run(images[0], seed=1)
         else:
@@ -59,7 +62,6 @@ def main():
         save_object(output, out_dir, out_name)
 
         print(f"[done] Saved mesh for {out_name} to {out_dir}")
-        return
 
 
 if __name__ == "__main__":
