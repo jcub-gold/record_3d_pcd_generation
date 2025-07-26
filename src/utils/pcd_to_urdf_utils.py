@@ -12,6 +12,9 @@ from sklearn.cluster import KMeans
 from collections import defaultdict
 
 
+GREEN = "\033[32m"
+RESET = "\033[0m"
+
 possible_labels = ['drawer', 'lower_left_cabinet', 'lower_right_cabinet', 'upper_left_cabinet', 'upper_right_cabinet', 'box', 'sink']
 
 extent_labels = ['width', 'height', 'depth']
@@ -170,8 +173,8 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
                             [0, 0, -1 * np.pi / 4])
                     transform[:3, :3] = R
                     dict_data['rotation'] = transform
-                else:
-                    print(f'No rotation {obj_num}')
+                # else:
+                #     print(f'No rotation {obj_num}')
 
         # if obj_num == 35 and obj_num == 36:
         #     dict_data["relative_alignment"] = [2, 1, 0]
@@ -345,7 +348,8 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, output_path
                     continue
 
     s.export(output_path)
-    s.show()
+    print(f"{GREEN} Successfully generated URDF at {output_path}!{RESET}")
+    # s.show()
     return
 
 
@@ -603,11 +607,11 @@ def set_cluster_fixed_extents(data,
         clusters[d[key_cluster]].append(d)
     for cid, objs in clusters.items():
         means = {name: float(np.mean([o[name] for o in objs])) for name in names}
-        if label_keyword =='drawer':
-            print("-------")     
+        # if label_keyword =='drawer':
+        #     print("-------")     
         for o in objs:
-            if 'drawer' in o['label']:
-                print(o['object_number'])
+            # if 'drawer' in o['label']:
+            #     print(o['object_number'])
             for name in names:
                 o[f"fixed_{name}"] = means[name]
                     # print(name, means[name])

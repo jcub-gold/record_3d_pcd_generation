@@ -10,6 +10,10 @@ git clone https://github.com/jcub-gold/record_3d_pcd_generation
 ```
 ### 2. Install requirements
 ```bash
+mamba create -y -n r2c2r python=3.10 pip cmake ninja
+mamba activate r2c2r
+
+
 pip install -r requirements.txt
 ```
 ### 3. Download sam2 checkpoints
