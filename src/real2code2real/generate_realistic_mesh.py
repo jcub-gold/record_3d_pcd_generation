@@ -46,8 +46,11 @@ def main():
         if not images:
             print(f"[skip] {obj_name}: no images found in {img_dir}")
             continue
-
-        output = pipe.run(images[0], seed=1)
+        
+        if len(images) == 1:
+            output = pipe.run(images[0], seed=1)
+        else:
+            output = pipe.run_multi_image(images, seed=1)
 
         out_name = obj_name if obj_name != "." else "object"
         out_dir = output_path if obj_name == "." else os.path.join(output_path, obj_name)
