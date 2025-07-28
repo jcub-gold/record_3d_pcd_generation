@@ -27,12 +27,15 @@ second_floor_test
 label_clusters = [3, 1, 1, 1, 1]
 extent_indices = [(0, 1, 2), (1,), (1,), (0, 1), (0,)]
 """
-# basement_test
-label_clusters = [5, 1, 1, 1]
-extent_indices = [(0, 1, 2), (0, 1, 2), (1,), (1,), ]
+# # basement_test
+# label_clusters = [5, 1, 1, 1]
+# extent_indices = [(0, 1, 2), (0, 1, 2), (1,), (1,), ]
 # # second_floor_test
 # label_clusters = [1, 1, 3, 1, 1]
 # extent_indices = [(1,), (0,), (0, 1, 2), (1,), (0, 1)]
+# base_cabinet_test
+label_clusters = [1, 1]
+extent_indices = [(0, 1, 2), (1,)]
 
 """
     Function: prepare_pcd_data
@@ -73,8 +76,8 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
 
         raw_pcds = [pcd for _, pcd in files]
         R, center = align_pcd_scene_via_object_aabb_minimization(raw_pcds)
-        extra_R = o3d.geometry.get_rotation_matrix_from_axis_angle([0, np.pi/2, 0])
-        R = extra_R @ R
+        # extra_R = o3d.geometry.get_rotation_matrix_from_axis_angle([0, np.pi/2, 0])
+        # R = extra_R @ R
 
         os.makedirs(aa_pcds_path, exist_ok=True)
         for fname, pcd in files:
@@ -95,6 +98,7 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
 
     pcd_data = []
     labels = []
+    asset_info = {}
     for fname, pcd in files:
         match = re.search(r'object_(\d+)', fname)
         assert match, f"Filename {fname} does not match expected pattern."
@@ -184,11 +188,17 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
         dict_data["asset_name"] = (
             f"{label}_{width:.3f}_{height:.3f}_{depth:.3f}_object_{obj_num}"
         )
+        asset_info[f"object_{obj_num}"] = dict_data["asset_name"]
 
         pcd_data.append(dict_data)
 
     if save_labels is not None:
         json.dump(save_labels, open(os.path.join(input_path, "cached_labels.json"), "w"), indent=4)
+
+    asset_info_path = os.path.join(input_path, "cached_asset_info.json")
+    with open(asset_info_path, "w") as f:
+        json.dump(asset_info, f, indent=4)
+    print(f"💾 Wrote asset info for {len(asset_info)} objects to: {asset_info_path}")
 
     label_keywords = []
     for label in labels:
@@ -349,7 +359,7 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, output_path
 
     s.export(output_path)
     print(f"{GREEN} Successfully generated URDF at {output_path}!{RESET}")
-    # s.show()
+    s.show()
     return
 
 

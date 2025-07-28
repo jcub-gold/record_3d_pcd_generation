@@ -56,7 +56,8 @@ def rewrite_json(json_dir, output_dir, frame_correspondance, rewrite_categories)
 def copy_cached_frames(scene_name):
     record3d_input_path = f"data/{scene_name}/record3d_input/"
     multiview_output_path = f"data/{scene_name}/multiview/"
-    dests = ['generation_state', 'state_1']
+    # dests = ['generation_state', 'state_1']
+    dests = ['generation_state']
 
     num_objects = 0
     for dirpath, dirnames, filenames in os.walk(record3d_input_path):

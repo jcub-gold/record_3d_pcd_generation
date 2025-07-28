@@ -85,7 +85,7 @@
   <link name="drawer_0.496_0.171_0.531_object_9_drawer_0_0">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.09999999999999998"/>
+      <mass value="0.09999999999999999"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.496_0.171_0.531_object_9_drawer_0_0_board_0">
@@ -294,7 +294,7 @@
   <link name="drawer_0.477_0.177_0.533_object_8_drawer_0_0">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.09999999999999998"/>
+      <mass value="0.09999999999999999"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.477_0.177_0.533_object_8_drawer_0_0_board_0">
@@ -503,7 +503,7 @@
   <link name="drawer_0.506_0.185_0.545_object_7_drawer_0_0">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.09999999999999998"/>
+      <mass value="0.09999999999999999"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.506_0.185_0.545_object_7_drawer_0_0_board_0">
@@ -1107,7 +1107,7 @@
   <link name="drawer_0.800_0.258_0.558_object_21_drawer_0_0">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.10000000000000003"/>
+      <mass value="0.1"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.800_0.258_0.558_object_21_drawer_0_0_board_0">
@@ -1808,7 +1808,7 @@
   <link name="drawer_0.496_0.183_0.557_object_28_drawer_0_0">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.09999999999999998"/>
+      <mass value="0.09999999999999999"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.496_0.183_0.557_object_28_drawer_0_0_board_0">
@@ -2017,7 +2017,7 @@
   <link name="drawer_0.481_0.206_0.542_object_29_drawer_0_0">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.09999999999999998"/>
+      <mass value="0.09999999999999999"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.481_0.206_0.542_object_29_drawer_0_0_board_0">
@@ -6488,7 +6488,7 @@
   <joint name="upper_left_cabinet_0.017_0.929_0.471_object_19_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="upper_left_cabinet_0.017_0.929_0.471_object_19"/>
-    <origin xyz="4.228767027523136 -0.5793425324686289 0.8417438520603431" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="4.228767027523136 -0.579342532468629 0.8417438520603431" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="upper_left_cabinet_0.017_0.929_0.471_object_19_corpus_to_door_0_0" type="revolute">
     <parent link="upper_left_cabinet_0.017_0.929_0.471_object_19_corpus"/>
@@ -6505,7 +6505,7 @@
   <joint name="upper_right_cabinet_0.037_0.938_0.459_object_20_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="upper_right_cabinet_0.037_0.938_0.459_object_20"/>
-    <origin xyz="4.228767027523136 -1.0442449261212499 0.8417438520603431" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="4.228767027523135 -1.04424492612125 0.8417438520603431" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="upper_right_cabinet_0.037_0.938_0.459_object_20_corpus_to_door_0_0" type="revolute">
     <parent link="upper_right_cabinet_0.037_0.938_0.459_object_20_corpus"/>
@@ -6522,7 +6522,7 @@
   <joint name="upper_left_cabinet_0.279_0.929_0.299_object_18_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="upper_left_cabinet_0.279_0.929_0.299_object_18"/>
-    <origin xyz="4.049086354776553 -0.08368340224450188 0.8417438520603431" rpy="0.0 -0.0 -0.7853981633974484"/>
+    <origin xyz="4.049086354776554 -0.08368340224450199 0.8417438520603431" rpy="0.0 -0.0 -0.7853981633974484"/>
   </joint>
   <joint name="upper_left_cabinet_0.279_0.929_0.299_object_18_corpus_to_door_0_0" type="revolute">
     <parent link="upper_left_cabinet_0.279_0.929_0.299_object_18_corpus"/>
