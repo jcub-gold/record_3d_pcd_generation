@@ -27,15 +27,15 @@ second_floor_test
 label_clusters = [3, 1, 1, 1, 1]
 extent_indices = [(0, 1, 2), (1,), (1,), (0, 1), (0,)]
 """
-# # basement_test
-# label_clusters = [5, 1, 1, 1]
-# extent_indices = [(0, 1, 2), (0, 1, 2), (1,), (1,), ]
+# basement_test
+label_clusters = [5, 1, 1, 2]
+extent_indices = [(0, 1, 2), (0, 1, 2), (1,), (1,), ]
 # # second_floor_test
 # label_clusters = [1, 1, 3, 1, 1]
 # extent_indices = [(1,), (0,), (0, 1, 2), (1,), (0, 1)]
-# base_cabinet_test
-label_clusters = [1, 1]
-extent_indices = [(0, 1, 2), (1,)]
+# # base_cabinet_test
+# label_clusters = [1, 1]
+# extent_indices = [(0, 1, 2), (1,)]
 
 """
     Function: prepare_pcd_data
@@ -76,8 +76,8 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
 
         raw_pcds = [pcd for _, pcd in files]
         R, center = align_pcd_scene_via_object_aabb_minimization(raw_pcds)
-        # extra_R = o3d.geometry.get_rotation_matrix_from_axis_angle([0, np.pi/2, 0])
-        # R = extra_R @ R
+        extra_R = o3d.geometry.get_rotation_matrix_from_axis_angle([0, np.pi/2, 0])
+        R = extra_R @ R
 
         os.makedirs(aa_pcds_path, exist_ok=True)
         for fname, pcd in files:
@@ -301,6 +301,9 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, output_path
     s = synth.Scene()
     placed_assets = []
 
+    if unplaced_assets.get('drawer') is None:
+        print('No drawer asset in scene :(')
+        return 
     # place the first asset, prioritize a drawer asset for depth calculation
     parent_asset = unplaced_assets['drawer'].pop()
     set_dimension_parent_default(parent_asset, aligned_axis=parent_asset['relative_alignment'], target_axis=0, data=pcd_data)
@@ -783,6 +786,10 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
     set_dimension_parent_default(best_child, aligned_axis, axes[1], pcd_data,
                                     potential_parent=best_parent)
     set_dimension_parent_default(best_child, aligned_axis, axes[2], pcd_data)
+
+    for extent in ['width', 'height', 'depth']:
+        if abs(best_child[extent] - best_parent[extent]) < 0.05 * best_parent[extent]:
+            best_child[extent] = best_parent[extent]
     if best_child.get("rotation") is not None:
         transform = best_child['rotation']
         child_pos  = best_child["center"][aligned_axis[0]] # might need weight here (2 lines below)
@@ -1390,3 +1397,5 @@ def place_overlapped_child(s,
 #     unplaced_assets[label].remove(child)
 
 #     return True
+
+

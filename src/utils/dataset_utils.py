@@ -79,6 +79,7 @@ def copy_cached_frames(scene_name):
                     for dest in dests:
                         dest_path = os.path.join(multiview_output_path, f"object_{obj}",dest, file)
                         shutil.copy2(source_path, dest_path)
+    print("Copied images successfully to multiview!!!")
 
 if __name__ == "__main__":
     copy_cached_frames("basement_test")
