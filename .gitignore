@@ -219,4 +219,6 @@ visualize/
 data/left_cabinet
 enhanced_tests
 enhanced_vis
-images
+cabinet_images
+mesh_tests
+data/second_floor_test_2

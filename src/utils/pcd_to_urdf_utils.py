@@ -27,12 +27,12 @@ second_floor_test
 label_clusters = [3, 1, 1, 1, 1]
 extent_indices = [(0, 1, 2), (1,), (1,), (0, 1), (0,)]
 """
-# basement_test
-label_clusters = [5, 1, 1, 2]
-extent_indices = [(0, 1, 2), (0, 1, 2), (1,), (1,), ]
-# # second_floor_test
-# label_clusters = [1, 1, 3, 1, 1]
-# extent_indices = [(1,), (0,), (0, 1, 2), (1,), (0, 1)]
+# # basement_test
+# label_clusters = [5, 1, 1, 2]
+# extent_indices = [(0, 1, 2), (0, 1, 2), (1,), (1,), ]
+# second_floor_test
+label_clusters = [1, 1, 3, 1, 1]
+extent_indices = [(1,), (0,), (0, 1, 2), (1,), (0, 1)]
 # # base_cabinet_test
 # label_clusters = [1, 1]
 # extent_indices = [(0, 1, 2), (1,)]
@@ -127,15 +127,15 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
         aabb = pcd.get_axis_aligned_bounding_box()
         width, height, depth = aabb.get_extent()
 
-        # # second_floor_test
-        # # not neccesary assuming closed scan and need to set relative axes based on dimensions
-        # if 'cabinet' in label:
-        #     if 'upper' in label:
-        #         print(f"Old object {obj_num} width: {width}")
-        #     width = np.sqrt(width**2 + depth**2)
-        #     depth = width
-        #     if 'upper' in label:
-        #         print(f"New object {obj_num} width: {width}")
+        # second_floor_test
+        # not neccesary assuming closed scan and need to set relative axes based on dimensions
+        if 'cabinet' in label:
+            if 'upper' in label:
+                print(f"Old object {obj_num} width: {width}")
+            width = np.sqrt(width**2 + depth**2)
+            depth = width
+            if 'upper' in label:
+                print(f"New object {obj_num} width: {width}")
 
         # if 'box' in label:
         #     print(aabb)
@@ -158,25 +158,25 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
         else:
             prnt=False
 
-        # # second_floor_test
-        # if 'upper' in label:
-        #     dict_data["relative_alignment"] = [2, 1, 0]
+        # second_floor_test
+        if 'upper' in label:
+            dict_data["relative_alignment"] = [2, 1, 0]
 
-        # basement_test
-        thin = thin_axis(aabb.get_extent(), ratio_threshold=0.15, p=prnt)
-        if 'cabinet' in label:
-            if thin == 0:
-                dict_data["relative_alignment"] = [2, 1, 0]
-                # print(f'90 degree rotation {obj_num}')
-            else:
-                dict_data["relative_alignment"] = [0, 1, 2]
-                if thin == None:
-                    # print(f'45 degree degree rotation {obj_num}')
-                    transform = np.eye(4)
-                    R = o3d.geometry.get_rotation_matrix_from_axis_angle(
-                            [0, 0, -1 * np.pi / 4])
-                    transform[:3, :3] = R
-                    dict_data['rotation'] = transform
+        # # basement_test
+        # thin = thin_axis(aabb.get_extent(), ratio_threshold=0.15, p=prnt)
+        # if 'cabinet' in label:
+        #     if thin == 0:
+        #         dict_data["relative_alignment"] = [2, 1, 0]
+        #         # print(f'90 degree rotation {obj_num}')
+        #     else:
+        #         dict_data["relative_alignment"] = [0, 1, 2]
+        #         if thin == None:
+        #             # print(f'45 degree degree rotation {obj_num}')
+        #             transform = np.eye(4)
+        #             R = o3d.geometry.get_rotation_matrix_from_axis_angle(
+        #                     [0, 0, -1 * np.pi / 4])
+        #             transform[:3, :3] = R
+        #             dict_data['rotation'] = transform
                 # else:
                 #     print(f'No rotation {obj_num}')
 
@@ -291,7 +291,10 @@ def thin_axis(extent, ratio_threshold: float = 0.2, p=False):
     return smallest_idx if ext[smallest_idx] < ratio_threshold * second_smallest else None
 
 
-def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, output_path=None):
+def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=None):
+    output_path = f"simple_urdf_scenes/{scene_name}/{scene_name}.urdf"
+    cache = {}
+    cache['vertical_placement_pairs'] = []
     unplaced_assets = {}
     for asset in pcd_data:
         if unplaced_assets.get(asset['label']) is None:
@@ -324,7 +327,7 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, output_path
     while get_unplaced_assets_length(unplaced_assets, labels) > 0:
         expand_bottom = True
         while expand_bottom:
-            expand_direct_neighbors(lower_labels, unplaced_assets, placed_assets, pcd_data, s, combined_center)
+            expand_direct_neighbors(lower_labels, unplaced_assets, placed_assets, pcd_data, s, combined_center, cache)
             expand_bottom = False
             for label in lower_labels:
                 if try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center, allow_overlap=True):
@@ -333,7 +336,7 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, output_path
         
         expand_top = True
         while expand_top:
-            expand_direct_neighbors(upper_labels, unplaced_assets, placed_assets, pcd_data, s, combined_center)
+            expand_direct_neighbors(upper_labels, unplaced_assets, placed_assets, pcd_data, s, combined_center, cache)
             place_aligned_top = False
             for label in upper_labels:
                 if try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, s):
@@ -362,16 +365,18 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, output_path
 
     s.export(output_path)
     print(f"{GREEN} Successfully generated URDF at {output_path}!{RESET}")
+    with open(os.path.join("data", scene_name, "cached_vertical_pairs.json"), "w") as f:
+        json.dump(cache, f, indent=4)
     s.show()
     return
 
 
-def expand_direct_neighbors(labels, unplaced_assets, placed_assets, pcd_data, s, combined_center):
+def expand_direct_neighbors(labels, unplaced_assets, placed_assets, pcd_data, s, combined_center, cache):
     place_direct_neighbor = True
     while place_direct_neighbor:
         place_direct_neighbor = False
         for label in labels:
-            while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 1, combined_center)):
+            while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 1, combined_center, cache=cache)):
                 place_direct_neighbor = True
                 continue
             while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center)):
@@ -549,7 +554,7 @@ def get_lower_left_cabinet_asset(width, height, depth):
         include_cabinet_doors=True,
         include_foot_panel=False,
         lower_compartment_types=("door_right",),
-        handle_offset=(height * 0.35, width * 0.05))
+        handle_offset=(height * 0.3, width * 0.05))
 
 def get_lower_right_cabinet_asset(width, height, depth):
     return pa.BaseCabinetAsset(width=width, 
@@ -559,7 +564,7 @@ def get_lower_right_cabinet_asset(width, height, depth):
         include_cabinet_doors=True,
         include_foot_panel=False,
         lower_compartment_types=("door_left",),
-        handle_offset=(height * 0.35, width * 0.05))
+        handle_offset=(height * 0.3, width * 0.05))
 
 def get_upper_left_cabinet_asset(width, height, depth):
     return pa.WallCabinetAsset(width=width, 
@@ -672,7 +677,7 @@ when placing objects:
 
 ## upper aligneed + anchoring
 
-def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis, center, allow_overlap=False, allow_rotation=False):
+def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis, center, allow_overlap=False, allow_rotation=False, cache=None):
     # allow_overlap = False
     if axis == 1:
         func_name, axes = "place_vertical_asset", [0, 2, 1]
@@ -730,9 +735,9 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
                                  depth_axis=aligned_axis[axes[1]], weight=0.45)
             
             # # fix since scans were with door open:
-            # # second_floor_test
-            # if 'upper' in label and abs(potential_child['object_number'] - potential_parent['object_number']) < 2:
-            #     c_o = True
+            # second_floor_test
+            if 'upper' in label and abs(potential_child['object_number'] - potential_parent['object_number']) < 2:
+                c_o = True
             # if (potential_child['object_number'] == 15 and potential_parent['object_number'] == 14 and axis == 0):
             #     print('----')
             #     print(c_o, one_d, c_depth)
@@ -832,6 +837,11 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
     #     print(potential_parent['object_number'])
     best_child['relative_alignment'] = aligned_axis
     best_child['weight'] = best_parent['weight']
+
+    if cache is not None:
+        cache['vertical_placement_pairs'].append(
+            (f"object_{best_parent['object_number']}", f"object_{best_child['object_number']}")
+        )
     
     return True
 
@@ -1285,7 +1295,74 @@ def place_overlapped_child(s,
 
 
 
+def post_process_placed_assets(scene_name):
+    aa_pcds_dir = f"data/{scene_name}/aa_pcds"
+    vertical_pairs_cache = json.load(open(f"data/{scene_name}/cached_vertical_pairs.json", "r"))
 
+    for pair in vertical_pairs_cache['vertical_placement_pairs']:
+        for _, _, filenames in os.walk(aa_pcds_dir):
+            pcds = [dict(), dict()]
+            for file in filenames:
+                for i in range(2):
+                    if pair[i] in file:
+                        pcds[i]['pcd'] = o3d.io.read_point_cloud(os.path.join(aa_pcds_dir, file))
+                        pcds[i]['path'] = os.path.join(aa_pcds_dir, file)
+                        print(pair[i])
+            resize_pcd(pcds[0]['pcd'], pcds[1]['pcd'], pcds[0]['path'], pcds[1]['path'])
+            
+                
+
+
+
+from time import sleep
+
+def resize_pcd(pcd_1, pcd_2, pcd_1_path, pcd_2_path):
+
+    extent_1 = pcd_1.get_max_bound()[1] - pcd_1.get_min_bound()[1]
+    extent_1 /= 2
+    extent_2 = pcd_2.get_max_bound()[1] - pcd_2.get_min_bound()[1]
+    extent_2 /= 2
+    center_1 = pcd_1.get_center()[1]
+    center_2 = pcd_2.get_center()[1]
+
+    clip = (extent_1 + extent_2) - abs(center_1 - center_2)
+    print(f"overlap: {clip}")
+    if clip > 0:
+        scale_1 = np.eye(4)
+        scale_1[1,1] = (extent_1 - clip / 4) /extent_1
+        scale_2 = np.eye(4)
+        scale_2[1,1] = (extent_2 - clip / 4) /extent_2
+        if center_1 > center_2:
+            sign = 1
+        else:
+            sign = -1
+
+        center = pcd_1.get_center()
+        pcd_1.translate(-center)
+        pcd_1.transform(scale_1)
+        center[1] += sign * clip / 4
+        pcd_1.translate(center)
+
+        center = pcd_2.get_center()
+        pcd_2.translate(-center)
+        pcd_2.transform(scale_2)
+        center[1] -= sign * clip / 4
+        pcd_2.translate(center)
+    
+    extent_1 = pcd_1.get_max_bound()[1] - pcd_1.get_min_bound()[1]
+    extent_1 /= 2
+    extent_2 = pcd_2.get_max_bound()[1] - pcd_2.get_min_bound()[1]
+    extent_2 /= 2
+    center_1 = pcd_1.get_center()[1]
+    center_2 = pcd_2.get_center()[1]
+
+    clip = (extent_1 + extent_2) - abs(center_1 - center_2)
+    print(f"overlap: {clip}")
+    
+    o3d.io.write_point_cloud(pcd_2_path, pcd_2)
+    o3d.io.write_point_cloud(pcd_1_path, pcd_1)
+    sleep(0.1)
+            
 
 
 

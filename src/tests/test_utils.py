@@ -1,7 +1,7 @@
 from src.utils.data_utils import prepare_record3d_data, get_number
 from src.utils.align_utils import create_pcd_from_frame
 from src.utils.pcd_to_urdf_utils import align_pcd_scene_via_object_aabb_minimization, prepare_pcd_data, pcd_to_urdf_simple_geometries
-from src.utils.pcd_to_urdf_utils import pcd_to_urdf_simple_geometries
+from src.utils.pcd_to_urdf_utils import pcd_to_urdf_simple_geometries, post_process_placed_assets
 import os
 import open3d as o3d
 import pickle
@@ -126,8 +126,9 @@ if __name__ == "__main__":
     # testing visualize_pcd_aabb_and_center
     print("Testing visualize_pcd_aabb_and_center...")
     ply_paths = []
-    root_path = "data/basement_test/aa_pcds" # "data/basement_test/pcds" # 'test_pcd' #  "data/basement_base_cabinet/pcds" # "data/basement_base_cabinet_extension/aa_pcds" # pcds
 
+    root_path = "data/basement_test/pcds" # "data/basement_test/aa_pcds" # "data/basement_test/pcds" # 'test_pcd' #  "data/basement_base_cabinet/pcds" # "data/basement_base_cabinet_extension/aa_pcds" # pcds
+    # post_process_placed_assets("basement_test")
     for dirpath, dirnames, filenames in os.walk(root_path):
         for filename in filenames:
             if filename.endswith(".ply"):
