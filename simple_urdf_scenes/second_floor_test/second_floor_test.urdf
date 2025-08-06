@@ -7099,7 +7099,7 @@
   <joint name="upper_right_cabinet_0.485_0.805_0.485_object_29_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="upper_right_cabinet_0.485_0.805_0.485_object_29"/>
-    <origin xyz="6.3321385653473055 -1.4458530318084521 0.7045451622127326" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="6.3321385653473055 -1.4458530318084524 0.7045451622127326" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="upper_right_cabinet_0.485_0.805_0.485_object_29_corpus_to_door_0_0" type="revolute">
     <parent link="upper_right_cabinet_0.485_0.805_0.485_object_29_corpus"/>

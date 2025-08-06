@@ -10,13 +10,14 @@ import json
 from scene_synthesizer.assets import BoxAsset
 from sklearn.cluster import KMeans
 from collections import defaultdict
+from src.utils.pcd_to_urdf_utils_utils import get_depth_axis_from_pcd_extents, place_lateral_asset, place_vertical_asset, check_BB_overlap, check_extent_overlap, get_depth_delta
+from src.utils.asset_utils import get_asset
 
 
 GREEN = "\033[32m"
 RESET = "\033[0m"
 
-possible_labels = ['drawer', 'lower_left_cabinet', 'lower_right_cabinet', 'upper_left_cabinet', 'upper_right_cabinet', 'box', 'sink']
-
+possible_labels = ['drawer', 'lower_left_cabinet', 'lower_right_cabinet', 'upper_left_cabinet', 'upper_right_cabinet', 'box', 'sink', "counter"]
 extent_labels = ['width', 'height', 'depth']
 
 default_countertop_thickness = 0.04
@@ -76,8 +77,6 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
 
         raw_pcds = [pcd for _, pcd in files]
         R, center = align_pcd_scene_via_object_aabb_minimization(raw_pcds)
-        extra_R = o3d.geometry.get_rotation_matrix_from_axis_angle([0, np.pi/2, 0])
-        R = extra_R @ R
 
         os.makedirs(aa_pcds_path, exist_ok=True)
         for fname, pcd in files:
@@ -125,21 +124,28 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
             labels.append(label)
 
         aabb = pcd.get_axis_aligned_bounding_box()
-        width, height, depth = aabb.get_extent()
+        dict_data = {}
+        dict_data["weight"] = 1
+        depth_axis = get_depth_axis_from_pcd_extents(aabb.get_extent(), ratio_threshold=0.15)
+        if depth_axis == 0:
+            dict_data["relative_alignment"] = [2, 1, 0]
+            # print(f'90 degree rotation {obj_num}')
+        else:
+            dict_data["relative_alignment"] = [0, 1, 2]
+            if depth_axis == None:
+                # print(f'45 degree degree rotation {obj_num}')
+                ### TODO: calculate 2.5 OBB and if their is no rotation, mark as unconfident in relative alignment
+                transform = np.eye(4)
+                R = o3d.geometry.get_rotation_matrix_from_axis_angle(
+                        [0, 0, -1 * np.pi / 4])
+                transform[:3, :3] = R
+                dict_data['rotation'] = transform
+            # else:
+            #     print(f'No rotation {obj_num}')
 
-        # second_floor_test
-        # not neccesary assuming closed scan and need to set relative axes based on dimensions
-        if 'cabinet' in label:
-            if 'upper' in label:
-                print(f"Old object {obj_num} width: {width}")
-            width = np.sqrt(width**2 + depth**2)
-            depth = width
-            if 'upper' in label:
-                print(f"New object {obj_num} width: {width}")
 
-        # if 'box' in label:
-        #     print(aabb)
-
+        extent = np.array(aabb.get_extent())
+        width, height, depth = extent[dict_data["relative_alignment"]]
         dict_data = {
             "pcd_path": os.path.join(aa_pcds_path, fname),
             "pcd": pcd,
@@ -149,42 +155,12 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
             "object_number": obj_num,
             "width": width,
             "height": height,
-            "depth": depth,
-            "relative_alignment": [0, 1, 2],
-            "weight": 1
+            "depth": depth
         }
-        if obj_num == 18:
-            prnt = True
-        else:
-            prnt=False
 
-        # second_floor_test
-        if 'upper' in label:
-            dict_data["relative_alignment"] = [2, 1, 0]
+       
 
-        # # basement_test
-        # thin = thin_axis(aabb.get_extent(), ratio_threshold=0.15, p=prnt)
-        # if 'cabinet' in label:
-        #     if thin == 0:
-        #         dict_data["relative_alignment"] = [2, 1, 0]
-        #         # print(f'90 degree rotation {obj_num}')
-        #     else:
-        #         dict_data["relative_alignment"] = [0, 1, 2]
-        #         if thin == None:
-        #             # print(f'45 degree degree rotation {obj_num}')
-        #             transform = np.eye(4)
-        #             R = o3d.geometry.get_rotation_matrix_from_axis_angle(
-        #                     [0, 0, -1 * np.pi / 4])
-        #             transform[:3, :3] = R
-        #             dict_data['rotation'] = transform
-                # else:
-                #     print(f'No rotation {obj_num}')
-
-        # if obj_num == 35 and obj_num == 36:
-        #     dict_data["relative_alignment"] = [2, 1, 0]
-
-        func_name = f"get_{label}_asset"
-        dict_data["asset_func"] = globals()[func_name]
+        ### NOTE: will probobly want to define the asset name later after assignment
         dict_data["asset_name"] = (
             f"{label}_{width:.3f}_{height:.3f}_{depth:.3f}_object_{obj_num}"
         )
@@ -199,27 +175,7 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
     with open(asset_info_path, "w") as f:
         json.dump(asset_info, f, indent=4)
     print(f"💾 Wrote asset info for {len(asset_info)} objects to: {asset_info_path}")
-
-    label_keywords = []
-    for label in labels:
-        if label.split("_")[0] not in label_keywords:
-            label_keywords.append(label.split("_")[0])
-    
-    print(label_keywords, label_clusters, extent_indices)
-    for kw, clusters, idx in zip(label_keywords, label_clusters, extent_indices):
-        assign_extent_clusters(pcd_data, kw, clusters, idx)
-    for kw, idx in zip(label_keywords, extent_indices):
-        set_cluster_fixed_extents(pcd_data, kw, idx)
-    return pcd_data, center, labels, label_keywords
-
-
-# if allow_rotation = false skip asset,
-# otherwise place rotated, similar to other way, make sure to commit after this step
-
-# instead of candidates just including potential children, loop through parents too and find best pair by closet overlap extent
-# may have to use this closest overlap condition to check vertical and lateral anchors
-
-# branch test
+    return dict, labels, 
 
 """
     Function: align_pcd_scene_via_object_aabb_minimization
@@ -255,40 +211,10 @@ def align_pcd_scene_via_object_aabb_minimization(pcds):
             min_total_volume = total_volume
             best_angle = rad
 
-    # for deg in tqdm(np.arange(-45, 45.01, 0.5), desc="Rotating degrees"):
-    #     rad = np.deg2rad(deg)
-    #     total_volume = 0
-
-    #     pcd_copy = copy.deepcopy(combined_pcd)
-    #     R = pcd_copy.get_rotation_matrix_from_axis_angle([0, rad, 0])
-    #     pcd_copy.rotate(R, center=pcd_copy.get_center())
-
-    #     aabb = pcd_copy.get_axis_aligned_bounding_box()
-    #     extent = aabb.get_extent()
-    #     volume = extent[0] * extent[1] * extent[2]
-    #     total_volume += volume
-
-    #     if total_volume < min_total_volume:
-    #         min_total_volume = total_volume
-    #         best_angle = rad
-
     best_R = o3d.geometry.get_rotation_matrix_from_axis_angle([0, best_angle, 0])
     combined_pcd_center = combined_pcd.get_center()
 
     return best_R, combined_pcd_center
-
-
-def thin_axis(extent, ratio_threshold: float = 0.2, p=False):
-    ext = np.asarray(extent, dtype=float)
-    if ext.shape != (3,):
-        raise ValueError("extent must be length-3 (dx, dy, dz)")
-
-    smallest_idx = int(np.argmin(ext))
-    second_smallest = np.partition(ext, 1)[1]   # next-smallest value
-    # if p:
-    #     print(ext[smallest_idx], second_smallest)
-
-    return smallest_idx if ext[smallest_idx] < ratio_threshold * second_smallest else None
 
 
 def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=None):
@@ -313,7 +239,7 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=
     set_dimension_parent_default(parent_asset, aligned_axis=parent_asset['relative_alignment'], target_axis=1, data=pcd_data)
     set_dimension_parent_default(parent_asset, aligned_axis=parent_asset['relative_alignment'], target_axis=2, data=pcd_data)
     width, height, depth = parent_asset['width'], parent_asset['height'], parent_asset['depth']
-    s.add_object(parent_asset["asset_func"](width, height, depth), parent_asset['asset_name'])
+    s.add_object(get_asset(parent_asset['label'], width, height, depth), parent_asset['asset_name'])
     placed_assets.append(parent_asset)
 
     upper_labels = []
@@ -323,6 +249,12 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=
             lower_labels.append(label)
         else:
             upper_labels.append(label)
+
+    def get_unplaced_assets_length(unplaced_assets, labels):
+        length = 0
+        for label in labels:
+            length += len(unplaced_assets[label])
+        return length
 
     while get_unplaced_assets_length(unplaced_assets, labels) > 0:
         expand_bottom = True
@@ -370,7 +302,6 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=
     s.show()
     return
 
-
 def expand_direct_neighbors(labels, unplaced_assets, placed_assets, pcd_data, s, combined_center, cache):
     place_direct_neighbor = True
     while place_direct_neighbor:
@@ -383,256 +314,6 @@ def expand_direct_neighbors(labels, unplaced_assets, placed_assets, pcd_data, s,
                 place_direct_neighbor = True
                 continue
 
-def get_unplaced_assets_length(unplaced_assets, labels):
-    length = 0
-    for label in labels:
-        length += len(unplaced_assets[label])
-    return length
-
-
-
-def place_vertical_asset(s, parent_asset, child_asset, child_width, child_height, child_depth, transform=np.eye(4), depth_clamp='back', clamp=-1):
-    lateral_anchor = 'left' if clamp == -1 else 'right'
-    # lateral_anchor = 'left'
-    # place on top of the parent asset
-    if (child_asset['center'][1] > parent_asset['center'][1]):
-        s.add_object(child_asset["asset_func"](child_width, child_height, child_depth), 
-                    child_asset['asset_name'],
-                    connect_parent_id=parent_asset['asset_name'],
-                    connect_parent_anchor=(lateral_anchor, depth_clamp, 'top'), 
-                    connect_obj_anchor=(lateral_anchor, depth_clamp, 'bottom'),
-                    transform=transform)
-        
-    # place on bottom of the parent asset
-    else:
-        # print('bottom')
-        transform[2,3] = transform[2,3] * -1
-        s.add_object(child_asset["asset_func"](child_width, child_height, child_depth), 
-                    child_asset['asset_name'],
-                    connect_parent_id=parent_asset['asset_name'],
-                    connect_parent_anchor=(lateral_anchor, depth_clamp, 'bottom'), 
-                    connect_obj_anchor=(lateral_anchor, depth_clamp, 'top'),
-                    transform=transform)
-        
-def place_lateral_asset(s, parent_asset, child_asset, child_width, child_height, child_depth, transform=np.eye(4), depth_clamp='back', clamp=1):
-    aa = parent_asset['relative_alignment']
-    vertical_anchor = 'top' if clamp == 1 else 'bottom'
-    if child_asset['label'] == 'sink' or parent_asset['label'] == 'sink':
-        vertical_anchor = 'top'
-        if child_asset['label'] == 'sink':
-            tranlation = default_countertop_thickness
-        else:
-            tranlation = -1 * default_countertop_thickness
-        transform = np.eye(4)
-        transform[2, 3] = tranlation
-        # child_height += default_countertop_thickness
-
-
-    # place on left of the parent asset
-    if (child_asset['center'][aa[0]] * parent_asset['weight'] < parent_asset['center'][aa[0]] * parent_asset['weight']):
-        transform[0,3] = transform[0,3] * -1
-        s.add_object(child_asset["asset_func"](child_width, child_height, child_depth), 
-                    child_asset['asset_name'],
-                    connect_parent_id=parent_asset['asset_name'],
-                    connect_parent_anchor=('left', depth_clamp, vertical_anchor), 
-                    connect_obj_anchor=('right', depth_clamp, vertical_anchor),
-                    transform=transform)
-        
-    # place on right of the parent asset
-    else:
-        if parent_asset['object_number'] == 5 and child_asset['object_number'] == 4:
-            print("whahtttt")
-            print()
-        s.add_object(child_asset["asset_func"](child_width, child_height, child_depth), 
-                    child_asset['asset_name'],
-                    connect_parent_id=parent_asset['asset_name'],
-                    connect_parent_anchor=('right', depth_clamp, vertical_anchor), 
-                    connect_obj_anchor=('left', depth_clamp, vertical_anchor),
-                    transform=transform)
-
-# axis: axis along which to check overlap (0 for x, 1 for y, 2 for z)
-def check_overlap(axis, potential_parent, potential_child, threshold = 0.1):
-
-    child_center=potential_child['center']
-    parent_center=potential_parent['center']
-    child_extents=potential_child['aabb'].get_extent()
-    parent_extents=potential_parent['aabb'].get_extent()
-
-    buffer = max(parent_extents[axis], child_extents[axis]) * threshold
-
-    child_min = child_center[axis] - child_extents[axis] / 2.0
-    child_max = child_center[axis] + child_extents[axis] / 2.0
-    parent_min = parent_center[axis] - parent_extents[axis] / 2.0
-    parent_max = parent_center[axis] + parent_extents[axis] / 2.0
-
-    return not (child_max < parent_min - buffer or child_min > parent_max + buffer)
-
-
-def half_extent_overlap_2d(parent: dict,
-                           child: dict,
-                           threshold=1.0,
-                           axes: tuple[int, int] = (0, 2)) -> bool:
-    def is_half_inside(shrink: dict, fixed: dict) -> bool:
-        shrink_center = shrink["center"]
-        fixed_center  = fixed["center"]
-        shrink_half   = shrink["aabb"].get_extent() * 0.25  # half of half = quarter
-        fixed_half    = fixed["aabb"].get_extent() * 0.5
-
-        for ax in axes:
-            shrink_min = shrink_center[ax] - shrink_half[ax]
-            shrink_max = shrink_center[ax] + shrink_half[ax]
-
-            # Expand fixed boundary by (threshold - 1) * half_extent on each side
-            expansion = fixed_half[ax] * (threshold - 1)
-            fixed_min = fixed_center[ax] - fixed_half[ax] - expansion
-            fixed_max = fixed_center[ax] + fixed_half[ax] + expansion
-
-            if shrink_min < fixed_min or shrink_max > fixed_max:
-                return False
-        return True
-
-    return is_half_inside(child, parent) or is_half_inside(parent, child)
-
-def same_depth(parent, child, depth_axis, weight=0.05):
-
-    p_depth = parent["aabb"].get_extent()[depth_axis]
-    c_depth = child["aabb"].get_extent()[depth_axis]
-    p_center = parent["center"][depth_axis]
-    c_center = child["center"][depth_axis]
-    max_depth_threshold = max(p_depth, c_depth) * weight
-    if parent['relative_alignment'] == [2, 1, 0] and parent['weight'] == 1:
-        p_min = p_center + (p_depth / 2)
-        c_min = c_center + (c_depth / 2)
-    else:
-        p_min = p_center - (p_depth / 2)
-        c_min = c_center - (c_depth / 2)
-    # if parent['object_number'] == 4 and child['object_number'] == 36:
-    #     print(p_depth, depth_axis, p_min, c_min)
-    #     print('look here')
-    if abs(p_min - c_min) <= max_depth_threshold:
-        return True
-    return False
-
-
-def compare_axes(fixed, shrink, axes):
-    for ax in axes:
-        if shrink[ax][0] / 2 < fixed[ax][0] or shrink[ax][1] / 2 > fixed[ax][1]:
-            return False
-    return True
-
-
-
-
-
-
-### asset generation functions
-def get_sink_asset(width, height, depth):
-    adjusted_height = height+default_countertop_thickness
-    return pa.SinkCabinetAsset(width=width,
-                               depth=depth,
-                               height=adjusted_height,
-                               sink_height=adjusted_height,
-                               countertop_thickness=default_countertop_thickness,
-                               sink_width=width/2,
-                               sink_depth=depth/2,
-                               include_bottom_compartment=False)
-
-def get_drawer_asset(width, height, depth):
-    return pa.BaseCabinetAsset(
-        width=width, 
-        height=height, 
-        depth=depth, 
-        num_drawers_horizontal=1,
-        include_cabinet_doors=False,
-        include_foot_panel=False)
-
-def get_lower_left_cabinet_asset(width, height, depth):
-    return pa.BaseCabinetAsset(width=width, 
-        height=height, 
-        depth=depth, 
-        num_drawers_vertical=0,
-        include_cabinet_doors=True,
-        include_foot_panel=False,
-        lower_compartment_types=("door_right",),
-        handle_offset=(height * 0.3, width * 0.05))
-
-def get_lower_right_cabinet_asset(width, height, depth):
-    return pa.BaseCabinetAsset(width=width, 
-        height=height, 
-        depth=depth, 
-        num_drawers_vertical=0,
-        include_cabinet_doors=True,
-        include_foot_panel=False,
-        lower_compartment_types=("door_left",),
-        handle_offset=(height * 0.3, width * 0.05))
-
-def get_upper_left_cabinet_asset(width, height, depth):
-    return pa.WallCabinetAsset(width=width, 
-                                height=height, 
-                                depth=depth, 
-                                compartment_types=("door_right",),
-                                handle_offset=(height * -0.4, width * 0.05))
-
-def get_upper_right_cabinet_asset(width, height, depth):
-    return pa.WallCabinetAsset(width=width, 
-                                height=height, 
-                                depth=depth, 
-                                compartment_types=("door_left",),
-                                handle_offset=(height * -0.4, width * 0.05))
-
-def get_box_asset(width, height, depth):
-    return BoxAsset(extents=[width, depth, height])
-
-
-
-def assign_extent_clusters(data,
-                           label_keyword: str,
-                           n_clusters: int = 3,
-                           extent_indices=(0, 1, 2)):
-    matches = [d for d in data if label_keyword in d["label"]]
-
-    if len(matches) == 0:
-        print(f"[assign_extent_clusters] No assets matched '{label_keyword}'.")
-        return
-
-    feats = np.array([[ [d["width"], d["height"], d["depth"]][i]
-                        for i in extent_indices ]
-                       for d in matches ])
-
-    k = min(n_clusters, len(matches))
-    kmeans = KMeans(n_clusters=k, random_state=42).fit(feats)
-
-    key = f"{label_keyword}_cluster_id"
-    for d, cid in zip(matches, kmeans.labels_):
-        d[key] = int(cid)
-
-def set_cluster_fixed_extents(data,
-                              label_keyword: str,
-                              extent_indices=(0, 1, 2)):
-    if isinstance(extent_indices, int):
-        extent_indices = (extent_indices,)
-    idx2name = {0: "width", 1: "height", 2: "depth"}
-    names    = [idx2name[i] for i in extent_indices]
-
-    key_cluster = f"{label_keyword}_cluster_id"
-    matches = [d for d in data
-               if label_keyword in d["label"] and key_cluster in d]
-    if not matches:
-        print(f"[set_cluster_fixed_extents] Nothing to do for '{label_keyword}'.")
-        return
-    clusters = defaultdict(list)
-    for d in matches:
-        clusters[d[key_cluster]].append(d)
-    for cid, objs in clusters.items():
-        means = {name: float(np.mean([o[name] for o in objs])) for name in names}
-        # if label_keyword =='drawer':
-        #     print("-------")     
-        for o in objs:
-            # if 'drawer' in o['label']:
-            #     print(o['object_number'])
-            for name in names:
-                o[f"fixed_{name}"] = means[name]
-                    # print(name, means[name])
 
 
 def _edge_alignment_score(parent, child, axis_idx, *, eps=1e-6):
@@ -649,35 +330,7 @@ def _edge_alignment_score(parent, child, axis_idx, *, eps=1e-6):
         clamp = 1 
     return np.sqrt(1.0 / (closest + eps)), clamp
 
-'''
-k means cluster for each object
-set fixed heights/widths for each object based off of average in the cluster
-- drawer: fix height, width, depth (depth across all clusters)
-- lower cabinet: fix height
-- upper cabinet: fix height, caculated width, calulated depth abs(drawer_center_depth - drawer_depth * 1.5 - (cabinet_center_depth - cabinet_Depth * 0.5))
-- box fix height and width
-place objects and override fixed heights if needed.
-track reference frame for each object, only look in that reference frame
-
-if overlap turn 90 degrees so there is no collision
-
-when placing objects:
--try to place all drawers first, allowing translations but not overlap
--try to place all lower cabinets, allowing translations but not overlap
--try to place all boxes allowing translation and not overlap
--allow overlap
--unlock upper cabinet placement
- -if can't place, laterally and could depth wise, rotate
-
-
-*** -if found go back to top
-
-
-'''
-
-## upper aligneed + anchoring
-
-def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis, center, allow_overlap=False, allow_rotation=False, cache=None):
+def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis, center, allow_90_degree_rotation, allow_other_rotation=False, cache=None):
     # allow_overlap = False
     if axis == 1:
         func_name, axes = "place_vertical_asset", [0, 2, 1]
@@ -691,73 +344,18 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
         if 'upper' in label and 'upper' not in potential_parent['label']:
             continue
         for potential_child in list(unplaced_assets[label]):
-            # if (potential_child['object_number'] == 36 and potential_parent['object_number'] == 4 and axis == 1):
-            #         print('----')
-            #         print(potential_parent['center'], potential_parent['aabb'].get_extent(),
-            #                                                         potential_child['center'], potential_child['aabb'].get_extent())
-            #         print('----')
-            # if allow_rotation and potential_child['object_number'] == 18:
-                # print('well well well')
-            # if allow_rotation:
-            #     print(f'{potential_child['object_number']}well well well')
-            if allow_rotation == False and potential_child.get("rotation") is not None:
-                # print(f'skipping {potential_child['object_number']}')
+            # TODO: need to add extra logic if unsure about the relative alignment
+            if allow_90_degree_rotation == False and potential_child['relative_alignment'] != potential_parent['relative_alignment']:
                 continue
-            if not allow_overlap and overlaps_any_placed(potential_child, placed_assets):
-                # print(potential_child['object_number'])
-                # if (potential_child['object_number'] == 36 and potential_parent['object_number'] == 4 and axis == 1):
-                #     print('----')
-                #     print(potential_parent['center'], potential_parent['aabb'].get_extent(),
-                #                                                     potential_child['center'], potential_child['aabb'].get_extent())
-                #     print('----')
-                potential_child['relative_alignment'] = [2, 1, 0]
+            if allow_other_rotation == False and potential_child.get("rotation") is not None:
                 continue
-            # if allow_overlap and overlaps_any_placed(potential_child, placed_assets):
-            if allow_overlap and aabb_overlap_fraction_with_centers(potential_parent['center'], potential_parent['aabb'].get_extent(),
-                                                                    potential_child['center'], potential_child['aabb'].get_extent()):
-                # print(potential_child['object_number'])
-                if place_overlapped_child(s, potential_parent, potential_child, center, pcd_data):
-                    placed_assets.append(potential_child)
-                    unplaced_assets[potential_child['label']].remove(potential_child)
-                    return True
-            elif allow_overlap and overlaps_any_placed(potential_child, placed_assets):
-                continue
-            # elif (for every potential child, parent pair find the one with different 
-            # relative axes and find the one with the least center distance and move those must have a height overlap too to be a candidate)
-
-            c_o     = check_overlap(axis=aligned_axis[axes[2]],
+            c_o     = check_BB_overlap(axis=aligned_axis[axes[2]],
                                     potential_child=potential_child,
                                     potential_parent=potential_parent)
-            one_d   = half_extent_overlap_2d(potential_parent, potential_child,
+            one_d   = check_extent_overlap(potential_parent, potential_child,
                                              threshold=1,
                                              axes=(aligned_axis[axes[0]],))
-            c_depth = same_depth(potential_parent, potential_child,
-                                 depth_axis=aligned_axis[axes[1]], weight=0.45)
-            
-            # # fix since scans were with door open:
-            # second_floor_test
-            if 'upper' in label and abs(potential_child['object_number'] - potential_parent['object_number']) < 2:
-                c_o = True
-            # if (potential_child['object_number'] == 15 and potential_parent['object_number'] == 14 and axis == 0):
-            #     print('----')
-            #     print(c_o, one_d, c_depth)
-            #     print('----')
-            # if (potential_child['object_number'] == 36):
-            #     print('----')
-            #     print(c_o, one_d, c_depth)
-            #     print(potential_parent['center'], potential_parent['aabb'].get_extent(),
-            #                                                         potential_child['center'], potential_child['aabb'].get_extent())
-            #     print('----')
-            # print(c_o, one_d, c_depth)
-
-            # if (potential_child['object_number'] == 18 and potential_parent['object_number'] == 17 and axis == 0):
-            #     print('----')
-            #     print('testing here')
-            #     print(c_o, one_d, c_depth)
-            #     print('----')
-            if c_depth and one_d and c_o and \
-               potential_child['aabb'].get_extent()[aligned_axis[0]] > \
-               potential_parent ['aabb'].get_extent()[aligned_axis[0]] / 8:
+            if one_d and c_o:
 
                 # --- scoring ------------------------------------------------
                 axis_idx   = aligned_axis[axes[0]]           # edge-comparison axis
@@ -784,17 +382,17 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
 
     _, best_parent, best_child, aligned_axis, axes, clamp = best
 
-
-
-    set_dimension_parent_default(best_child, aligned_axis, axes[0], pcd_data,
-                                    potential_parent=best_parent)
-    set_dimension_parent_default(best_child, aligned_axis, axes[1], pcd_data,
-                                    potential_parent=best_parent)
-    set_dimension_parent_default(best_child, aligned_axis, axes[2], pcd_data)
+    # if they were not aligned, we need to realign the child
+    if best_child['relative_alignment'] != aligned_axis:    
+        extent = np.array(best_child['aabb'].get_extent())
+        best_child['width'], best_child['height'], best_child['depth'] = extent[aligned_axis]
+    best_child['depth'] = best_parent['depth']  + get_depth_delta(best_parent, best_child, aligned_axis)
+    
 
     for extent in ['width', 'height', 'depth']:
         if abs(best_child[extent] - best_parent[extent]) < 0.05 * best_parent[extent]:
             best_child[extent] = best_parent[extent]
+
     if best_child.get("rotation") is not None:
         transform = best_child['rotation']
         child_pos  = best_child["center"][aligned_axis[0]] # might need weight here (2 lines below)
@@ -858,7 +456,7 @@ def try_to_place_upper_aligned(unplaced_assets, label, placed_assets, pcd_data, 
             if potential_child.get("rotation") is not None:
                 # print(f'skipping {potential_child['object_number']}')
                 continue
-            one_d = half_extent_overlap_2d(
+            one_d = check_extent_overlap(
                 potential_parent, potential_child,
                 threshold=1,
                 axes=(aligned_axis[axes[0]],)
@@ -947,7 +545,7 @@ def try_to_place_upper_not_aligned(unplaced_assets, label, placed_assets, pcd_da
             if potential_child.get("rotation") is not None:
                 # print(f'skipping {potential_child['object_number']}')
                 continue
-            one_d = half_extent_overlap_2d(
+            one_d = check_extent_overlap(
                 potential_parent,
                 potential_child,
                 threshold=1,
@@ -1009,11 +607,7 @@ def try_to_place_upper_not_aligned(unplaced_assets, label, placed_assets, pcd_da
     # 5. Place ABOVE the parent (anchors = top/bottom)
     # ------------------------------------------------------------
     s.add_object(
-        child_asset["asset_func"](
-            child_asset["width"],
-            child_asset["height"],
-            child_asset["depth"],
-        ),
+        get_asset(child_asset['label'], child_asset['width'], child_asset['height'], child_asset['depth']),
         child_asset["asset_name"],
         connect_parent_id=parent_asset["asset_name"],
         connect_parent_anchor=(parent_side, "back", "top"),
@@ -1103,14 +697,7 @@ def get_translation(potential_parent, potential_child, aligned_axis, target_axis
     
 
 def set_dimension_parent_default(potential_child, aligned_axis, target_axis, data, potential_parent=None):
-    label = potential_child['label']
-    if potential_child.get(f'fixed_{extent_labels[target_axis]}') is not None:
-        if potential_child.get(f'fixed_{extent_labels[aligned_axis[target_axis]]}') is None:
-            potential_child[extent_labels[aligned_axis[target_axis]]] = get_cluster_fixed_extents_one_asset(data, potential_child, label_keyword=label.split('_')[0], extent_index=aligned_axis[target_axis])
-        else:
-            potential_child[extent_labels[aligned_axis[target_axis]]] = potential_child.get(f'fixed_{extent_labels[aligned_axis[target_axis]]}')
-    else:
-        if potential_parent is not None:
+    if potential_parent is not None:
             potential_child[extent_labels[aligned_axis[target_axis]]] = potential_parent[extent_labels[aligned_axis[target_axis]]]
 
 def get_cluster_fixed_extents_one_asset(data,
@@ -1246,11 +833,12 @@ def place_overlapped_child(s,
     # --------------------------------------------------
     # 4.  Pick vertical anchor (same rule you used before)
     # --------------------------------------------------
-    vertical_anchor = (
-        'top' if not same_depth(parent_asset, child_asset,
-                                depth_axis=aligned_p[1], weight=0.2)
-        else 'bottom'
-    )
+    # vertical_anchor = (
+    #     'top' if not same_depth(parent_asset, child_asset,
+    #                             depth_axis=aligned_p[1], weight=0.2)
+    #     else 'bottom'
+    # )
+    vertical_anchor = "top"
 
     # Special-case countertop offset for sinks
     if child_asset['label'] == 'sink' or parent_asset['label'] == 'sink':
@@ -1261,11 +849,7 @@ def place_overlapped_child(s,
     print(f"placing object {child_asset['object_number']} on object {parent_asset['object_number']}, 90 degree rotation")
 
     s.add_object(
-        child_asset["asset_func"](
-            child_asset["width"],
-            child_asset["height"],
-            child_asset["depth"],
-        ),
+        get_asset(child_asset['label'], child_asset['width'], child_asset['height'], child_asset['depth']),
         child_asset["asset_name"],
         connect_parent_id=parent_asset["asset_name"],
         connect_parent_anchor=(parent_side, 'front', vertical_anchor),
@@ -1273,7 +857,7 @@ def place_overlapped_child(s,
         transform=transform
     )
     s.add_object(
-        get_box_asset(child_asset["depth"] + default_drawer_depth, parent_asset['height'], parent_asset['depth']),
+        get_asset('box', child_asset["depth"] + default_drawer_depth, parent_asset['height'], parent_asset['depth']),
         f"box_{parent_asset['object_number']}_to_{child_asset['object_number']}",
         connect_parent_id=parent_asset["asset_name"],
         connect_parent_anchor=(parent_side, 'back', vertical_anchor),
@@ -1281,7 +865,7 @@ def place_overlapped_child(s,
 
     )
     s.add_object(
-        get_box_asset(parent_asset["depth"] + default_drawer_depth, child_asset['height'], child_asset['depth']),
+        get_asset('box', parent_asset["depth"] + default_drawer_depth, child_asset['height'], child_asset['depth']),
         f"box_{child_asset['object_number']}_to_{parent_asset['object_number']}",
         connect_parent_id=child_asset["asset_name"],
         connect_parent_anchor=(child_side, 'back', vertical_anchor),
@@ -1365,114 +949,21 @@ def resize_pcd(pcd_1, pcd_2, pcd_1_path, pcd_2_path):
             
 
 
+# Assume we are only scanning the faces
+# Start with a counter top
 
-# def try_to_place_medium(unplaced_assets, label, placed_assets,
-#                         pcd_data, s, axis, allow_overlap=False):
-#     # ----------------------------------------------------
-#     # 0.  Determine helper function and axis mapping
-#     # ----------------------------------------------------
-#     if axis == 1:
-#         func_name = "place_vertical_asset"
-#         axes = [0, 2, 1]      # x–z–y order
-#     elif axis == 0:
-#         func_name = "place_lateral_asset"
-#         axes = [1, 2, 0]      # y–z–x order
-#     else:
-#         raise ValueError("axis must be 0 (lateral) or 1 (vertical)")
-
-#     placement_func = globals()[func_name]
-
-#     # ----------------------------------------------------
-#     # 1.  Search for the parent/child pair with *minimum*
-#     #     |translation| along axes[2]
-#     # ----------------------------------------------------
-#     best = {
-#         "mag": float("inf"),
-#         "parent": None,
-#         "child": None,
-#         "aligned_axis": None,
-#         "translation": None,
-#     }
-
-#     for parent in placed_assets:
-#         aligned_axis = parent["relative_alignment"]
-#         pp_half_box = get_half_aabb_box(parent)
-
-#         # iterate over a *copy* so we don't mutate during search
-#         for child in list(unplaced_assets[label]):
-#             pc_half_box = get_half_aabb_box(child)
-
-#             # Skip if overlap is prohibited and ≥50 % overlap detected
-#             if not allow_overlap and overlaps_any_placed(child, placed_assets):
-#                 continue
-
-#             # Must overlap on the two non-placement axes
-#             aabbs = _aabbs_overlap_2d(pp_half_box, pc_half_box, axes=(aligned_axis[axes[0]], aligned_axis[axes[1]]))
-#             two_d = half_extent_overlap_2d(parent, child, axes=(aligned_axis[axes[0]], aligned_axis[axes[1]]))
-#             if not two_d:
-#                 continue
-
-#             # Your change ①: use axes[2] here
-#             translation = get_translation(parent, child,
-#                                           aligned_axis, axes[2])
-
-#             if abs(translation) < best["mag"]:
-#                 best.update(dict(
-#                     mag=abs(translation),
-#                     parent=parent,
-#                     child=child,
-#                     aligned_axis=aligned_axis,
-#                     translation=translation,
-#                 ))
-
-#     # ----------------------------------------------------
-#     # 2.  Bail early if nothing legal was found
-#     # ----------------------------------------------------
-#     if best["parent"] is None:
-#         return False
-
-#     parent = best["parent"]
-#     child = best["child"]
-#     aligned_axis = best["aligned_axis"]
-#     translation = best["translation"]
-
-#     # ----------------------------------------------------
-#     # 3.  Dimension propagation
-#     # ----------------------------------------------------
-#     set_dimension_parent_default(child, aligned_axis, axes[0], pcd_data,
-#                                  potential_parent=parent)
-#     set_dimension_parent_default(child, aligned_axis, axes[1], pcd_data,
-#                                  potential_parent=parent)
-#     set_dimension_parent_default(child, aligned_axis, axes[2], pcd_data)
-
-#     # ----------------------------------------------------
-#     # 4.  Build 4×4 transform
-#     #     Your change ②: index derived from aligned_axis[axes[2]]
-#     # ----------------------------------------------------
-#     indices = [0, 2, 1]        # map x/y/z → homogeneous-matrix col
-#     index = indices[aligned_axis[axes[2]]]
-#     transform = np.eye(4)
-#     transform[index, 3] = translation
-
-#     # ----------------------------------------------------
-#     # 5.  Call placement helper once
-#     # ----------------------------------------------------
-#     placement_func(
-#         s=s,
-#         parent_asset=parent,
-#         child_asset=child,
-#         child_width=child[extent_labels[aligned_axis[0]]],
-#         child_height=child[extent_labels[aligned_axis[1]]],
-#         child_depth=child[extent_labels[aligned_axis[2]]],
-#         transform=transform,
-#     )
-
-#     # ----------------------------------------------------
-#     # 6.  Book-keeping
-#     # ----------------------------------------------------
-#     placed_assets.append(child)
-#     unplaced_assets[label].remove(child)
-
-#     return True
+# if extents overlap (80% of one fits in the other), and there is overlap or very close to overlap in the searching dimension
+# the relative alignments need to be the same if allow rotation is False ::::: don't need to check the depth at this step
 
 
+# calculate depth by front of parent minus front of child
+# if extents are within 5-10% of each other, set to parent extent
+
+
+
+# issues, how do I solve for unknow relative alignment? 
+#   - calculate 2.5 obb and then if there is no rotation needed mark as unconfident_relative_alignment, if so, look in the parent.
+# issues, how do i caculate first depth?
+#   - calculate depth countertop caclulation (only look at countertop pcd overlapping with the child width)
+# issues, how do I place the countertop?
+#  - bit hacky, but proposed solution is to add all the directly below candidates with the same relative alignment, per countertop, then you can add their width and place on the "best asset", will need to add countertop when rotating assets, will require a set countertop height

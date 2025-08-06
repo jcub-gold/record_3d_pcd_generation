@@ -1,5 +1,5 @@
 import argparse
-from src.utils.pcd_to_urdf_utils import prepare_pcd_data, pcd_to_urdf_simple_geometries
+from src.utils.pcd_to_urdf_utils import prepare_pcd_data, pcd_to_urdf_simple_geometries, post_process_placed_assets
 from src.utils.dataset_utils import copy_cached_frames
 
 if __name__ == "__main__":
@@ -16,5 +16,7 @@ if __name__ == "__main__":
 
     pcds_path = f"data/{args.scene_name}/pcds"
     pcd_data, center, labels, label_keywords = prepare_pcd_data(pcds_path, save_labels=sl, load_cached_labels=args.load_cached_labels)
+    pcd_to_urdf_simple_geometries(pcd_data, center, labels, scene_name=args.scene_name)
+    post_process_placed_assets(args.scene_name)
     pcd_to_urdf_simple_geometries(pcd_data, center, labels, scene_name=args.scene_name)
     copy_cached_frames(args.scene_name)
