@@ -181,3 +181,69 @@ def get_depth_delta(parent: dict, child: dict) -> float:
     parent_front = parent['center'][aa[2]] * weight + parent['aabb'].get_extent()[aa[2]] / 2.0
     child_front = child['center'][aa[2]] * weight + child['aabb'].get_extent()[aa[2]] / 2.0
     return parent_front - child_front
+
+## assume upper is smaller depth than lower
+def get_aligned_depth(parent, child, depth_axis = 2):
+    extent_labels = ['width', 'height', 'depth']
+    aa = parent['relative_alignment']
+    p_s = parent['weight']
+    p_depth = parent["aabb"].get_extent()[aa[2]]
+    c_depth = child["aabb"].get_extent()[aa[2]]
+    p_center = parent["center"][aa[2]]
+    c_center = child["center"][aa[2]]
+
+    p_fixed_depth = parent[extent_labels[depth_axis]]
+
+    if (parent['relative_alignment'] == [0,1,2]):
+        p_s = p_s * -1
+    p_min = p_center + p_s * (p_depth / 2)
+    c_min = c_center + p_s * (c_depth / 2)
+
+    # if child['object_number'] == 1:
+    #     print()
+    #     print(parent['object_number'])
+    #     print(p_s)
+    #     print(depth_axis)
+    #     print(p_depth)
+    #     print(p_center, c_center)
+    #     print(p_min, c_min)
+    #     print()
+    # if (child['object_number'] == 29 and parent['object_number'] == 25):
+    #     print('----')
+    #     print(p_s)
+    #     print(depth_axis)
+    #     print(p_center, c_center)
+    #     print(p_min, c_min)
+    #     print(p_depth)
+    #     print(p_fixed_depth - abs(p_min - c_min))
+    #     print('----')
+
+    if (p_s == -1 and (p_min > c_min)) or (p_s == 1 and c_min > p_min):
+        return p_fixed_depth - abs(p_min - c_min)
+    else:
+        return None
+    
+# input child depth axis
+def get_not_aligned_depth(parent, child, depth_axis):
+    aa = child['relative_alignment']
+    c_s = child['weight']
+    p_depth = parent["aabb"].get_extent()[aa[2]]
+    c_depth = child["aabb"].get_extent()[aa[2]]
+    p_center = parent["center"][aa[2]]
+    c_center = child["center"][aa[2]]
+
+    p_min = p_center + c_s * (p_depth / 2)
+    c_min = c_center + c_s * (c_depth / 2)
+
+    if child['object_number'] == 34:
+        print(parent['object_number'])
+        print(c_s)
+        print(depth_axis)
+        print(p_center, c_center)
+        print(p_min, c_min)
+
+    # print((c_s == 1 and c_min < p_min))
+    if (c_s == -1 and (p_min < c_min)) or (c_s == 1 and c_min < p_min):
+        return abs(p_min - c_min)
+    else:
+        return None
