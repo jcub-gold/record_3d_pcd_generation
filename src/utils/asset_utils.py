@@ -78,3 +78,6 @@ def get_upper_right_cabinet_asset(width, height, depth):
 
 def get_box_asset(width, height, depth):
     return BoxAsset(extents=[width, depth, height])
+
+def get_counter_asset(width, height, depth):
+    return get_box_asset(width, height, depth)

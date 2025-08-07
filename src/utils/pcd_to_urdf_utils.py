@@ -10,8 +10,9 @@ import json
 from scene_synthesizer.assets import BoxAsset
 from sklearn.cluster import KMeans
 from collections import defaultdict
-from src.utils.pcd_to_urdf_utils_utils import get_depth_axis_from_pcd_extents, place_lateral_asset, place_vertical_asset, check_BB_overlap, check_extent_overlap, get_depth_delta, get_aligned_depth, get_not_aligned_depth
+from src.utils.pcd_to_urdf_utils_utils import get_depth_axis_from_pcd_extents, place_lateral_asset, place_vertical_asset, check_BB_overlap, check_extent_overlap, get_depth_delta, get_aligned_depth, get_not_aligned_depth, get_depth_from_counter, place_counter_top
 from src.utils.asset_utils import get_asset
+from src.utils.obb_utils import get_rotation_from_pca
 
 
 GREEN = "\033[32m"
@@ -120,14 +121,14 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
                     raise ValueError("Invalid label or index")
             if save_labels is not None:
                 save_labels[f"object_{obj_num}"] = label
-        if label == "counter":
-            continue
         if label not in labels:
             labels.append(label)
 
         aabb = pcd.get_axis_aligned_bounding_box()
         dict_data = {}
         weight = 1
+        confident = True
+        transform = None
         depth_axis = get_depth_axis_from_pcd_extents(aabb.get_extent(), ratio_threshold=0.15)
         if depth_axis == 0:
             relative_alignment = [2, 1, 0]
@@ -135,32 +136,43 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
         else:
             relative_alignment = [0, 1, 2]
             if depth_axis == None:
-                print(f'45 degree degree rotation {obj_num}')
-                ### TODO: calculate 2.5 OBB and if their is no rotation, mark as unconfident in relative alignment
-                transform = np.eye(4)
-                R = o3d.geometry.get_rotation_matrix_from_axis_angle(
-                        [0, 0, -1 * np.pi / 4])
-                transform[:3, :3] = R
-                dict_data['rotation'] = transform
+                angle = get_rotation_from_pca(pcd) * 180 / np.pi
+                angle = 5 * round(angle / 5)
+                angle = abs(angle % 90)
+                print(f'{angle} degree degree rotation {obj_num}')
+                if angle == 0:
+                    confident = False
+                else:
+                    angle = angle / 180 * np.pi
+                    transform = np.eye(4)
+                    R = o3d.geometry.get_rotation_matrix_from_axis_angle(
+                            [0, 0, -1 * angle])
+                    transform[:3, :3] = R
+                    
             else:
                 print(f'No rotation {obj_num}')
 
 
         extent = np.array(aabb.get_extent())
         width, height, depth = extent[relative_alignment]
+        if transform is not None:
+            width = np.sqrt(width**2 + depth**2)
         dict_data = {
             "pcd_path": os.path.join(aa_pcds_path, fname),
             "pcd": pcd,
             "aabb": aabb,
-            "center": pcd.get_center(),
+            "center": aabb.get_center(),
             "label": label,
             "object_number": obj_num,
             "width": width,
             "height": height,
             "depth": depth,
             "relative_alignment": relative_alignment,
-            "weight": weight
+            "weight": weight,
+            "alignment_confidence": confident
         }
+        if transform is not None:
+            dict_data['rotation'] = transform
 
        
 
@@ -226,14 +238,28 @@ def align_pcd_scene_via_object_aabb_minimization(pcds):
 
 
 def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=None):
+    # if "counter" in labels:
+    #     labels.remove("counter")
+    #     counter = True
+    # else:
+    #     counter = False
+    # counters = []
+    # if counter:
+    #     for asset in pcd_data:
+    #         if asset['label'] == "counter":
+    #             counters.append(asset)
+    
     output_path = f"simple_urdf_scenes/{scene_name}/{scene_name}.urdf"
     cache = {}
     cache['vertical_placement_pairs'] = []
     unplaced_assets = {}
+
     for asset in pcd_data:
         if unplaced_assets.get(asset['label']) is None:
             unplaced_assets[asset['label']] = []
         unplaced_assets[asset['label']].append(asset)
+    if "counter" in labels:
+        labels.remove("counter")
 
     s = synth.Scene()
     placed_assets = []
@@ -243,8 +269,14 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=
         return 
     # place the first asset, prioritize a drawer asset for depth calculation
     parent_asset = unplaced_assets['drawer'].pop()
-    print(parent_asset)
+    # print(parent_asset)
+
     parent_asset['depth'] = .7 # hardcoded right now
+    if unplaced_assets.get("counter") is not None:
+        parent_asset['depth'] = get_depth_from_counter(unplaced_assets["counter"], parent_asset)
+    print(f" DEPTH!!!!! {parent_asset['depth']}")
+
+
     width, height, depth = parent_asset['width'], parent_asset['height'], parent_asset['depth']
     s.add_object(get_asset(parent_asset['label'], width, height, depth), parent_asset['asset_name'])
     placed_assets.append(parent_asset)
@@ -270,7 +302,9 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=
             expand_bottom = False
             for label in lower_labels:
                 while try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center, allow_90_degree_rotation=True):
+                    # s.show()
                     expand_bottom = True
+        # s.show()
 
         expand_top = True
         while expand_top:
@@ -290,6 +324,7 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=
                     break
             expand_top = place_aligned_top or place_not_aligned_top
 
+        print("here")
         place_rotated = True
         while place_rotated:
             place_rotated = False
@@ -301,6 +336,12 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=
                 while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center, allow_other_rotation=True)):
                     place_rotated = True
                     continue
+        # s.show()
+
+    # place counters
+    if len(unplaced_assets['counter']) > 0:
+        for counter in unplaced_assets['counter']:
+            place_counter_top(s, counter, pcd_data)
 
     s.export(output_path)
     print(f"{GREEN} Successfully generated URDF at {output_path}!{RESET}")
@@ -316,10 +357,10 @@ def expand_direct_neighbors(labels, unplaced_assets, placed_assets, pcd_data, s,
         for label in labels:
             while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 1, combined_center, cache=cache)):
                 place_direct_neighbor = True
-                continue
+                break
             while(try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, 0, combined_center)):
                 place_direct_neighbor = True
-                continue
+                break
 
 
 
@@ -352,10 +393,10 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
             continue
         for potential_child in list(unplaced_assets[label]):
             # TODO: need to add extra logic if unsure about the relative alignment
-            if allow_90_degree_rotation == False and potential_child['relative_alignment'] != potential_parent['relative_alignment']:
+            if allow_90_degree_rotation == False and potential_child['relative_alignment'] != potential_parent['relative_alignment'] and potential_child['alignment_confidence'] == True:
                 continue
-            if allow_90_degree_rotation and potential_child['relative_alignment'] != potential_parent['relative_alignment']:
-                if place_90_degree_rotated_child(s, potential_parent, potential_child, center, pcd_data):
+            if allow_90_degree_rotation and potential_child['relative_alignment'] != potential_parent['relative_alignment'] and potential_child['alignment_confidence'] == True:
+                if place_90_degree_rotated_child(s, potential_parent, potential_child, center, unplaced_assets):
                     placed_assets.append(potential_child)
                     unplaced_assets[label].remove(potential_child)
                     return True
@@ -369,7 +410,7 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
             one_d   = check_extent_overlap(potential_parent, potential_child,
                                              threshold=1,
                                              axes=(aligned_axis[axes[0]],))
-            if one_d and c_o and abs(potential_parent['center'][aligned_axis[2]] - potential_child['center'][aligned_axis[2]]) < potential_parent['depth']:
+            if one_d and c_o and abs(potential_parent['center'][aligned_axis[2]] - potential_child['center'][aligned_axis[2]]) < potential_parent['depth'] / 2:
                 # if potential_child['object_number'] == 27 and potential_parent['object_number'] == 28:
                 #     print(potential_parent['width'], potential_parent['height'], potential_parent['depth'])
                 #     print(aligned_axis)
@@ -404,6 +445,8 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
     if best_child['relative_alignment'] != aligned_axis:    
         extent = np.array(best_child['aabb'].get_extent())
         best_child['width'], best_child['height'], best_child['depth'] = extent[aligned_axis]
+    if (best_child['object_number'] == 11):
+        print(get_depth_delta(best_parent, best_child))
     best_child['depth'] = best_parent['depth']  + get_depth_delta(best_parent, best_child)
     
 
@@ -426,7 +469,8 @@ def try_to_place_strict(unplaced_assets, label, placed_assets, pcd_data, s, axis
         transform[0, 3] = tight_translation_weight * default_drawer_depth
         # print(f"parent {best_parent['object_number']}")
         # print(aligned_axis)
-        # print(transform, tight_translation_weight)
+        # print(transform, tight_translation_weight
+        best_child['depth'] = best_parent['depth']
         depth_clamp = 'front'
     else:
         depth_clamp = 'back'
@@ -678,14 +722,14 @@ def place_90_degree_rotated_child(s,
                              parent_asset: dict,
                              child_asset: dict,
                              scene_center: np.ndarray,
-                             pcd_data: list):
+                             unplaced_assets: list):
     aligned_p = parent_asset["relative_alignment"]
     if not (check_BB_overlap(aligned_p[0], parent_asset, child_asset) and check_extent_overlap(parent_asset, child_asset, threshold=1, axes=(1,)) and check_BB_overlap(aligned_p[2], parent_asset, child_asset, threshold=0.5)):
         return False
     # print(parent_asset['object_number'], child_asset['object_number'])
     aligned_c = child_asset["relative_alignment"]
     lateral_axis = aligned_p[0]
-    child_asset['depth'] = parent_asset['depth'] # need to get from counter!! else just do this
+    child_asset['depth'] = parent_asset['depth'] # hardcoded to depth rn get_depth_from_counter(unplaced_assets['counter'], child_asset)
     child_pos  = child_asset["center"][lateral_axis] # might need weight here (2 lines below)
     scene_pos  = scene_center[lateral_axis]
     side_sign  = -1 if scene_pos * parent_asset['weight'] > child_pos * parent_asset['weight'] else 1 
@@ -843,4 +887,4 @@ def resize_pcd(pcd_1, pcd_2, pcd_1_path, pcd_2_path):
 #  - bit hacky, but proposed solution is to add all the directly below candidates with the same relative alignment, per countertop, then you can add their width and place on the "best asset", will need to add countertop when rotating assets, will require a set countertop height
 
 
-# todo countertops
+# todo countertops (extract depth and add)
