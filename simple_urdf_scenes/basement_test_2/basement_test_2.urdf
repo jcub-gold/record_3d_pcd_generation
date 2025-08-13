@@ -3546,21 +3546,21 @@
   <link name="drawer_0.465_0.159_0.014_object_22_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.015391478017598341"/>
+      <mass value="0.01436303653505577"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.465_0.159_0.014_object_22_back">
       <geometry>
         <box size="0.46528856344015224 0.02 0.13851079536548797"/>
       </geometry>
-      <origin xyz="0.0 0.3079707968667911 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.2859503572450648 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.465_0.159_0.014_object_22_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.465_0.159_0.014_object_22_left">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.13851079536548797"/>
+        <box size="0.02 0.5519007144901296 0.13851079536548797"/>
       </geometry>
       <origin xyz="-0.2226442817200761 0.0 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.465_0.159_0.014_object_22_left_main_color">
@@ -3569,7 +3569,7 @@
     </visual>
     <visual name="drawer_0.465_0.159_0.014_object_22_right">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.13851079536548797"/>
+        <box size="0.02 0.5519007144901296 0.13851079536548797"/>
       </geometry>
       <origin xyz="0.2226442817200761 0.0 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.465_0.159_0.014_object_22_right_main_color">
@@ -3578,7 +3578,7 @@
     </visual>
     <visual name="drawer_0.465_0.159_0.014_object_22_surface_0_0">
       <geometry>
-        <box size="0.42528856344015226 0.5959415937335821 0.02"/>
+        <box size="0.42528856344015226 0.5519007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.465_0.159_0.014_object_22_surface_0_0_main_color">
@@ -3587,7 +3587,7 @@
     </visual>
     <visual name="drawer_0.465_0.159_0.014_object_22_top">
       <geometry>
-        <box size="0.46528856344015224 0.6159415937335821 0.02"/>
+        <box size="0.46528856344015224 0.5719007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14851079536548795" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.465_0.159_0.014_object_22_top_main_color">
@@ -3598,29 +3598,29 @@
       <geometry>
         <box size="0.46528856344015224 0.02 0.13851079536548797"/>
       </geometry>
-      <origin xyz="0.0 0.3079707968667911 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.2859503572450648 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.465_0.159_0.014_object_22_left">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.13851079536548797"/>
+        <box size="0.02 0.5519007144901296 0.13851079536548797"/>
       </geometry>
       <origin xyz="-0.2226442817200761 0.0 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.465_0.159_0.014_object_22_right">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.13851079536548797"/>
+        <box size="0.02 0.5519007144901296 0.13851079536548797"/>
       </geometry>
       <origin xyz="0.2226442817200761 0.0 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.465_0.159_0.014_object_22_surface_0_0">
       <geometry>
-        <box size="0.42528856344015226 0.5959415937335821 0.02"/>
+        <box size="0.42528856344015226 0.5519007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.465_0.159_0.014_object_22_top">
       <geometry>
-        <box size="0.46528856344015224 0.6159415937335821 0.02"/>
+        <box size="0.46528856344015224 0.5719007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14851079536548795" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -3628,7 +3628,7 @@
   <link name="drawer_0.465_0.159_0.014_object_22_drawer_0_0">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.1"/>
+      <mass value="0.10000000000000002"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.465_0.159_0.014_object_22_drawer_0_0_board_0">
@@ -3642,27 +3642,27 @@
     </visual>
     <visual name="drawer_0.465_0.159_0.014_object_22_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40528856344015224 0.5293474343602239 0.005"/>
+        <box size="0.40528856344015224 0.48971064304111667 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.26467371718011196 -0.051755397682743974" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.24485532152055836 -0.051755397682743974" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.465_0.159_0.014_object_22_drawer_0_0_board_1_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.465_0.159_0.014_object_22_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5293474343602239 0.10851079536548795"/>
+        <box size="0.005 0.48971064304111667 0.10851079536548795"/>
       </geometry>
-      <origin xyz="-0.20514428172007612 0.26467371718011196 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20514428172007612 0.24485532152055836 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.465_0.159_0.014_object_22_drawer_0_0_board_2_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.465_0.159_0.014_object_22_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5293474343602239 0.10851079536548795"/>
+        <box size="0.005 0.48971064304111667 0.10851079536548795"/>
       </geometry>
-      <origin xyz="0.20514428172007612 0.26467371718011196 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20514428172007612 0.24485532152055836 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.465_0.159_0.014_object_22_drawer_0_0_board_3_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -3671,7 +3671,7 @@
       <geometry>
         <box size="0.41528856344015225 0.005 0.10851079536548795"/>
       </geometry>
-      <origin xyz="0.0 0.531847434360224 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.49221064304111667 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.465_0.159_0.014_object_22_drawer_0_0_board_4_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -3711,27 +3711,27 @@
     </collision>
     <collision name="drawer_0.465_0.159_0.014_object_22_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40528856344015224 0.5293474343602239 0.005"/>
+        <box size="0.40528856344015224 0.48971064304111667 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.26467371718011196 -0.051755397682743974" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.24485532152055836 -0.051755397682743974" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.465_0.159_0.014_object_22_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5293474343602239 0.10851079536548795"/>
+        <box size="0.005 0.48971064304111667 0.10851079536548795"/>
       </geometry>
-      <origin xyz="-0.20514428172007612 0.26467371718011196 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20514428172007612 0.24485532152055836 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.465_0.159_0.014_object_22_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5293474343602239 0.10851079536548795"/>
+        <box size="0.005 0.48971064304111667 0.10851079536548795"/>
       </geometry>
-      <origin xyz="0.20514428172007612 0.26467371718011196 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20514428172007612 0.24485532152055836 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.465_0.159_0.014_object_22_drawer_0_0_board_4">
       <geometry>
         <box size="0.41528856344015225 0.005 0.10851079536548795"/>
       </geometry>
-      <origin xyz="0.0 0.531847434360224 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.49221064304111667 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.465_0.159_0.014_object_22_drawer_0_0_handle_part_0">
       <geometry>
@@ -3755,12 +3755,12 @@
   <link name="box_20_to_22">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.07712755561857769"/>
+      <mass value="0.07198048594514879"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="box_20_to_22_geometry_0">
       <geometry>
-        <box size="0.6599415937335822 0.5919007144901296 0.1974491198482727"/>
+        <box size="0.6159007144901296 0.5919007144901296 0.1974491198482727"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="box_20_to_22_geometry_0_main_color">
@@ -3769,7 +3769,7 @@
     </visual>
     <collision name="box_20_to_22_geometry_0">
       <geometry>
-        <box size="0.6599415937335822 0.5919007144901296 0.1974491198482727"/>
+        <box size="0.6159007144901296 0.5919007144901296 0.1974491198482727"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -3777,12 +3777,12 @@
   <link name="box_22_to_20">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.07775208936306312"/>
+      <mass value="0.07236752195576229"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="box_22_to_20_geometry_0">
       <geometry>
-        <box size="0.6159007144901296 0.6359415937335822 0.19851079536548796"/>
+        <box size="0.6159007144901296 0.5919007144901296 0.19851079536548796"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="box_22_to_20_geometry_0_main_color">
@@ -3791,7 +3791,7 @@
     </visual>
     <collision name="box_22_to_20_geometry_0">
       <geometry>
-        <box size="0.6159007144901296 0.6359415937335822 0.19851079536548796"/>
+        <box size="0.6159007144901296 0.5919007144901296 0.19851079536548796"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -3799,21 +3799,21 @@
   <link name="drawer_0.477_0.158_0.016_object_24_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.015391478017598341"/>
+      <mass value="0.01436303653505577"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.477_0.158_0.016_object_24_back">
       <geometry>
         <box size="0.46528856344015224 0.02 0.13851079536548797"/>
       </geometry>
-      <origin xyz="0.0 0.3079707968667911 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.2859503572450648 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.477_0.158_0.016_object_24_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.477_0.158_0.016_object_24_left">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.13851079536548797"/>
+        <box size="0.02 0.5519007144901296 0.13851079536548797"/>
       </geometry>
       <origin xyz="-0.2226442817200761 0.0 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.477_0.158_0.016_object_24_left_main_color">
@@ -3822,7 +3822,7 @@
     </visual>
     <visual name="drawer_0.477_0.158_0.016_object_24_right">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.13851079536548797"/>
+        <box size="0.02 0.5519007144901296 0.13851079536548797"/>
       </geometry>
       <origin xyz="0.2226442817200761 0.0 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.477_0.158_0.016_object_24_right_main_color">
@@ -3831,7 +3831,7 @@
     </visual>
     <visual name="drawer_0.477_0.158_0.016_object_24_surface_0_0">
       <geometry>
-        <box size="0.42528856344015226 0.5959415937335821 0.02"/>
+        <box size="0.42528856344015226 0.5519007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.477_0.158_0.016_object_24_surface_0_0_main_color">
@@ -3840,7 +3840,7 @@
     </visual>
     <visual name="drawer_0.477_0.158_0.016_object_24_top">
       <geometry>
-        <box size="0.46528856344015224 0.6159415937335821 0.02"/>
+        <box size="0.46528856344015224 0.5719007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14851079536548795" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.477_0.158_0.016_object_24_top_main_color">
@@ -3851,29 +3851,29 @@
       <geometry>
         <box size="0.46528856344015224 0.02 0.13851079536548797"/>
       </geometry>
-      <origin xyz="0.0 0.3079707968667911 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.2859503572450648 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.477_0.158_0.016_object_24_left">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.13851079536548797"/>
+        <box size="0.02 0.5519007144901296 0.13851079536548797"/>
       </geometry>
       <origin xyz="-0.2226442817200761 0.0 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.477_0.158_0.016_object_24_right">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.13851079536548797"/>
+        <box size="0.02 0.5519007144901296 0.13851079536548797"/>
       </geometry>
       <origin xyz="0.2226442817200761 0.0 0.06925539768274398" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.477_0.158_0.016_object_24_surface_0_0">
       <geometry>
-        <box size="0.42528856344015226 0.5959415937335821 0.02"/>
+        <box size="0.42528856344015226 0.5519007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.477_0.158_0.016_object_24_top">
       <geometry>
-        <box size="0.46528856344015224 0.6159415937335821 0.02"/>
+        <box size="0.46528856344015224 0.5719007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14851079536548795" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -3881,7 +3881,7 @@
   <link name="drawer_0.477_0.158_0.016_object_24_drawer_0_0">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.1"/>
+      <mass value="0.10000000000000002"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.477_0.158_0.016_object_24_drawer_0_0_board_0">
@@ -3895,27 +3895,27 @@
     </visual>
     <visual name="drawer_0.477_0.158_0.016_object_24_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40528856344015224 0.5293474343602239 0.005"/>
+        <box size="0.40528856344015224 0.48971064304111667 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.26467371718011196 -0.051755397682743974" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.24485532152055836 -0.051755397682743974" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.477_0.158_0.016_object_24_drawer_0_0_board_1_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.477_0.158_0.016_object_24_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5293474343602239 0.10851079536548795"/>
+        <box size="0.005 0.48971064304111667 0.10851079536548795"/>
       </geometry>
-      <origin xyz="-0.20514428172007612 0.26467371718011196 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20514428172007612 0.24485532152055836 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.477_0.158_0.016_object_24_drawer_0_0_board_2_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.477_0.158_0.016_object_24_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5293474343602239 0.10851079536548795"/>
+        <box size="0.005 0.48971064304111667 0.10851079536548795"/>
       </geometry>
-      <origin xyz="0.20514428172007612 0.26467371718011196 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20514428172007612 0.24485532152055836 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.477_0.158_0.016_object_24_drawer_0_0_board_3_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -3924,7 +3924,7 @@
       <geometry>
         <box size="0.41528856344015225 0.005 0.10851079536548795"/>
       </geometry>
-      <origin xyz="0.0 0.531847434360224 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.49221064304111667 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.477_0.158_0.016_object_24_drawer_0_0_board_4_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -3964,27 +3964,27 @@
     </collision>
     <collision name="drawer_0.477_0.158_0.016_object_24_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40528856344015224 0.5293474343602239 0.005"/>
+        <box size="0.40528856344015224 0.48971064304111667 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.26467371718011196 -0.051755397682743974" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.24485532152055836 -0.051755397682743974" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.477_0.158_0.016_object_24_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5293474343602239 0.10851079536548795"/>
+        <box size="0.005 0.48971064304111667 0.10851079536548795"/>
       </geometry>
-      <origin xyz="-0.20514428172007612 0.26467371718011196 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20514428172007612 0.24485532152055836 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.477_0.158_0.016_object_24_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5293474343602239 0.10851079536548795"/>
+        <box size="0.005 0.48971064304111667 0.10851079536548795"/>
       </geometry>
-      <origin xyz="0.20514428172007612 0.26467371718011196 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20514428172007612 0.24485532152055836 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.477_0.158_0.016_object_24_drawer_0_0_board_4">
       <geometry>
         <box size="0.41528856344015225 0.005 0.10851079536548795"/>
       </geometry>
-      <origin xyz="0.0 0.531847434360224 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.49221064304111667 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.477_0.158_0.016_object_24_drawer_0_0_handle_part_0">
       <geometry>
@@ -4008,12 +4008,12 @@
   <link name="box_0.662_0.761_0.525_object_25">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.2799124493371002"/>
+      <mass value="0.26232525320836386"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="box_0.662_0.761_0.525_object_25_geometry_0">
       <geometry>
-        <box size="0.5246704664350093 0.7009412011873675 0.7611215306452649"/>
+        <box size="0.5246704664350093 0.6569003219439149 0.7611215306452649"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="box_0.662_0.761_0.525_object_25_geometry_0_main_color">
@@ -4022,7 +4022,7 @@
     </visual>
     <collision name="box_0.662_0.761_0.525_object_25_geometry_0">
       <geometry>
-        <box size="0.5246704664350093 0.7009412011873675 0.7611215306452649"/>
+        <box size="0.5246704664350093 0.6569003219439149 0.7611215306452649"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -4030,12 +4030,12 @@
   <link name="box_0.310_0.842_0.981_object_26">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.6202560509384899"/>
+      <mass value="0.583872083293423"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="box_0.310_0.842_0.981_object_26_geometry_0">
       <geometry>
-        <box size="0.9807156973429858 0.7507873277010955 0.8423856292876121"/>
+        <box size="0.9807156973429858 0.7067464484576429 0.8423856292876121"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="box_0.310_0.842_0.981_object_26_geometry_0_main_color">
@@ -4044,7 +4044,7 @@
     </visual>
     <collision name="box_0.310_0.842_0.981_object_26_geometry_0">
       <geometry>
-        <box size="0.9807156973429858 0.7507873277010955 0.8423856292876121"/>
+        <box size="0.9807156973429858 0.7067464484576429 0.8423856292876121"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -4052,21 +4052,21 @@
   <link name="lower_left_cabinet_0.464_0.559_0.015_object_21_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.031134596403209782"/>
+      <mass value="0.02921682782042771"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="lower_left_cabinet_0.464_0.559_0.015_object_21_back">
       <geometry>
         <box size="0.4637145093079448 0.02 0.5389866862285517"/>
       </geometry>
-      <origin xyz="0.0 0.3079707968667911 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.2859503572450648 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.464_0.559_0.015_object_21_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="lower_left_cabinet_0.464_0.559_0.015_object_21_left">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.5389866862285517"/>
+        <box size="0.02 0.5519007144901296 0.5389866862285517"/>
       </geometry>
       <origin xyz="-0.22185725465397238 0.0 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.464_0.559_0.015_object_21_left_main_color">
@@ -4075,7 +4075,7 @@
     </visual>
     <visual name="lower_left_cabinet_0.464_0.559_0.015_object_21_right">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.5389866862285517"/>
+        <box size="0.02 0.5519007144901296 0.5389866862285517"/>
       </geometry>
       <origin xyz="0.22185725465397238 0.0 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.464_0.559_0.015_object_21_right_main_color">
@@ -4084,7 +4084,7 @@
     </visual>
     <visual name="lower_left_cabinet_0.464_0.559_0.015_object_21_shelf_0_0_0">
       <geometry>
-        <box size="0.4237145093079448 0.5959415937335821 0.01"/>
+        <box size="0.4237145093079448 0.5519007144901296 0.01"/>
       </geometry>
       <origin xyz="0.0 0.0 0.27949334311427587" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.464_0.559_0.015_object_21_shelf_0_0_0_main_color">
@@ -4093,7 +4093,7 @@
     </visual>
     <visual name="lower_left_cabinet_0.464_0.559_0.015_object_21_surface_0_0">
       <geometry>
-        <box size="0.4237145093079448 0.5959415937335821 0.02"/>
+        <box size="0.4237145093079448 0.5519007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.464_0.559_0.015_object_21_surface_0_0_main_color">
@@ -4102,7 +4102,7 @@
     </visual>
     <visual name="lower_left_cabinet_0.464_0.559_0.015_object_21_top">
       <geometry>
-        <box size="0.4637145093079448 0.6159415937335821 0.02"/>
+        <box size="0.4637145093079448 0.5719007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.5489866862285517" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.464_0.559_0.015_object_21_top_main_color">
@@ -4113,35 +4113,35 @@
       <geometry>
         <box size="0.4637145093079448 0.02 0.5389866862285517"/>
       </geometry>
-      <origin xyz="0.0 0.3079707968667911 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.2859503572450648 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_left_cabinet_0.464_0.559_0.015_object_21_left">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.5389866862285517"/>
+        <box size="0.02 0.5519007144901296 0.5389866862285517"/>
       </geometry>
       <origin xyz="-0.22185725465397238 0.0 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_left_cabinet_0.464_0.559_0.015_object_21_right">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.5389866862285517"/>
+        <box size="0.02 0.5519007144901296 0.5389866862285517"/>
       </geometry>
       <origin xyz="0.22185725465397238 0.0 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_left_cabinet_0.464_0.559_0.015_object_21_shelf_0_0_0">
       <geometry>
-        <box size="0.4237145093079448 0.5959415937335821 0.01"/>
+        <box size="0.4237145093079448 0.5519007144901296 0.01"/>
       </geometry>
       <origin xyz="0.0 0.0 0.27949334311427587" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_left_cabinet_0.464_0.559_0.015_object_21_surface_0_0">
       <geometry>
-        <box size="0.4237145093079448 0.5959415937335821 0.02"/>
+        <box size="0.4237145093079448 0.5519007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_left_cabinet_0.464_0.559_0.015_object_21_top">
       <geometry>
-        <box size="0.4637145093079448 0.6159415937335821 0.02"/>
+        <box size="0.4637145093079448 0.5719007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.5489866862285517" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -4216,12 +4216,12 @@
   <link name="box_19_to_21">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.233357267974139"/>
+      <mass value="0.2177842849147018"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="box_19_to_21_geometry_0">
       <geometry>
-        <box size="0.6599415937335822 0.5919007144901296 0.5974024043955687"/>
+        <box size="0.6159007144901296 0.5919007144901296 0.5974024043955687"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="box_19_to_21_geometry_0_main_color">
@@ -4230,7 +4230,7 @@
     </visual>
     <collision name="box_19_to_21_geometry_0">
       <geometry>
-        <box size="0.6599415937335822 0.5919007144901296 0.5974024043955687"/>
+        <box size="0.6159007144901296 0.5919007144901296 0.5974024043955687"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -4238,12 +4238,12 @@
   <link name="box_21_to_19">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.23460923759426058"/>
+      <mass value="0.21836183814107135"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="box_21_to_19_geometry_0">
       <geometry>
-        <box size="0.6159007144901296 0.6359415937335822 0.5989866862285518"/>
+        <box size="0.6159007144901296 0.5919007144901296 0.5989866862285518"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="box_21_to_19_geometry_0_main_color">
@@ -4252,7 +4252,7 @@
     </visual>
     <collision name="box_21_to_19_geometry_0">
       <geometry>
-        <box size="0.6159007144901296 0.6359415937335822 0.5989866862285518"/>
+        <box size="0.6159007144901296 0.5919007144901296 0.5989866862285518"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -4260,21 +4260,21 @@
   <link name="lower_right_cabinet_0.480_0.561_0.021_object_23_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.031134596403209782"/>
+      <mass value="0.02921682782042771"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="lower_right_cabinet_0.480_0.561_0.021_object_23_back">
       <geometry>
         <box size="0.4637145093079448 0.02 0.5389866862285517"/>
       </geometry>
-      <origin xyz="0.0 0.3079707968667911 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.2859503572450648 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.480_0.561_0.021_object_23_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="lower_right_cabinet_0.480_0.561_0.021_object_23_left">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.5389866862285517"/>
+        <box size="0.02 0.5519007144901296 0.5389866862285517"/>
       </geometry>
       <origin xyz="-0.22185725465397238 0.0 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.480_0.561_0.021_object_23_left_main_color">
@@ -4283,7 +4283,7 @@
     </visual>
     <visual name="lower_right_cabinet_0.480_0.561_0.021_object_23_right">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.5389866862285517"/>
+        <box size="0.02 0.5519007144901296 0.5389866862285517"/>
       </geometry>
       <origin xyz="0.22185725465397238 0.0 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.480_0.561_0.021_object_23_right_main_color">
@@ -4292,7 +4292,7 @@
     </visual>
     <visual name="lower_right_cabinet_0.480_0.561_0.021_object_23_shelf_0_0_0">
       <geometry>
-        <box size="0.4237145093079448 0.5959415937335821 0.01"/>
+        <box size="0.4237145093079448 0.5519007144901296 0.01"/>
       </geometry>
       <origin xyz="0.0 0.0 0.27949334311427587" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.480_0.561_0.021_object_23_shelf_0_0_0_main_color">
@@ -4301,7 +4301,7 @@
     </visual>
     <visual name="lower_right_cabinet_0.480_0.561_0.021_object_23_surface_0_0">
       <geometry>
-        <box size="0.4237145093079448 0.5959415937335821 0.02"/>
+        <box size="0.4237145093079448 0.5519007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.480_0.561_0.021_object_23_surface_0_0_main_color">
@@ -4310,7 +4310,7 @@
     </visual>
     <visual name="lower_right_cabinet_0.480_0.561_0.021_object_23_top">
       <geometry>
-        <box size="0.4637145093079448 0.6159415937335821 0.02"/>
+        <box size="0.4637145093079448 0.5719007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.5489866862285517" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.480_0.561_0.021_object_23_top_main_color">
@@ -4321,35 +4321,35 @@
       <geometry>
         <box size="0.4637145093079448 0.02 0.5389866862285517"/>
       </geometry>
-      <origin xyz="0.0 0.3079707968667911 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.2859503572450648 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_right_cabinet_0.480_0.561_0.021_object_23_left">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.5389866862285517"/>
+        <box size="0.02 0.5519007144901296 0.5389866862285517"/>
       </geometry>
       <origin xyz="-0.22185725465397238 0.0 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_right_cabinet_0.480_0.561_0.021_object_23_right">
       <geometry>
-        <box size="0.02 0.5959415937335821 0.5389866862285517"/>
+        <box size="0.02 0.5519007144901296 0.5389866862285517"/>
       </geometry>
       <origin xyz="0.22185725465397238 0.0 0.26949334311427586" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_right_cabinet_0.480_0.561_0.021_object_23_shelf_0_0_0">
       <geometry>
-        <box size="0.4237145093079448 0.5959415937335821 0.01"/>
+        <box size="0.4237145093079448 0.5519007144901296 0.01"/>
       </geometry>
       <origin xyz="0.0 0.0 0.27949334311427587" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_right_cabinet_0.480_0.561_0.021_object_23_surface_0_0">
       <geometry>
-        <box size="0.4237145093079448 0.5959415937335821 0.02"/>
+        <box size="0.4237145093079448 0.5519007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_right_cabinet_0.480_0.561_0.021_object_23_top">
       <geometry>
-        <box size="0.4637145093079448 0.6159415937335821 0.02"/>
+        <box size="0.4637145093079448 0.5719007144901296 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.5489866862285517" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -4424,21 +4424,21 @@
   <link name="drawer_0.464_0.154_0.017_object_27_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.016002670961306246"/>
+      <mass value="0.01498428250626202"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.464_0.154_0.017_object_27_back">
       <geometry>
         <box size="0.46380192628451766 0.02 0.13429078697326166"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.017_object_27_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.464_0.154_0.017_object_27_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.017_object_27_left_main_color">
@@ -4447,7 +4447,7 @@
     </visual>
     <visual name="drawer_0.464_0.154_0.017_object_27_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.017_object_27_right_main_color">
@@ -4456,7 +4456,7 @@
     </visual>
     <visual name="drawer_0.464_0.154_0.017_object_27_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.017_object_27_surface_0_0_main_color">
@@ -4465,7 +4465,7 @@
     </visual>
     <visual name="drawer_0.464_0.154_0.017_object_27_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14429078697326164" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.017_object_27_top_main_color">
@@ -4476,29 +4476,29 @@
       <geometry>
         <box size="0.46380192628451766 0.02 0.13429078697326166"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.017_object_27_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.017_object_27_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.017_object_27_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.017_object_27_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14429078697326164" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -4520,27 +4520,27 @@
     </visual>
     <visual name="drawer_0.464_0.154_0.017_object_27_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.017_object_27_drawer_0_0_board_1_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.464_0.154_0.017_object_27_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.017_object_27_drawer_0_0_board_2_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.464_0.154_0.017_object_27_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.017_object_27_drawer_0_0_board_3_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -4549,7 +4549,7 @@
       <geometry>
         <box size="0.4138019262845177 0.005 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.017_object_27_drawer_0_0_board_4_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -4589,27 +4589,27 @@
     </collision>
     <collision name="drawer_0.464_0.154_0.017_object_27_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.017_object_27_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.017_object_27_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.017_object_27_drawer_0_0_board_4">
       <geometry>
         <box size="0.4138019262845177 0.005 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.017_object_27_drawer_0_0_handle_part_0">
       <geometry>
@@ -4633,21 +4633,21 @@
   <link name="drawer_0.463_0.154_0.012_object_28_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.016002670961306246"/>
+      <mass value="0.01498428250626202"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.463_0.154_0.012_object_28_back">
       <geometry>
         <box size="0.46380192628451766 0.02 0.13429078697326166"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.154_0.012_object_28_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.463_0.154_0.012_object_28_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.154_0.012_object_28_left_main_color">
@@ -4656,7 +4656,7 @@
     </visual>
     <visual name="drawer_0.463_0.154_0.012_object_28_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.154_0.012_object_28_right_main_color">
@@ -4665,7 +4665,7 @@
     </visual>
     <visual name="drawer_0.463_0.154_0.012_object_28_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.154_0.012_object_28_surface_0_0_main_color">
@@ -4674,7 +4674,7 @@
     </visual>
     <visual name="drawer_0.463_0.154_0.012_object_28_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14429078697326164" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.154_0.012_object_28_top_main_color">
@@ -4685,29 +4685,29 @@
       <geometry>
         <box size="0.46380192628451766 0.02 0.13429078697326166"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.154_0.012_object_28_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.154_0.012_object_28_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.154_0.012_object_28_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.154_0.012_object_28_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14429078697326164" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -4729,27 +4729,27 @@
     </visual>
     <visual name="drawer_0.463_0.154_0.012_object_28_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.154_0.012_object_28_drawer_0_0_board_1_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.463_0.154_0.012_object_28_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.154_0.012_object_28_drawer_0_0_board_2_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.463_0.154_0.012_object_28_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.154_0.012_object_28_drawer_0_0_board_3_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -4758,7 +4758,7 @@
       <geometry>
         <box size="0.4138019262845177 0.005 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.154_0.012_object_28_drawer_0_0_board_4_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -4798,27 +4798,27 @@
     </collision>
     <collision name="drawer_0.463_0.154_0.012_object_28_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.154_0.012_object_28_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.154_0.012_object_28_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.154_0.012_object_28_drawer_0_0_board_4">
       <geometry>
         <box size="0.4138019262845177 0.005 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.154_0.012_object_28_drawer_0_0_handle_part_0">
       <geometry>
@@ -4842,21 +4842,21 @@
   <link name="drawer_0.470_0.154_0.020_object_34_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.016002670961306246"/>
+      <mass value="0.01498428250626202"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.470_0.154_0.020_object_34_back">
       <geometry>
         <box size="0.46380192628451766 0.02 0.13429078697326166"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.470_0.154_0.020_object_34_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.470_0.154_0.020_object_34_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.470_0.154_0.020_object_34_left_main_color">
@@ -4865,7 +4865,7 @@
     </visual>
     <visual name="drawer_0.470_0.154_0.020_object_34_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.470_0.154_0.020_object_34_right_main_color">
@@ -4874,7 +4874,7 @@
     </visual>
     <visual name="drawer_0.470_0.154_0.020_object_34_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.470_0.154_0.020_object_34_surface_0_0_main_color">
@@ -4883,7 +4883,7 @@
     </visual>
     <visual name="drawer_0.470_0.154_0.020_object_34_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14429078697326164" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.470_0.154_0.020_object_34_top_main_color">
@@ -4894,29 +4894,29 @@
       <geometry>
         <box size="0.46380192628451766 0.02 0.13429078697326166"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.470_0.154_0.020_object_34_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.470_0.154_0.020_object_34_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.470_0.154_0.020_object_34_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.470_0.154_0.020_object_34_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14429078697326164" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -4938,27 +4938,27 @@
     </visual>
     <visual name="drawer_0.470_0.154_0.020_object_34_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.470_0.154_0.020_object_34_drawer_0_0_board_1_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.470_0.154_0.020_object_34_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.470_0.154_0.020_object_34_drawer_0_0_board_2_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.470_0.154_0.020_object_34_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.470_0.154_0.020_object_34_drawer_0_0_board_3_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -4967,7 +4967,7 @@
       <geometry>
         <box size="0.4138019262845177 0.005 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.470_0.154_0.020_object_34_drawer_0_0_board_4_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -5007,27 +5007,27 @@
     </collision>
     <collision name="drawer_0.470_0.154_0.020_object_34_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.470_0.154_0.020_object_34_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.470_0.154_0.020_object_34_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.470_0.154_0.020_object_34_drawer_0_0_board_4">
       <geometry>
         <box size="0.4138019262845177 0.005 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.470_0.154_0.020_object_34_drawer_0_0_handle_part_0">
       <geometry>
@@ -5051,12 +5051,12 @@
   <link name="box_0.602_0.725_0.043_object_35">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.30905135235460923"/>
+      <mass value="0.28981585335688237"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="box_0.602_0.725_0.043_object_35_geometry_0">
       <geometry>
-        <box size="0.6021619998788239 0.7075924201749864 0.7253274788229321"/>
+        <box size="0.6021619998788239 0.6635515409315338 0.7253274788229321"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="box_0.602_0.725_0.043_object_35_geometry_0_main_color">
@@ -5065,7 +5065,7 @@
     </visual>
     <collision name="box_0.602_0.725_0.043_object_35_geometry_0">
       <geometry>
-        <box size="0.6021619998788239 0.7075924201749864 0.7253274788229321"/>
+        <box size="0.6021619998788239 0.6635515409315338 0.7253274788229321"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -5073,21 +5073,21 @@
   <link name="lower_left_cabinet_0.484_0.717_0.027_object_36_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.04122121507286721"/>
+      <mass value="0.03896525917585969"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="lower_left_cabinet_0.484_0.717_0.027_object_36_back">
       <geometry>
         <box size="0.4842206956533479 0.02 0.7053274788229321"/>
       </geometry>
-      <origin xyz="0.0 0.34379621008749317 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3217757704657669 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.484_0.717_0.027_object_36_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="lower_left_cabinet_0.484_0.717_0.027_object_36_left">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.7053274788229321"/>
+        <box size="0.02 0.6235515409315338 0.7053274788229321"/>
       </geometry>
       <origin xyz="-0.23211034782667395 0.0 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.484_0.717_0.027_object_36_left_main_color">
@@ -5096,7 +5096,7 @@
     </visual>
     <visual name="lower_left_cabinet_0.484_0.717_0.027_object_36_right">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.7053274788229321"/>
+        <box size="0.02 0.6235515409315338 0.7053274788229321"/>
       </geometry>
       <origin xyz="0.23211034782667395 0.0 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.484_0.717_0.027_object_36_right_main_color">
@@ -5105,7 +5105,7 @@
     </visual>
     <visual name="lower_left_cabinet_0.484_0.717_0.027_object_36_shelf_0_0_0">
       <geometry>
-        <box size="0.44422069565334793 0.6675924201749863 0.01"/>
+        <box size="0.44422069565334793 0.6235515409315338 0.01"/>
       </geometry>
       <origin xyz="0.0 0.0 0.36266373941146607" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.484_0.717_0.027_object_36_shelf_0_0_0_main_color">
@@ -5114,7 +5114,7 @@
     </visual>
     <visual name="lower_left_cabinet_0.484_0.717_0.027_object_36_surface_0_0">
       <geometry>
-        <box size="0.44422069565334793 0.6675924201749863 0.02"/>
+        <box size="0.44422069565334793 0.6235515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.484_0.717_0.027_object_36_surface_0_0_main_color">
@@ -5123,7 +5123,7 @@
     </visual>
     <visual name="lower_left_cabinet_0.484_0.717_0.027_object_36_top">
       <geometry>
-        <box size="0.4842206956533479 0.6875924201749863 0.02"/>
+        <box size="0.4842206956533479 0.6435515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.7153274788229321" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.484_0.717_0.027_object_36_top_main_color">
@@ -5134,35 +5134,35 @@
       <geometry>
         <box size="0.4842206956533479 0.02 0.7053274788229321"/>
       </geometry>
-      <origin xyz="0.0 0.34379621008749317 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3217757704657669 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_left_cabinet_0.484_0.717_0.027_object_36_left">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.7053274788229321"/>
+        <box size="0.02 0.6235515409315338 0.7053274788229321"/>
       </geometry>
       <origin xyz="-0.23211034782667395 0.0 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_left_cabinet_0.484_0.717_0.027_object_36_right">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.7053274788229321"/>
+        <box size="0.02 0.6235515409315338 0.7053274788229321"/>
       </geometry>
       <origin xyz="0.23211034782667395 0.0 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_left_cabinet_0.484_0.717_0.027_object_36_shelf_0_0_0">
       <geometry>
-        <box size="0.44422069565334793 0.6675924201749863 0.01"/>
+        <box size="0.44422069565334793 0.6235515409315338 0.01"/>
       </geometry>
       <origin xyz="0.0 0.0 0.36266373941146607" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_left_cabinet_0.484_0.717_0.027_object_36_surface_0_0">
       <geometry>
-        <box size="0.44422069565334793 0.6675924201749863 0.02"/>
+        <box size="0.44422069565334793 0.6235515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_left_cabinet_0.484_0.717_0.027_object_36_top">
       <geometry>
-        <box size="0.4842206956533479 0.6875924201749863 0.02"/>
+        <box size="0.4842206956533479 0.6435515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.7153274788229321" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -5237,21 +5237,21 @@
   <link name="lower_right_cabinet_0.474_0.719_0.027_object_37_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.04122121507286721"/>
+      <mass value="0.03896525917585969"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="lower_right_cabinet_0.474_0.719_0.027_object_37_back">
       <geometry>
         <box size="0.4842206956533479 0.02 0.7053274788229321"/>
       </geometry>
-      <origin xyz="0.0 0.34379621008749317 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3217757704657669 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.474_0.719_0.027_object_37_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="lower_right_cabinet_0.474_0.719_0.027_object_37_left">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.7053274788229321"/>
+        <box size="0.02 0.6235515409315338 0.7053274788229321"/>
       </geometry>
       <origin xyz="-0.23211034782667395 0.0 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.474_0.719_0.027_object_37_left_main_color">
@@ -5260,7 +5260,7 @@
     </visual>
     <visual name="lower_right_cabinet_0.474_0.719_0.027_object_37_right">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.7053274788229321"/>
+        <box size="0.02 0.6235515409315338 0.7053274788229321"/>
       </geometry>
       <origin xyz="0.23211034782667395 0.0 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.474_0.719_0.027_object_37_right_main_color">
@@ -5269,7 +5269,7 @@
     </visual>
     <visual name="lower_right_cabinet_0.474_0.719_0.027_object_37_shelf_0_0_0">
       <geometry>
-        <box size="0.44422069565334793 0.6675924201749863 0.01"/>
+        <box size="0.44422069565334793 0.6235515409315338 0.01"/>
       </geometry>
       <origin xyz="0.0 0.0 0.36266373941146607" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.474_0.719_0.027_object_37_shelf_0_0_0_main_color">
@@ -5278,7 +5278,7 @@
     </visual>
     <visual name="lower_right_cabinet_0.474_0.719_0.027_object_37_surface_0_0">
       <geometry>
-        <box size="0.44422069565334793 0.6675924201749863 0.02"/>
+        <box size="0.44422069565334793 0.6235515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.474_0.719_0.027_object_37_surface_0_0_main_color">
@@ -5287,7 +5287,7 @@
     </visual>
     <visual name="lower_right_cabinet_0.474_0.719_0.027_object_37_top">
       <geometry>
-        <box size="0.4842206956533479 0.6875924201749863 0.02"/>
+        <box size="0.4842206956533479 0.6435515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.7153274788229321" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.474_0.719_0.027_object_37_top_main_color">
@@ -5298,35 +5298,35 @@
       <geometry>
         <box size="0.4842206956533479 0.02 0.7053274788229321"/>
       </geometry>
-      <origin xyz="0.0 0.34379621008749317 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3217757704657669 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_right_cabinet_0.474_0.719_0.027_object_37_left">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.7053274788229321"/>
+        <box size="0.02 0.6235515409315338 0.7053274788229321"/>
       </geometry>
       <origin xyz="-0.23211034782667395 0.0 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_right_cabinet_0.474_0.719_0.027_object_37_right">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.7053274788229321"/>
+        <box size="0.02 0.6235515409315338 0.7053274788229321"/>
       </geometry>
       <origin xyz="0.23211034782667395 0.0 0.35266373941146606" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_right_cabinet_0.474_0.719_0.027_object_37_shelf_0_0_0">
       <geometry>
-        <box size="0.44422069565334793 0.6675924201749863 0.01"/>
+        <box size="0.44422069565334793 0.6235515409315338 0.01"/>
       </geometry>
       <origin xyz="0.0 0.0 0.36266373941146607" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_right_cabinet_0.474_0.719_0.027_object_37_surface_0_0">
       <geometry>
-        <box size="0.44422069565334793 0.6675924201749863 0.02"/>
+        <box size="0.44422069565334793 0.6235515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_right_cabinet_0.474_0.719_0.027_object_37_top">
       <geometry>
-        <box size="0.4842206956533479 0.6875924201749863 0.02"/>
+        <box size="0.4842206956533479 0.6435515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.7153274788229321" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -5401,21 +5401,21 @@
   <link name="drawer_0.461_0.155_0.011_object_29_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.016002670961306246"/>
+      <mass value="0.01498428250626202"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.461_0.155_0.011_object_29_back">
       <geometry>
         <box size="0.46380192628451766 0.02 0.13429078697326166"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.461_0.155_0.011_object_29_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.461_0.155_0.011_object_29_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.461_0.155_0.011_object_29_left_main_color">
@@ -5424,7 +5424,7 @@
     </visual>
     <visual name="drawer_0.461_0.155_0.011_object_29_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.461_0.155_0.011_object_29_right_main_color">
@@ -5433,7 +5433,7 @@
     </visual>
     <visual name="drawer_0.461_0.155_0.011_object_29_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.461_0.155_0.011_object_29_surface_0_0_main_color">
@@ -5442,7 +5442,7 @@
     </visual>
     <visual name="drawer_0.461_0.155_0.011_object_29_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14429078697326164" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.461_0.155_0.011_object_29_top_main_color">
@@ -5453,29 +5453,29 @@
       <geometry>
         <box size="0.46380192628451766 0.02 0.13429078697326166"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.461_0.155_0.011_object_29_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.461_0.155_0.011_object_29_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.461_0.155_0.011_object_29_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.461_0.155_0.011_object_29_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14429078697326164" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -5497,27 +5497,27 @@
     </visual>
     <visual name="drawer_0.461_0.155_0.011_object_29_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.461_0.155_0.011_object_29_drawer_0_0_board_1_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.461_0.155_0.011_object_29_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.461_0.155_0.011_object_29_drawer_0_0_board_2_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.461_0.155_0.011_object_29_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.461_0.155_0.011_object_29_drawer_0_0_board_3_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -5526,7 +5526,7 @@
       <geometry>
         <box size="0.4138019262845177 0.005 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.461_0.155_0.011_object_29_drawer_0_0_board_4_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -5566,27 +5566,27 @@
     </collision>
     <collision name="drawer_0.461_0.155_0.011_object_29_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.461_0.155_0.011_object_29_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.461_0.155_0.011_object_29_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.461_0.155_0.011_object_29_drawer_0_0_board_4">
       <geometry>
         <box size="0.4138019262845177 0.005 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.461_0.155_0.011_object_29_drawer_0_0_handle_part_0">
       <geometry>
@@ -5610,21 +5610,21 @@
   <link name="drawer_0.464_0.154_0.014_object_32_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.016002670961306246"/>
+      <mass value="0.01498428250626202"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.464_0.154_0.014_object_32_back">
       <geometry>
         <box size="0.46380192628451766 0.02 0.13429078697326166"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.014_object_32_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.464_0.154_0.014_object_32_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.014_object_32_left_main_color">
@@ -5633,7 +5633,7 @@
     </visual>
     <visual name="drawer_0.464_0.154_0.014_object_32_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.014_object_32_right_main_color">
@@ -5642,7 +5642,7 @@
     </visual>
     <visual name="drawer_0.464_0.154_0.014_object_32_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.014_object_32_surface_0_0_main_color">
@@ -5651,7 +5651,7 @@
     </visual>
     <visual name="drawer_0.464_0.154_0.014_object_32_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14429078697326164" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.014_object_32_top_main_color">
@@ -5662,29 +5662,29 @@
       <geometry>
         <box size="0.46380192628451766 0.02 0.13429078697326166"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.014_object_32_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.014_object_32_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.014_object_32_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.014_object_32_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14429078697326164" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -5706,27 +5706,27 @@
     </visual>
     <visual name="drawer_0.464_0.154_0.014_object_32_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.014_object_32_drawer_0_0_board_1_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.464_0.154_0.014_object_32_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.014_object_32_drawer_0_0_board_2_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.464_0.154_0.014_object_32_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.014_object_32_drawer_0_0_board_3_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -5735,7 +5735,7 @@
       <geometry>
         <box size="0.4138019262845177 0.005 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.464_0.154_0.014_object_32_drawer_0_0_board_4_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -5775,27 +5775,27 @@
     </collision>
     <collision name="drawer_0.464_0.154_0.014_object_32_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.014_object_32_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.014_object_32_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.014_object_32_drawer_0_0_board_4">
       <geometry>
         <box size="0.4138019262845177 0.005 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.464_0.154_0.014_object_32_drawer_0_0_handle_part_0">
       <geometry>
@@ -5819,21 +5819,21 @@
   <link name="lower_left_cabinet_0.370_0.563_0.023_object_38_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.03021162013627085"/>
+      <mass value="0.028493355108827403"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="lower_left_cabinet_0.370_0.563_0.023_object_38_back">
       <geometry>
         <box size="0.3700153824459953 0.02 0.5428615187397526"/>
       </geometry>
-      <origin xyz="0.0 0.34379621008749317 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3217757704657669 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.370_0.563_0.023_object_38_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="lower_left_cabinet_0.370_0.563_0.023_object_38_left">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.5428615187397526"/>
+        <box size="0.02 0.6235515409315338 0.5428615187397526"/>
       </geometry>
       <origin xyz="-0.17500769122299764 0.0 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.370_0.563_0.023_object_38_left_main_color">
@@ -5842,7 +5842,7 @@
     </visual>
     <visual name="lower_left_cabinet_0.370_0.563_0.023_object_38_right">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.5428615187397526"/>
+        <box size="0.02 0.6235515409315338 0.5428615187397526"/>
       </geometry>
       <origin xyz="0.17500769122299764 0.0 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.370_0.563_0.023_object_38_right_main_color">
@@ -5851,7 +5851,7 @@
     </visual>
     <visual name="lower_left_cabinet_0.370_0.563_0.023_object_38_shelf_0_0_0">
       <geometry>
-        <box size="0.3300153824459953 0.6675924201749863 0.01"/>
+        <box size="0.3300153824459953 0.6235515409315338 0.01"/>
       </geometry>
       <origin xyz="0.0 0.0 0.2814307593698763" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.370_0.563_0.023_object_38_shelf_0_0_0_main_color">
@@ -5860,7 +5860,7 @@
     </visual>
     <visual name="lower_left_cabinet_0.370_0.563_0.023_object_38_surface_0_0">
       <geometry>
-        <box size="0.3300153824459953 0.6675924201749863 0.02"/>
+        <box size="0.3300153824459953 0.6235515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.370_0.563_0.023_object_38_surface_0_0_main_color">
@@ -5869,7 +5869,7 @@
     </visual>
     <visual name="lower_left_cabinet_0.370_0.563_0.023_object_38_top">
       <geometry>
-        <box size="0.3700153824459953 0.6875924201749863 0.02"/>
+        <box size="0.3700153824459953 0.6435515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.5528615187397526" rpy="0.0 -0.0 0.0"/>
       <material name="lower_left_cabinet_0.370_0.563_0.023_object_38_top_main_color">
@@ -5880,35 +5880,35 @@
       <geometry>
         <box size="0.3700153824459953 0.02 0.5428615187397526"/>
       </geometry>
-      <origin xyz="0.0 0.34379621008749317 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3217757704657669 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_left_cabinet_0.370_0.563_0.023_object_38_left">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.5428615187397526"/>
+        <box size="0.02 0.6235515409315338 0.5428615187397526"/>
       </geometry>
       <origin xyz="-0.17500769122299764 0.0 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_left_cabinet_0.370_0.563_0.023_object_38_right">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.5428615187397526"/>
+        <box size="0.02 0.6235515409315338 0.5428615187397526"/>
       </geometry>
       <origin xyz="0.17500769122299764 0.0 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_left_cabinet_0.370_0.563_0.023_object_38_shelf_0_0_0">
       <geometry>
-        <box size="0.3300153824459953 0.6675924201749863 0.01"/>
+        <box size="0.3300153824459953 0.6235515409315338 0.01"/>
       </geometry>
       <origin xyz="0.0 0.0 0.2814307593698763" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_left_cabinet_0.370_0.563_0.023_object_38_surface_0_0">
       <geometry>
-        <box size="0.3300153824459953 0.6675924201749863 0.02"/>
+        <box size="0.3300153824459953 0.6235515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_left_cabinet_0.370_0.563_0.023_object_38_top">
       <geometry>
-        <box size="0.3700153824459953 0.6875924201749863 0.02"/>
+        <box size="0.3700153824459953 0.6435515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.5528615187397526" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -5983,21 +5983,21 @@
   <link name="lower_right_cabinet_0.366_0.563_0.024_object_40_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.03021162013627085"/>
+      <mass value="0.028493355108827403"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="lower_right_cabinet_0.366_0.563_0.024_object_40_back">
       <geometry>
         <box size="0.3700153824459953 0.02 0.5428615187397526"/>
       </geometry>
-      <origin xyz="0.0 0.34379621008749317 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3217757704657669 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.366_0.563_0.024_object_40_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="lower_right_cabinet_0.366_0.563_0.024_object_40_left">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.5428615187397526"/>
+        <box size="0.02 0.6235515409315338 0.5428615187397526"/>
       </geometry>
       <origin xyz="-0.17500769122299764 0.0 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.366_0.563_0.024_object_40_left_main_color">
@@ -6006,7 +6006,7 @@
     </visual>
     <visual name="lower_right_cabinet_0.366_0.563_0.024_object_40_right">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.5428615187397526"/>
+        <box size="0.02 0.6235515409315338 0.5428615187397526"/>
       </geometry>
       <origin xyz="0.17500769122299764 0.0 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.366_0.563_0.024_object_40_right_main_color">
@@ -6015,7 +6015,7 @@
     </visual>
     <visual name="lower_right_cabinet_0.366_0.563_0.024_object_40_shelf_0_0_0">
       <geometry>
-        <box size="0.3300153824459953 0.6675924201749863 0.01"/>
+        <box size="0.3300153824459953 0.6235515409315338 0.01"/>
       </geometry>
       <origin xyz="0.0 0.0 0.2814307593698763" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.366_0.563_0.024_object_40_shelf_0_0_0_main_color">
@@ -6024,7 +6024,7 @@
     </visual>
     <visual name="lower_right_cabinet_0.366_0.563_0.024_object_40_surface_0_0">
       <geometry>
-        <box size="0.3300153824459953 0.6675924201749863 0.02"/>
+        <box size="0.3300153824459953 0.6235515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.366_0.563_0.024_object_40_surface_0_0_main_color">
@@ -6033,7 +6033,7 @@
     </visual>
     <visual name="lower_right_cabinet_0.366_0.563_0.024_object_40_top">
       <geometry>
-        <box size="0.3700153824459953 0.6875924201749863 0.02"/>
+        <box size="0.3700153824459953 0.6435515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.5528615187397526" rpy="0.0 -0.0 0.0"/>
       <material name="lower_right_cabinet_0.366_0.563_0.024_object_40_top_main_color">
@@ -6044,35 +6044,35 @@
       <geometry>
         <box size="0.3700153824459953 0.02 0.5428615187397526"/>
       </geometry>
-      <origin xyz="0.0 0.34379621008749317 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3217757704657669 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_right_cabinet_0.366_0.563_0.024_object_40_left">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.5428615187397526"/>
+        <box size="0.02 0.6235515409315338 0.5428615187397526"/>
       </geometry>
       <origin xyz="-0.17500769122299764 0.0 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_right_cabinet_0.366_0.563_0.024_object_40_right">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.5428615187397526"/>
+        <box size="0.02 0.6235515409315338 0.5428615187397526"/>
       </geometry>
       <origin xyz="0.17500769122299764 0.0 0.2714307593698763" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_right_cabinet_0.366_0.563_0.024_object_40_shelf_0_0_0">
       <geometry>
-        <box size="0.3300153824459953 0.6675924201749863 0.01"/>
+        <box size="0.3300153824459953 0.6235515409315338 0.01"/>
       </geometry>
       <origin xyz="0.0 0.0 0.2814307593698763" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_right_cabinet_0.366_0.563_0.024_object_40_surface_0_0">
       <geometry>
-        <box size="0.3300153824459953 0.6675924201749863 0.02"/>
+        <box size="0.3300153824459953 0.6235515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="lower_right_cabinet_0.366_0.563_0.024_object_40_top">
       <geometry>
-        <box size="0.3700153824459953 0.6875924201749863 0.02"/>
+        <box size="0.3700153824459953 0.6435515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.5528615187397526" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -6147,21 +6147,21 @@
   <link name="drawer_0.468_0.155_0.015_object_33_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.016002670961306246"/>
+      <mass value="0.01498428250626202"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.468_0.155_0.015_object_33_back">
       <geometry>
         <box size="0.46380192628451766 0.02 0.13429078697326166"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.468_0.155_0.015_object_33_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.468_0.155_0.015_object_33_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.468_0.155_0.015_object_33_left_main_color">
@@ -6170,7 +6170,7 @@
     </visual>
     <visual name="drawer_0.468_0.155_0.015_object_33_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.468_0.155_0.015_object_33_right_main_color">
@@ -6179,7 +6179,7 @@
     </visual>
     <visual name="drawer_0.468_0.155_0.015_object_33_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.468_0.155_0.015_object_33_surface_0_0_main_color">
@@ -6188,7 +6188,7 @@
     </visual>
     <visual name="drawer_0.468_0.155_0.015_object_33_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14429078697326164" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.468_0.155_0.015_object_33_top_main_color">
@@ -6199,29 +6199,29 @@
       <geometry>
         <box size="0.46380192628451766 0.02 0.13429078697326166"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.468_0.155_0.015_object_33_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.468_0.155_0.015_object_33_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.13429078697326166"/>
+        <box size="0.02 0.586111661300921 0.13429078697326166"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.06714539348663083" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.468_0.155_0.015_object_33_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.468_0.155_0.015_object_33_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14429078697326164" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -6243,27 +6243,27 @@
     </visual>
     <visual name="drawer_0.468_0.155_0.015_object_33_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.468_0.155_0.015_object_33_drawer_0_0_board_1_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.468_0.155_0.015_object_33_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.468_0.155_0.015_object_33_drawer_0_0_board_2_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.468_0.155_0.015_object_33_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.468_0.155_0.015_object_33_drawer_0_0_board_3_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -6272,7 +6272,7 @@
       <geometry>
         <box size="0.4138019262845177 0.005 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.468_0.155_0.015_object_33_drawer_0_0_board_4_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -6312,27 +6312,27 @@
     </collision>
     <collision name="drawer_0.468_0.155_0.015_object_33_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.04964539348663082" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.468_0.155_0.015_object_33_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.468_0.155_0.015_object_33_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.10429078697326165"/>
+        <box size="0.005 0.5205004951708289 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.468_0.155_0.015_object_33_drawer_0_0_board_4">
       <geometry>
         <box size="0.4138019262845177 0.005 0.10429078697326165"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.468_0.155_0.015_object_33_drawer_0_0_handle_part_0">
       <geometry>
@@ -6356,21 +6356,21 @@
   <link name="drawer_0.028_0.158_0.368_object_39_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.01412544674538541"/>
+      <mass value="0.013270167208939337"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.028_0.158_0.368_object_39_back">
       <geometry>
         <box size="0.3676448891514861 0.02 0.13785832464574008"/>
       </geometry>
-      <origin xyz="0.0 0.34379621008749317 0.06892916232287004" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3217757704657669 0.06892916232287004" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.028_0.158_0.368_object_39_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.028_0.158_0.368_object_39_left">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.13785832464574008"/>
+        <box size="0.02 0.6235515409315338 0.13785832464574008"/>
       </geometry>
       <origin xyz="-0.17382244457574303 0.0 0.06892916232287004" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.028_0.158_0.368_object_39_left_main_color">
@@ -6379,7 +6379,7 @@
     </visual>
     <visual name="drawer_0.028_0.158_0.368_object_39_right">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.13785832464574008"/>
+        <box size="0.02 0.6235515409315338 0.13785832464574008"/>
       </geometry>
       <origin xyz="0.17382244457574303 0.0 0.06892916232287004" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.028_0.158_0.368_object_39_right_main_color">
@@ -6388,7 +6388,7 @@
     </visual>
     <visual name="drawer_0.028_0.158_0.368_object_39_surface_0_0">
       <geometry>
-        <box size="0.3276448891514861 0.6675924201749863 0.02"/>
+        <box size="0.3276448891514861 0.6235515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.028_0.158_0.368_object_39_surface_0_0_main_color">
@@ -6397,7 +6397,7 @@
     </visual>
     <visual name="drawer_0.028_0.158_0.368_object_39_top">
       <geometry>
-        <box size="0.3676448891514861 0.6875924201749863 0.02"/>
+        <box size="0.3676448891514861 0.6435515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14785832464574006" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.028_0.158_0.368_object_39_top_main_color">
@@ -6408,29 +6408,29 @@
       <geometry>
         <box size="0.3676448891514861 0.02 0.13785832464574008"/>
       </geometry>
-      <origin xyz="0.0 0.34379621008749317 0.06892916232287004" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3217757704657669 0.06892916232287004" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.028_0.158_0.368_object_39_left">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.13785832464574008"/>
+        <box size="0.02 0.6235515409315338 0.13785832464574008"/>
       </geometry>
       <origin xyz="-0.17382244457574303 0.0 0.06892916232287004" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.028_0.158_0.368_object_39_right">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.13785832464574008"/>
+        <box size="0.02 0.6235515409315338 0.13785832464574008"/>
       </geometry>
       <origin xyz="0.17382244457574303 0.0 0.06892916232287004" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.028_0.158_0.368_object_39_surface_0_0">
       <geometry>
-        <box size="0.3276448891514861 0.6675924201749863 0.02"/>
+        <box size="0.3276448891514861 0.6235515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.028_0.158_0.368_object_39_top">
       <geometry>
-        <box size="0.3676448891514861 0.6875924201749863 0.02"/>
+        <box size="0.3676448891514861 0.6435515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14785832464574006" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -6438,7 +6438,7 @@
   <link name="drawer_0.028_0.158_0.368_object_39_drawer_0_0">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.1"/>
+      <mass value="0.09999999999999999"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.028_0.158_0.368_object_39_drawer_0_0_board_0">
@@ -6452,27 +6452,27 @@
     </visual>
     <visual name="drawer_0.028_0.158_0.368_object_39_drawer_0_0_board_1">
       <geometry>
-        <box size="0.3076448891514861 0.5938331781574877 0.005"/>
+        <box size="0.3076448891514861 0.5541963868383804 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.29691658907874385 -0.05142916232287003" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.2770981934191902 -0.05142916232287003" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.028_0.158_0.368_object_39_drawer_0_0_board_1_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.028_0.158_0.368_object_39_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5938331781574877 0.10785832464574006"/>
+        <box size="0.005 0.5541963868383804 0.10785832464574006"/>
       </geometry>
-      <origin xyz="-0.15632244457574304 0.29691658907874385 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.15632244457574304 0.2770981934191902 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.028_0.158_0.368_object_39_drawer_0_0_board_2_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.028_0.158_0.368_object_39_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5938331781574877 0.10785832464574006"/>
+        <box size="0.005 0.5541963868383804 0.10785832464574006"/>
       </geometry>
-      <origin xyz="0.15632244457574304 0.29691658907874385 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.15632244457574304 0.2770981934191902 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.028_0.158_0.368_object_39_drawer_0_0_board_3_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -6481,7 +6481,7 @@
       <geometry>
         <box size="0.3176448891514861 0.005 0.10785832464574006"/>
       </geometry>
-      <origin xyz="0.0 0.5963331781574878 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5566963868383804 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.028_0.158_0.368_object_39_drawer_0_0_board_4_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -6521,27 +6521,27 @@
     </collision>
     <collision name="drawer_0.028_0.158_0.368_object_39_drawer_0_0_board_1">
       <geometry>
-        <box size="0.3076448891514861 0.5938331781574877 0.005"/>
+        <box size="0.3076448891514861 0.5541963868383804 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.29691658907874385 -0.05142916232287003" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.2770981934191902 -0.05142916232287003" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.028_0.158_0.368_object_39_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5938331781574877 0.10785832464574006"/>
+        <box size="0.005 0.5541963868383804 0.10785832464574006"/>
       </geometry>
-      <origin xyz="-0.15632244457574304 0.29691658907874385 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.15632244457574304 0.2770981934191902 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.028_0.158_0.368_object_39_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5938331781574877 0.10785832464574006"/>
+        <box size="0.005 0.5541963868383804 0.10785832464574006"/>
       </geometry>
-      <origin xyz="0.15632244457574304 0.29691658907874385 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.15632244457574304 0.2770981934191902 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.028_0.158_0.368_object_39_drawer_0_0_board_4">
       <geometry>
         <box size="0.3176448891514861 0.005 0.10785832464574006"/>
       </geometry>
-      <origin xyz="0.0 0.5963331781574878 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5566963868383804 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.028_0.158_0.368_object_39_drawer_0_0_handle_part_0">
       <geometry>
@@ -6565,21 +6565,21 @@
   <link name="drawer_0.472_0.247_0.017_object_31_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.019190180222041102"/>
+      <mass value="0.018008947222152426"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.472_0.247_0.017_object_31_back">
       <geometry>
         <box size="0.46380192628451766 0.02 0.22673021350256775"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.472_0.247_0.017_object_31_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.472_0.247_0.017_object_31_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.22673021350256775"/>
+        <box size="0.02 0.586111661300921 0.22673021350256775"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.472_0.247_0.017_object_31_left_main_color">
@@ -6588,7 +6588,7 @@
     </visual>
     <visual name="drawer_0.472_0.247_0.017_object_31_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.22673021350256775"/>
+        <box size="0.02 0.586111661300921 0.22673021350256775"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.472_0.247_0.017_object_31_right_main_color">
@@ -6597,7 +6597,7 @@
     </visual>
     <visual name="drawer_0.472_0.247_0.017_object_31_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.472_0.247_0.017_object_31_surface_0_0_main_color">
@@ -6606,7 +6606,7 @@
     </visual>
     <visual name="drawer_0.472_0.247_0.017_object_31_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.23673021350256773" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.472_0.247_0.017_object_31_top_main_color">
@@ -6617,29 +6617,29 @@
       <geometry>
         <box size="0.46380192628451766 0.02 0.22673021350256775"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.472_0.247_0.017_object_31_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.22673021350256775"/>
+        <box size="0.02 0.586111661300921 0.22673021350256775"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.472_0.247_0.017_object_31_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.22673021350256775"/>
+        <box size="0.02 0.586111661300921 0.22673021350256775"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.472_0.247_0.017_object_31_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.472_0.247_0.017_object_31_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.23673021350256773" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -6661,27 +6661,27 @@
     </visual>
     <visual name="drawer_0.472_0.247_0.017_object_31_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.09586510675128387" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.09586510675128387" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.472_0.247_0.017_object_31_drawer_0_0_board_1_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.472_0.247_0.017_object_31_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.19673021350256772"/>
+        <box size="0.005 0.5205004951708289 0.19673021350256772"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.472_0.247_0.017_object_31_drawer_0_0_board_2_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.472_0.247_0.017_object_31_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.19673021350256772"/>
+        <box size="0.005 0.5205004951708289 0.19673021350256772"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.472_0.247_0.017_object_31_drawer_0_0_board_3_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -6690,7 +6690,7 @@
       <geometry>
         <box size="0.4138019262845177 0.005 0.19673021350256772"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.472_0.247_0.017_object_31_drawer_0_0_board_4_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -6730,27 +6730,27 @@
     </collision>
     <collision name="drawer_0.472_0.247_0.017_object_31_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.09586510675128387" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.09586510675128387" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.472_0.247_0.017_object_31_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.19673021350256772"/>
+        <box size="0.005 0.5205004951708289 0.19673021350256772"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.472_0.247_0.017_object_31_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.19673021350256772"/>
+        <box size="0.005 0.5205004951708289 0.19673021350256772"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.472_0.247_0.017_object_31_drawer_0_0_board_4">
       <geometry>
         <box size="0.4138019262845177 0.005 0.19673021350256772"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.472_0.247_0.017_object_31_drawer_0_0_handle_part_0">
       <geometry>
@@ -6774,21 +6774,21 @@
   <link name="drawer_0.463_0.248_0.017_object_30_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.019190180222041102"/>
+      <mass value="0.018008947222152426"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.463_0.248_0.017_object_30_back">
       <geometry>
         <box size="0.46380192628451766 0.02 0.22673021350256775"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.248_0.017_object_30_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.463_0.248_0.017_object_30_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.22673021350256775"/>
+        <box size="0.02 0.586111661300921 0.22673021350256775"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.248_0.017_object_30_left_main_color">
@@ -6797,7 +6797,7 @@
     </visual>
     <visual name="drawer_0.463_0.248_0.017_object_30_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.22673021350256775"/>
+        <box size="0.02 0.586111661300921 0.22673021350256775"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.248_0.017_object_30_right_main_color">
@@ -6806,7 +6806,7 @@
     </visual>
     <visual name="drawer_0.463_0.248_0.017_object_30_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.248_0.017_object_30_surface_0_0_main_color">
@@ -6815,7 +6815,7 @@
     </visual>
     <visual name="drawer_0.463_0.248_0.017_object_30_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.23673021350256773" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.248_0.017_object_30_top_main_color">
@@ -6826,29 +6826,29 @@
       <geometry>
         <box size="0.46380192628451766 0.02 0.22673021350256775"/>
       </geometry>
-      <origin xyz="0.0 0.3250762702721868 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3030558306504605 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.248_0.017_object_30_left">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.22673021350256775"/>
+        <box size="0.02 0.586111661300921 0.22673021350256775"/>
       </geometry>
       <origin xyz="-0.22190096314225882 0.0 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.248_0.017_object_30_right">
       <geometry>
-        <box size="0.02 0.6301525405443735 0.22673021350256775"/>
+        <box size="0.02 0.586111661300921 0.22673021350256775"/>
       </geometry>
       <origin xyz="0.22190096314225882 0.0 0.11336510675128388" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.248_0.017_object_30_surface_0_0">
       <geometry>
-        <box size="0.4238019262845177 0.6301525405443735 0.02"/>
+        <box size="0.4238019262845177 0.586111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.248_0.017_object_30_top">
       <geometry>
-        <box size="0.46380192628451766 0.6501525405443735 0.02"/>
+        <box size="0.46380192628451766 0.606111661300921 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.23673021350256773" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -6870,27 +6870,27 @@
     </visual>
     <visual name="drawer_0.463_0.248_0.017_object_30_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.09586510675128387" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.09586510675128387" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.248_0.017_object_30_drawer_0_0_board_1_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.463_0.248_0.017_object_30_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.19673021350256772"/>
+        <box size="0.005 0.5205004951708289 0.19673021350256772"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.248_0.017_object_30_drawer_0_0_board_2_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.463_0.248_0.017_object_30_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.19673021350256772"/>
+        <box size="0.005 0.5205004951708289 0.19673021350256772"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.248_0.017_object_30_drawer_0_0_board_3_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -6899,7 +6899,7 @@
       <geometry>
         <box size="0.4138019262845177 0.005 0.19673021350256772"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.463_0.248_0.017_object_30_drawer_0_0_board_4_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -6939,27 +6939,27 @@
     </collision>
     <collision name="drawer_0.463_0.248_0.017_object_30_drawer_0_0_board_1">
       <geometry>
-        <box size="0.40380192628451766 0.5601372864899362 0.005"/>
+        <box size="0.40380192628451766 0.5205004951708289 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.2800686432449681 -0.09586510675128387" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.26025024758541443 -0.09586510675128387" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.248_0.017_object_30_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.19673021350256772"/>
+        <box size="0.005 0.5205004951708289 0.19673021350256772"/>
       </geometry>
-      <origin xyz="-0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.248_0.017_object_30_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5601372864899362 0.19673021350256772"/>
+        <box size="0.005 0.5205004951708289 0.19673021350256772"/>
       </geometry>
-      <origin xyz="0.20440096314225883 0.2800686432449681 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.20440096314225883 0.26025024758541443 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.248_0.017_object_30_drawer_0_0_board_4">
       <geometry>
         <box size="0.4138019262845177 0.005 0.19673021350256772"/>
       </geometry>
-      <origin xyz="0.0 0.5626372864899363 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5230004951708289 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.463_0.248_0.017_object_30_drawer_0_0_handle_part_0">
       <geometry>
@@ -6983,21 +6983,21 @@
   <link name="drawer_0.365_0.159_0.022_object_41_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.014220179975226767"/>
+      <mass value="0.013359487452424873"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.365_0.159_0.022_object_41_back">
       <geometry>
         <box size="0.3700153824459953 0.02 0.13856053701061374"/>
       </geometry>
-      <origin xyz="0.0 0.34379621008749317 0.06928026850530687" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3217757704657669 0.06928026850530687" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.365_0.159_0.022_object_41_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.365_0.159_0.022_object_41_left">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.13856053701061374"/>
+        <box size="0.02 0.6235515409315338 0.13856053701061374"/>
       </geometry>
       <origin xyz="-0.17500769122299764 0.0 0.06928026850530687" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.365_0.159_0.022_object_41_left_main_color">
@@ -7006,7 +7006,7 @@
     </visual>
     <visual name="drawer_0.365_0.159_0.022_object_41_right">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.13856053701061374"/>
+        <box size="0.02 0.6235515409315338 0.13856053701061374"/>
       </geometry>
       <origin xyz="0.17500769122299764 0.0 0.06928026850530687" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.365_0.159_0.022_object_41_right_main_color">
@@ -7015,7 +7015,7 @@
     </visual>
     <visual name="drawer_0.365_0.159_0.022_object_41_surface_0_0">
       <geometry>
-        <box size="0.3300153824459953 0.6675924201749863 0.02"/>
+        <box size="0.3300153824459953 0.6235515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.365_0.159_0.022_object_41_surface_0_0_main_color">
@@ -7024,7 +7024,7 @@
     </visual>
     <visual name="drawer_0.365_0.159_0.022_object_41_top">
       <geometry>
-        <box size="0.3700153824459953 0.6875924201749863 0.02"/>
+        <box size="0.3700153824459953 0.6435515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14856053701061372" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.365_0.159_0.022_object_41_top_main_color">
@@ -7035,29 +7035,29 @@
       <geometry>
         <box size="0.3700153824459953 0.02 0.13856053701061374"/>
       </geometry>
-      <origin xyz="0.0 0.34379621008749317 0.06928026850530687" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.3217757704657669 0.06928026850530687" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.365_0.159_0.022_object_41_left">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.13856053701061374"/>
+        <box size="0.02 0.6235515409315338 0.13856053701061374"/>
       </geometry>
       <origin xyz="-0.17500769122299764 0.0 0.06928026850530687" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.365_0.159_0.022_object_41_right">
       <geometry>
-        <box size="0.02 0.6675924201749863 0.13856053701061374"/>
+        <box size="0.02 0.6235515409315338 0.13856053701061374"/>
       </geometry>
       <origin xyz="0.17500769122299764 0.0 0.06928026850530687" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.365_0.159_0.022_object_41_surface_0_0">
       <geometry>
-        <box size="0.3300153824459953 0.6675924201749863 0.02"/>
+        <box size="0.3300153824459953 0.6235515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.0 0.010000000000000018" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.365_0.159_0.022_object_41_top">
       <geometry>
-        <box size="0.3700153824459953 0.6875924201749863 0.02"/>
+        <box size="0.3700153824459953 0.6435515409315338 0.02"/>
       </geometry>
       <origin xyz="0.0 0.01 0.14856053701061372" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -7065,7 +7065,7 @@
   <link name="drawer_0.365_0.159_0.022_object_41_drawer_0_0">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.10000000000000002"/>
+      <mass value="0.09999999999999999"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="drawer_0.365_0.159_0.022_object_41_drawer_0_0_board_0">
@@ -7079,27 +7079,27 @@
     </visual>
     <visual name="drawer_0.365_0.159_0.022_object_41_drawer_0_0_board_1">
       <geometry>
-        <box size="0.3100153824459953 0.5938331781574877 0.005"/>
+        <box size="0.3100153824459953 0.5541963868383804 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.29691658907874385 -0.05178026850530686" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.2770981934191902 -0.05178026850530686" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.365_0.159_0.022_object_41_drawer_0_0_board_1_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.365_0.159_0.022_object_41_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5938331781574877 0.10856053701061373"/>
+        <box size="0.005 0.5541963868383804 0.10856053701061373"/>
       </geometry>
-      <origin xyz="-0.15750769122299765 0.29691658907874385 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.15750769122299765 0.2770981934191902 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.365_0.159_0.022_object_41_drawer_0_0_board_2_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="drawer_0.365_0.159_0.022_object_41_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5938331781574877 0.10856053701061373"/>
+        <box size="0.005 0.5541963868383804 0.10856053701061373"/>
       </geometry>
-      <origin xyz="0.15750769122299765 0.29691658907874385 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.15750769122299765 0.2770981934191902 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.365_0.159_0.022_object_41_drawer_0_0_board_3_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -7108,7 +7108,7 @@
       <geometry>
         <box size="0.3200153824459953 0.005 0.10856053701061373"/>
       </geometry>
-      <origin xyz="0.0 0.5963331781574878 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5566963868383804 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="drawer_0.365_0.159_0.022_object_41_drawer_0_0_board_4_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
@@ -7148,27 +7148,27 @@
     </collision>
     <collision name="drawer_0.365_0.159_0.022_object_41_drawer_0_0_board_1">
       <geometry>
-        <box size="0.3100153824459953 0.5938331781574877 0.005"/>
+        <box size="0.3100153824459953 0.5541963868383804 0.005"/>
       </geometry>
-      <origin xyz="0.0 0.29691658907874385 -0.05178026850530686" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.2770981934191902 -0.05178026850530686" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.365_0.159_0.022_object_41_drawer_0_0_board_2">
       <geometry>
-        <box size="0.005 0.5938331781574877 0.10856053701061373"/>
+        <box size="0.005 0.5541963868383804 0.10856053701061373"/>
       </geometry>
-      <origin xyz="-0.15750769122299765 0.29691658907874385 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="-0.15750769122299765 0.2770981934191902 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.365_0.159_0.022_object_41_drawer_0_0_board_3">
       <geometry>
-        <box size="0.005 0.5938331781574877 0.10856053701061373"/>
+        <box size="0.005 0.5541963868383804 0.10856053701061373"/>
       </geometry>
-      <origin xyz="0.15750769122299765 0.29691658907874385 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.15750769122299765 0.2770981934191902 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.365_0.159_0.022_object_41_drawer_0_0_board_4">
       <geometry>
         <box size="0.3200153824459953 0.005 0.10856053701061373"/>
       </geometry>
-      <origin xyz="0.0 0.5963331781574878 0.0" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.5566963868383804 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="drawer_0.365_0.159_0.022_object_41_drawer_0_0_handle_part_0">
       <geometry>
@@ -8266,21 +8266,21 @@
   <link name="upper_left_cabinet_0.469_0.936_0.030_object_52_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.02105937507711232"/>
+      <mass value="0.019443939017829866"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="upper_left_cabinet_0.469_0.936_0.030_object_52_back">
       <geometry>
         <box size="0.4690188527032082 0.01 0.9259811505211948"/>
       </geometry>
-      <origin xyz="0.0 0.2372256766818851 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.21520523706015882 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
       <material name="upper_left_cabinet_0.469_0.936_0.030_object_52_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="upper_left_cabinet_0.469_0.936_0.030_object_52_left">
       <geometry>
-        <box size="0.01 0.4544513533637702 0.9259811505211948"/>
+        <box size="0.01 0.4104104741203176 0.9259811505211948"/>
       </geometry>
       <origin xyz="-0.2295094263516041 0.005 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
       <material name="upper_left_cabinet_0.469_0.936_0.030_object_52_left_main_color">
@@ -8289,7 +8289,7 @@
     </visual>
     <visual name="upper_left_cabinet_0.469_0.936_0.030_object_52_right">
       <geometry>
-        <box size="0.01 0.4544513533637702 0.9259811505211948"/>
+        <box size="0.01 0.4104104741203176 0.9259811505211948"/>
       </geometry>
       <origin xyz="0.2295094263516041 0.005 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
       <material name="upper_left_cabinet_0.469_0.936_0.030_object_52_right_main_color">
@@ -8298,7 +8298,7 @@
     </visual>
     <visual name="upper_left_cabinet_0.469_0.936_0.030_object_52_shelf_0_0_0">
       <geometry>
-        <box size="0.4490188527032082 0.4544513533637702 0.01"/>
+        <box size="0.4490188527032082 0.4104104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.005 0.6206541003474633" rpy="0.0 -0.0 0.0"/>
       <material name="upper_left_cabinet_0.469_0.936_0.030_object_52_shelf_0_0_0_main_color">
@@ -8307,7 +8307,7 @@
     </visual>
     <visual name="upper_left_cabinet_0.469_0.936_0.030_object_52_shelf_0_0_1">
       <geometry>
-        <box size="0.4490188527032082 0.4544513533637702 0.01"/>
+        <box size="0.4490188527032082 0.4104104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.005 0.31532705017373164" rpy="0.0 -0.0 0.0"/>
       <material name="upper_left_cabinet_0.469_0.936_0.030_object_52_shelf_0_0_1_main_color">
@@ -8316,7 +8316,7 @@
     </visual>
     <visual name="upper_left_cabinet_0.469_0.936_0.030_object_52_surface_0_0">
       <geometry>
-        <box size="0.4490188527032082 0.4544513533637702 0.01"/>
+        <box size="0.4490188527032082 0.4104104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.005 0.005000000000000009" rpy="0.0 -0.0 0.0"/>
       <material name="upper_left_cabinet_0.469_0.936_0.030_object_52_surface_0_0_main_color">
@@ -8325,7 +8325,7 @@
     </visual>
     <visual name="upper_left_cabinet_0.469_0.936_0.030_object_52_top">
       <geometry>
-        <box size="0.4690188527032082 0.4644513533637702 0.01"/>
+        <box size="0.4690188527032082 0.4204104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.01 0.9309811505211948" rpy="0.0 -0.0 0.0"/>
       <material name="upper_left_cabinet_0.469_0.936_0.030_object_52_top_main_color">
@@ -8336,41 +8336,41 @@
       <geometry>
         <box size="0.4690188527032082 0.01 0.9259811505211948"/>
       </geometry>
-      <origin xyz="0.0 0.2372256766818851 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.21520523706015882 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="upper_left_cabinet_0.469_0.936_0.030_object_52_left">
       <geometry>
-        <box size="0.01 0.4544513533637702 0.9259811505211948"/>
+        <box size="0.01 0.4104104741203176 0.9259811505211948"/>
       </geometry>
       <origin xyz="-0.2295094263516041 0.005 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="upper_left_cabinet_0.469_0.936_0.030_object_52_right">
       <geometry>
-        <box size="0.01 0.4544513533637702 0.9259811505211948"/>
+        <box size="0.01 0.4104104741203176 0.9259811505211948"/>
       </geometry>
       <origin xyz="0.2295094263516041 0.005 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="upper_left_cabinet_0.469_0.936_0.030_object_52_shelf_0_0_0">
       <geometry>
-        <box size="0.4490188527032082 0.4544513533637702 0.01"/>
+        <box size="0.4490188527032082 0.4104104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.005 0.6206541003474633" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="upper_left_cabinet_0.469_0.936_0.030_object_52_shelf_0_0_1">
       <geometry>
-        <box size="0.4490188527032082 0.4544513533637702 0.01"/>
+        <box size="0.4490188527032082 0.4104104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.005 0.31532705017373164" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="upper_left_cabinet_0.469_0.936_0.030_object_52_surface_0_0">
       <geometry>
-        <box size="0.4490188527032082 0.4544513533637702 0.01"/>
+        <box size="0.4490188527032082 0.4104104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.005 0.005000000000000009" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="upper_left_cabinet_0.469_0.936_0.030_object_52_top">
       <geometry>
-        <box size="0.4690188527032082 0.4644513533637702 0.01"/>
+        <box size="0.4690188527032082 0.4204104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.01 0.9309811505211948" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -8445,21 +8445,21 @@
   <link name="upper_right_cabinet_0.461_0.940_0.021_object_53_corpus">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.02105937507711232"/>
+      <mass value="0.019443939017829866"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="upper_right_cabinet_0.461_0.940_0.021_object_53_back">
       <geometry>
         <box size="0.4690188527032082 0.01 0.9259811505211948"/>
       </geometry>
-      <origin xyz="0.0 0.2372256766818851 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.21520523706015882 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
       <material name="upper_right_cabinet_0.461_0.940_0.021_object_53_back_main_color">
         <color rgba="0.4 0.4 0.4 1.0"/>
       </material>
     </visual>
     <visual name="upper_right_cabinet_0.461_0.940_0.021_object_53_left">
       <geometry>
-        <box size="0.01 0.4544513533637702 0.9259811505211948"/>
+        <box size="0.01 0.4104104741203176 0.9259811505211948"/>
       </geometry>
       <origin xyz="-0.2295094263516041 0.005 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
       <material name="upper_right_cabinet_0.461_0.940_0.021_object_53_left_main_color">
@@ -8468,7 +8468,7 @@
     </visual>
     <visual name="upper_right_cabinet_0.461_0.940_0.021_object_53_right">
       <geometry>
-        <box size="0.01 0.4544513533637702 0.9259811505211948"/>
+        <box size="0.01 0.4104104741203176 0.9259811505211948"/>
       </geometry>
       <origin xyz="0.2295094263516041 0.005 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
       <material name="upper_right_cabinet_0.461_0.940_0.021_object_53_right_main_color">
@@ -8477,7 +8477,7 @@
     </visual>
     <visual name="upper_right_cabinet_0.461_0.940_0.021_object_53_shelf_0_0_0">
       <geometry>
-        <box size="0.4490188527032082 0.4544513533637702 0.01"/>
+        <box size="0.4490188527032082 0.4104104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.005 0.6206541003474633" rpy="0.0 -0.0 0.0"/>
       <material name="upper_right_cabinet_0.461_0.940_0.021_object_53_shelf_0_0_0_main_color">
@@ -8486,7 +8486,7 @@
     </visual>
     <visual name="upper_right_cabinet_0.461_0.940_0.021_object_53_shelf_0_0_1">
       <geometry>
-        <box size="0.4490188527032082 0.4544513533637702 0.01"/>
+        <box size="0.4490188527032082 0.4104104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.005 0.31532705017373164" rpy="0.0 -0.0 0.0"/>
       <material name="upper_right_cabinet_0.461_0.940_0.021_object_53_shelf_0_0_1_main_color">
@@ -8495,7 +8495,7 @@
     </visual>
     <visual name="upper_right_cabinet_0.461_0.940_0.021_object_53_surface_0_0">
       <geometry>
-        <box size="0.4490188527032082 0.4544513533637702 0.01"/>
+        <box size="0.4490188527032082 0.4104104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.005 0.005000000000000009" rpy="0.0 -0.0 0.0"/>
       <material name="upper_right_cabinet_0.461_0.940_0.021_object_53_surface_0_0_main_color">
@@ -8504,7 +8504,7 @@
     </visual>
     <visual name="upper_right_cabinet_0.461_0.940_0.021_object_53_top">
       <geometry>
-        <box size="0.4690188527032082 0.4644513533637702 0.01"/>
+        <box size="0.4690188527032082 0.4204104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.01 0.9309811505211948" rpy="0.0 -0.0 0.0"/>
       <material name="upper_right_cabinet_0.461_0.940_0.021_object_53_top_main_color">
@@ -8515,41 +8515,41 @@
       <geometry>
         <box size="0.4690188527032082 0.01 0.9259811505211948"/>
       </geometry>
-      <origin xyz="0.0 0.2372256766818851 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
+      <origin xyz="0.0 0.21520523706015882 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="upper_right_cabinet_0.461_0.940_0.021_object_53_left">
       <geometry>
-        <box size="0.01 0.4544513533637702 0.9259811505211948"/>
+        <box size="0.01 0.4104104741203176 0.9259811505211948"/>
       </geometry>
       <origin xyz="-0.2295094263516041 0.005 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="upper_right_cabinet_0.461_0.940_0.021_object_53_right">
       <geometry>
-        <box size="0.01 0.4544513533637702 0.9259811505211948"/>
+        <box size="0.01 0.4104104741203176 0.9259811505211948"/>
       </geometry>
       <origin xyz="0.2295094263516041 0.005 0.4629905752605974" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="upper_right_cabinet_0.461_0.940_0.021_object_53_shelf_0_0_0">
       <geometry>
-        <box size="0.4490188527032082 0.4544513533637702 0.01"/>
+        <box size="0.4490188527032082 0.4104104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.005 0.6206541003474633" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="upper_right_cabinet_0.461_0.940_0.021_object_53_shelf_0_0_1">
       <geometry>
-        <box size="0.4490188527032082 0.4544513533637702 0.01"/>
+        <box size="0.4490188527032082 0.4104104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.005 0.31532705017373164" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="upper_right_cabinet_0.461_0.940_0.021_object_53_surface_0_0">
       <geometry>
-        <box size="0.4490188527032082 0.4544513533637702 0.01"/>
+        <box size="0.4490188527032082 0.4104104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.005 0.005000000000000009" rpy="0.0 -0.0 0.0"/>
     </collision>
     <collision name="upper_right_cabinet_0.461_0.940_0.021_object_53_top">
       <geometry>
-        <box size="0.4690188527032082 0.4644513533637702 0.01"/>
+        <box size="0.4690188527032082 0.4204104741203176 0.01"/>
       </geometry>
       <origin xyz="0.0 0.01 0.9309811505211948" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -8803,12 +8803,12 @@
   <link name="counter_0.697_0.200_3.231_object_42_2">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.09158701306214269"/>
+      <mass value="0.08588659504248548"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="counter_0.697_0.200_3.231_object_42_2_geometry_0">
       <geometry>
-        <box size="3.2358675153520364 0.7075924201749864 0.04"/>
+        <box size="3.2358675153520364 0.6635515409315338 0.04"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="counter_0.697_0.200_3.231_object_42_2_geometry_0_main_color">
@@ -8817,7 +8817,7 @@
     </visual>
     <collision name="counter_0.697_0.200_3.231_object_42_2_geometry_0">
       <geometry>
-        <box size="3.2358675153520364 0.7075924201749864 0.04"/>
+        <box size="3.2358675153520364 0.6635515409315338 0.04"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -8847,12 +8847,12 @@
   <link name="counter_3.084_0.217_2.078_object_43_2">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
-      <mass value="0.040801719843338476"/>
+      <mass value="0.038238104502277485"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
     <visual name="counter_3.084_0.217_2.078_object_43_2_geometry_0">
       <geometry>
-        <box size="1.4552475933153137 0.7009412011873675 0.04"/>
+        <box size="1.4552475933153137 0.6569003219439149 0.04"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
       <material name="counter_3.084_0.217_2.078_object_43_2_geometry_0_main_color">
@@ -8861,7 +8861,7 @@
     </visual>
     <collision name="counter_3.084_0.217_2.078_object_43_2_geometry_0">
       <geometry>
-        <box size="1.4552475933153137 0.7009412011873675 0.04"/>
+        <box size="1.4552475933153137 0.6569003219439149 0.04"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
     </collision>
@@ -9266,14 +9266,14 @@
   <joint name="drawer_0.465_0.159_0.014_object_22_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="drawer_0.465_0.159_0.014_object_22"/>
-    <origin xyz="4.033228989916978 -0.5492462862972135 0.3059491619295661" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="4.011208550295251 -0.5492462862972135 0.3059491619295661" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="drawer_0.465_0.159_0.014_object_22_corpus_to_drawer_0_0" type="prismatic">
     <parent link="drawer_0.465_0.159_0.014_object_22_corpus"/>
     <child link="drawer_0.465_0.159_0.014_object_22_drawer_0_0"/>
-    <origin xyz="0.0 -0.29797079686679107 0.07925539768274399" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.0 -0.2759503572450648 0.07925539768274399" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 -1 0"/>
-    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.49891269092420154"/>
+    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.46323957873700505"/>
   </joint>
   <joint name="drawer_0.465_0.159_0.014_object_22_origin_joint" type="fixed">
     <parent link="drawer_0.465_0.159_0.014_object_22"/>
@@ -9283,24 +9283,24 @@
   <joint name="box_20_to_22_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="box_20_to_22"/>
-    <origin xyz="4.007228989916978 0.017348352667927336 0.4046737218537025" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="3.9852085502952512 0.017348352667927336 0.4046737218537025" rpy="0.0 -0.0 0.0"/>
   </joint>
   <joint name="box_22_to_20_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="box_22_to_20"/>
-    <origin xyz="4.033228989916978 -0.008651647332072576 0.4052045596123101" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="4.011208550295251 -0.008651647332072576 0.4052045596123101" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="drawer_0.477_0.158_0.016_object_24_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="drawer_0.477_0.158_0.016_object_24"/>
-    <origin xyz="4.033228989916978 -1.0145348497373659 0.3059491619295661" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="4.011208550295251 -1.0145348497373659 0.3059491619295661" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="drawer_0.477_0.158_0.016_object_24_corpus_to_drawer_0_0" type="prismatic">
     <parent link="drawer_0.477_0.158_0.016_object_24_corpus"/>
     <child link="drawer_0.477_0.158_0.016_object_24_drawer_0_0"/>
-    <origin xyz="0.0 -0.29797079686679107 0.07925539768274399" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.0 -0.2759503572450648 0.07925539768274399" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 -1 0"/>
-    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.49891269092420154"/>
+    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.46323957873700505"/>
   </joint>
   <joint name="drawer_0.477_0.158_0.016_object_24_origin_joint" type="fixed">
     <parent link="drawer_0.477_0.158_0.016_object_24"/>
@@ -9310,22 +9310,22 @@
   <joint name="box_0.662_0.761_0.525_object_25_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="box_0.662_0.761_0.525_object_25"/>
-    <origin xyz="4.000729186190085 -1.5095143646749467 0.08389919197242163" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.9787087465683584 -1.5095143646749467 0.08389919197242163" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="box_0.310_0.842_0.981_object_26_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="box_0.310_0.842_0.981_object_26"/>
-    <origin xyz="3.9758061229332213 -2.262207446563944 0.043267142651248036" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.9537856833114944 -2.262207446563944 0.043267142651248036" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="lower_left_cabinet_0.464_0.559_0.015_object_21_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="lower_left_cabinet_0.464_0.559_0.015_object_21"/>
-    <origin xyz="4.033228989916978 -0.5484592592311098 -0.25145324246600254" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="4.011208550295251 -0.5484592592311098 -0.25145324246600254" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="lower_left_cabinet_0.464_0.559_0.015_object_21_corpus_to_door_0_0" type="revolute">
     <parent link="lower_left_cabinet_0.464_0.559_0.015_object_21_corpus"/>
     <child link="lower_left_cabinet_0.464_0.559_0.015_object_21_door_0_0"/>
-    <origin xyz="-0.2298572546539724 -0.3179707968667911 0.27949334311427587" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="-0.2298572546539724 -0.2959503572450648 0.27949334311427587" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 0 -1"/>
     <limit effort="1000.0" velocity="0.1" lower="0.0" upper="1.5707963267948966"/>
   </joint>
@@ -9337,22 +9337,22 @@
   <joint name="box_19_to_21_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="box_19_to_21"/>
-    <origin xyz="4.007228989916978 0.017348352667927336 0.04724795973178181" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="3.9852085502952512 0.017348352667927336 0.04724795973178181" rpy="0.0 -0.0 0.0"/>
   </joint>
   <joint name="box_21_to_19_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="box_21_to_19"/>
-    <origin xyz="4.033228989916978 -0.008651647332072687 0.048040100648273354" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="4.011208550295251 -0.008651647332072687 0.048040100648273354" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="lower_right_cabinet_0.480_0.561_0.021_object_23_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="lower_right_cabinet_0.480_0.561_0.021_object_23"/>
-    <origin xyz="4.033228989916978 -1.0121737685390548 -0.25145324246600254" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="4.011208550295251 -1.0121737685390548 -0.25145324246600254" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="lower_right_cabinet_0.480_0.561_0.021_object_23_corpus_to_door_0_0" type="revolute">
     <parent link="lower_right_cabinet_0.480_0.561_0.021_object_23_corpus"/>
     <child link="lower_right_cabinet_0.480_0.561_0.021_object_23_door_0_0"/>
-    <origin xyz="0.2298572546539724 -0.3179707968667911 0.27949334311427587" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.2298572546539724 -0.2959503572450648 0.27949334311427587" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 0 1"/>
     <limit effort="1000.0" velocity="0.1" lower="0.0" upper="1.5707963267948966"/>
   </joint>
@@ -9364,14 +9364,14 @@
   <joint name="drawer_0.464_0.154_0.017_object_27_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="drawer_0.464_0.154_0.017_object_27"/>
-    <origin xyz="4.016123516511582 -2.984466258377696 0.2627327881148376" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.9941030768898553 -2.984466258377696 0.2627327881148376" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="drawer_0.464_0.154_0.017_object_27_corpus_to_drawer_0_0" type="prismatic">
     <parent link="drawer_0.464_0.154_0.017_object_27_corpus"/>
     <child link="drawer_0.464_0.154_0.017_object_27_drawer_0_0"/>
-    <origin xyz="0.0 -0.31507627027218676 0.07714539348663084" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.0 -0.2930558306504605 0.07714539348663084" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 -1 0"/>
-    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.5266235578409426"/>
+    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.490950445653746"/>
   </joint>
   <joint name="drawer_0.464_0.154_0.017_object_27_origin_joint" type="fixed">
     <parent link="drawer_0.464_0.154_0.017_object_27"/>
@@ -9381,14 +9381,14 @@
   <joint name="drawer_0.463_0.154_0.012_object_28_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="drawer_0.463_0.154_0.012_object_28"/>
-    <origin xyz="4.016123516511582 -2.984466258377696 0.10844200114157593" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.9941030768898553 -2.984466258377696 0.10844200114157593" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="drawer_0.463_0.154_0.012_object_28_corpus_to_drawer_0_0" type="prismatic">
     <parent link="drawer_0.463_0.154_0.012_object_28_corpus"/>
     <child link="drawer_0.463_0.154_0.012_object_28_drawer_0_0"/>
-    <origin xyz="0.0 -0.31507627027218676 0.07714539348663084" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.0 -0.2930558306504605 0.07714539348663084" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 -1 0"/>
-    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.5266235578409426"/>
+    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.490950445653746"/>
   </joint>
   <joint name="drawer_0.463_0.154_0.012_object_28_origin_joint" type="fixed">
     <parent link="drawer_0.463_0.154_0.012_object_28"/>
@@ -9398,14 +9398,14 @@
   <joint name="drawer_0.470_0.154_0.020_object_34_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="drawer_0.470_0.154_0.020_object_34"/>
-    <origin xyz="4.016123516511582 -3.4482681846622136 0.2627327881148376" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.9941030768898553 -3.4482681846622136 0.2627327881148376" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="drawer_0.470_0.154_0.020_object_34_corpus_to_drawer_0_0" type="prismatic">
     <parent link="drawer_0.470_0.154_0.020_object_34_corpus"/>
     <child link="drawer_0.470_0.154_0.020_object_34_drawer_0_0"/>
-    <origin xyz="0.0 -0.31507627027218676 0.07714539348663084" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.0 -0.2930558306504605 0.07714539348663084" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 -1 0"/>
-    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.5266235578409426"/>
+    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.490950445653746"/>
   </joint>
   <joint name="drawer_0.470_0.154_0.020_object_34_origin_joint" type="fixed">
     <parent link="drawer_0.470_0.154_0.020_object_34"/>
@@ -9415,17 +9415,17 @@
   <joint name="box_0.602_0.725_0.043_object_35_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="box_0.602_0.725_0.043_object_35"/>
-    <origin xyz="3.997403576696276 -3.981250147743884 0.05435983567663316" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.975383137074549 -3.981250147743884 0.05435983567663316" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="lower_left_cabinet_0.484_0.717_0.027_object_36_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="lower_left_cabinet_0.484_0.717_0.027_object_36"/>
-    <origin xyz="3.9974035766962763 -4.524441495509969 -0.3083039037348329" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.97538313707455 -4.524441495509969 -0.3083039037348329" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="lower_left_cabinet_0.484_0.717_0.027_object_36_corpus_to_door_0_0" type="revolute">
     <parent link="lower_left_cabinet_0.484_0.717_0.027_object_36_corpus"/>
     <child link="lower_left_cabinet_0.484_0.717_0.027_object_36_door_0_0"/>
-    <origin xyz="-0.24011034782667395 -0.3537962100874932 0.36266373941146607" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="-0.24011034782667395 -0.3317757704657669 0.36266373941146607" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 0 -1"/>
     <limit effort="1000.0" velocity="0.1" lower="0.0" upper="1.5707963267948966"/>
   </joint>
@@ -9437,12 +9437,12 @@
   <joint name="lower_right_cabinet_0.474_0.719_0.027_object_37_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="lower_right_cabinet_0.474_0.719_0.027_object_37"/>
-    <origin xyz="3.9974035766962768 -5.008662191163317 -0.3083039037348329" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.975383137074549 -5.008662191163317 -0.3083039037348329" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="lower_right_cabinet_0.474_0.719_0.027_object_37_corpus_to_door_0_0" type="revolute">
     <parent link="lower_right_cabinet_0.474_0.719_0.027_object_37_corpus"/>
     <child link="lower_right_cabinet_0.474_0.719_0.027_object_37_door_0_0"/>
-    <origin xyz="0.24011034782667395 -0.3537962100874932 0.36266373941146607" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.24011034782667395 -0.3317757704657669 0.36266373941146607" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 0 1"/>
     <limit effort="1000.0" velocity="0.1" lower="0.0" upper="1.5707963267948966"/>
   </joint>
@@ -9454,14 +9454,14 @@
   <joint name="drawer_0.461_0.155_0.011_object_29_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="drawer_0.461_0.155_0.011_object_29"/>
-    <origin xyz="4.016123516511582 -2.9844662583776955 -0.04584878583168572" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.9941030768898553 -2.9844662583776955 -0.04584878583168572" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="drawer_0.461_0.155_0.011_object_29_corpus_to_drawer_0_0" type="prismatic">
     <parent link="drawer_0.461_0.155_0.011_object_29_corpus"/>
     <child link="drawer_0.461_0.155_0.011_object_29_drawer_0_0"/>
-    <origin xyz="0.0 -0.31507627027218676 0.07714539348663084" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.0 -0.2930558306504605 0.07714539348663084" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 -1 0"/>
-    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.5266235578409426"/>
+    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.490950445653746"/>
   </joint>
   <joint name="drawer_0.461_0.155_0.011_object_29_origin_joint" type="fixed">
     <parent link="drawer_0.461_0.155_0.011_object_29"/>
@@ -9471,14 +9471,14 @@
   <joint name="drawer_0.464_0.154_0.014_object_32_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="drawer_0.464_0.154_0.014_object_32"/>
-    <origin xyz="4.016123516511582 -3.448268184662213 -0.04584878583168572" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.9941030768898553 -3.448268184662213 -0.04584878583168572" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="drawer_0.464_0.154_0.014_object_32_corpus_to_drawer_0_0" type="prismatic">
     <parent link="drawer_0.464_0.154_0.014_object_32_corpus"/>
     <child link="drawer_0.464_0.154_0.014_object_32_drawer_0_0"/>
-    <origin xyz="0.0 -0.31507627027218676 0.07714539348663084" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.0 -0.2930558306504605 0.07714539348663084" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 -1 0"/>
-    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.5266235578409426"/>
+    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.490950445653746"/>
   </joint>
   <joint name="drawer_0.464_0.154_0.014_object_32_origin_joint" type="fixed">
     <parent link="drawer_0.464_0.154_0.014_object_32"/>
@@ -9488,12 +9488,12 @@
   <joint name="lower_left_cabinet_0.370_0.563_0.023_object_38_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="lower_left_cabinet_0.370_0.563_0.023_object_38"/>
-    <origin xyz="3.9974035766962768 -5.435780230212989 -0.3083039037348329" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.975383137074549 -5.435780230212989 -0.3083039037348329" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="lower_left_cabinet_0.370_0.563_0.023_object_38_corpus_to_door_0_0" type="revolute">
     <parent link="lower_left_cabinet_0.370_0.563_0.023_object_38_corpus"/>
     <child link="lower_left_cabinet_0.370_0.563_0.023_object_38_door_0_0"/>
-    <origin xyz="-0.18300769122299765 -0.3537962100874932 0.2814307593698763" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="-0.18300769122299765 -0.3317757704657669 0.2814307593698763" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 0 -1"/>
     <limit effort="1000.0" velocity="0.1" lower="0.0" upper="1.5707963267948966"/>
   </joint>
@@ -9505,12 +9505,12 @@
   <joint name="lower_right_cabinet_0.366_0.563_0.024_object_40_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="lower_right_cabinet_0.366_0.563_0.024_object_40"/>
-    <origin xyz="3.9974035766962768 -5.805795612658985 -0.3083039037348329" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.975383137074549 -5.805795612658985 -0.3083039037348329" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="lower_right_cabinet_0.366_0.563_0.024_object_40_corpus_to_door_0_0" type="revolute">
     <parent link="lower_right_cabinet_0.366_0.563_0.024_object_40_corpus"/>
     <child link="lower_right_cabinet_0.366_0.563_0.024_object_40_door_0_0"/>
-    <origin xyz="0.18300769122299765 -0.3537962100874932 0.2814307593698763" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.18300769122299765 -0.3317757704657669 0.2814307593698763" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 0 1"/>
     <limit effort="1000.0" velocity="0.1" lower="0.0" upper="1.5707963267948966"/>
   </joint>
@@ -9522,14 +9522,14 @@
   <joint name="drawer_0.468_0.155_0.015_object_33_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="drawer_0.468_0.155_0.015_object_33"/>
-    <origin xyz="4.016123516511582 -3.448268184662213 0.10844200114157593" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.9941030768898553 -3.448268184662213 0.10844200114157593" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="drawer_0.468_0.155_0.015_object_33_corpus_to_drawer_0_0" type="prismatic">
     <parent link="drawer_0.468_0.155_0.015_object_33_corpus"/>
     <child link="drawer_0.468_0.155_0.015_object_33_drawer_0_0"/>
-    <origin xyz="0.0 -0.31507627027218676 0.07714539348663084" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.0 -0.2930558306504605 0.07714539348663084" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 -1 0"/>
-    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.5266235578409426"/>
+    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.490950445653746"/>
   </joint>
   <joint name="drawer_0.468_0.155_0.015_object_33_origin_joint" type="fixed">
     <parent link="drawer_0.468_0.155_0.015_object_33"/>
@@ -9539,14 +9539,14 @@
   <joint name="drawer_0.028_0.158_0.368_object_39_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="drawer_0.028_0.158_0.368_object_39"/>
-    <origin xyz="3.9974035766962768 -5.434594983565735 0.2591652504423592" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.975383137074549 -5.434594983565735 0.2591652504423592" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="drawer_0.028_0.158_0.368_object_39_corpus_to_drawer_0_0" type="prismatic">
     <parent link="drawer_0.028_0.158_0.368_object_39_corpus"/>
     <child link="drawer_0.028_0.158_0.368_object_39_drawer_0_0"/>
-    <origin xyz="0.0 -0.33379621008749316 0.07892916232287005" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.0 -0.3117757704657669 0.07892916232287005" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 -1 0"/>
-    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.556949860341739"/>
+    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.5212767481545424"/>
   </joint>
   <joint name="drawer_0.028_0.158_0.368_object_39_origin_joint" type="fixed">
     <parent link="drawer_0.028_0.158_0.368_object_39"/>
@@ -9556,14 +9556,14 @@
   <joint name="drawer_0.472_0.247_0.017_object_31_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="drawer_0.472_0.247_0.017_object_31"/>
-    <origin xyz="4.016123516511582 -3.448268184662213 -0.29257899933425346" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.9941030768898553 -3.448268184662213 -0.29257899933425346" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="drawer_0.472_0.247_0.017_object_31_corpus_to_drawer_0_0" type="prismatic">
     <parent link="drawer_0.472_0.247_0.017_object_31_corpus"/>
     <child link="drawer_0.472_0.247_0.017_object_31_drawer_0_0"/>
-    <origin xyz="0.0 -0.31507627027218676 0.12336510675128388" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.0 -0.2930558306504605 0.12336510675128388" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 -1 0"/>
-    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.5266235578409426"/>
+    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.490950445653746"/>
   </joint>
   <joint name="drawer_0.472_0.247_0.017_object_31_origin_joint" type="fixed">
     <parent link="drawer_0.472_0.247_0.017_object_31"/>
@@ -9573,14 +9573,14 @@
   <joint name="drawer_0.463_0.248_0.017_object_30_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="drawer_0.463_0.248_0.017_object_30"/>
-    <origin xyz="4.016123516511582 -2.9844662583776955 -0.29257899933425346" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.9941030768898553 -2.9844662583776955 -0.29257899933425346" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="drawer_0.463_0.248_0.017_object_30_corpus_to_drawer_0_0" type="prismatic">
     <parent link="drawer_0.463_0.248_0.017_object_30_corpus"/>
     <child link="drawer_0.463_0.248_0.017_object_30_drawer_0_0"/>
-    <origin xyz="0.0 -0.31507627027218676 0.12336510675128388" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.0 -0.2930558306504605 0.12336510675128388" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 -1 0"/>
-    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.5266235578409426"/>
+    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.490950445653746"/>
   </joint>
   <joint name="drawer_0.463_0.248_0.017_object_30_origin_joint" type="fixed">
     <parent link="drawer_0.463_0.248_0.017_object_30"/>
@@ -9590,14 +9590,14 @@
   <joint name="drawer_0.365_0.159_0.022_object_41_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="drawer_0.365_0.159_0.022_object_41"/>
-    <origin xyz="3.9974035766962768 -5.805795612658985 0.25455761500491975" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.975383137074549 -5.805795612658985 0.25455761500491975" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="drawer_0.365_0.159_0.022_object_41_corpus_to_drawer_0_0" type="prismatic">
     <parent link="drawer_0.365_0.159_0.022_object_41_corpus"/>
     <child link="drawer_0.365_0.159_0.022_object_41_drawer_0_0"/>
-    <origin xyz="0.0 -0.33379621008749316 0.07928026850530688" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.0 -0.3117757704657669 0.07928026850530688" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 -1 0"/>
-    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.556949860341739"/>
+    <limit effort="1000.0" velocity="1.0" lower="0.0" upper="0.5212767481545424"/>
   </joint>
   <joint name="drawer_0.365_0.159_0.022_object_41_origin_joint" type="fixed">
     <parent link="drawer_0.365_0.159_0.022_object_41"/>
@@ -9709,12 +9709,12 @@
   <joint name="upper_left_cabinet_0.469_0.936_0.030_object_52_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="upper_left_cabinet_0.469_0.936_0.030_object_52"/>
-    <origin xyz="4.108974110101884 -0.5511114309287416 0.8624776351863548" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="4.086953670480157 -0.5511114309287415 0.8624776351863548" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="upper_left_cabinet_0.469_0.936_0.030_object_52_corpus_to_door_0_0" type="revolute">
     <parent link="upper_left_cabinet_0.469_0.936_0.030_object_52_corpus"/>
     <child link="upper_left_cabinet_0.469_0.936_0.030_object_52_door_0_0"/>
-    <origin xyz="-0.2335094263516041 -0.2422256766818851 0.4679905752605974" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="-0.2335094263516041 -0.22020523706015882 0.4679905752605974" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 0 -1"/>
     <limit effort="1000.0" velocity="0.1" lower="0.0" upper="1.5707963267948966"/>
   </joint>
@@ -9726,12 +9726,12 @@
   <joint name="upper_right_cabinet_0.461_0.940_0.021_object_53_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="upper_right_cabinet_0.461_0.940_0.021_object_53"/>
-    <origin xyz="4.108974110101884 -1.02013028363195 0.8624776351863548" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="4.086953670480157 -1.0201302836319497 0.8624776351863548" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="upper_right_cabinet_0.461_0.940_0.021_object_53_corpus_to_door_0_0" type="revolute">
     <parent link="upper_right_cabinet_0.461_0.940_0.021_object_53_corpus"/>
     <child link="upper_right_cabinet_0.461_0.940_0.021_object_53_door_0_0"/>
-    <origin xyz="0.2335094263516041 -0.2422256766818851 0.4679905752605974" rpy="0.0 -0.0 0.0"/>
+    <origin xyz="0.2335094263516041 -0.22020523706015882 0.4679905752605974" rpy="0.0 -0.0 0.0"/>
     <axis xyz="0 0 1"/>
     <limit effort="1000.0" velocity="0.1" lower="0.0" upper="1.5707963267948966"/>
   </joint>
@@ -9760,7 +9760,7 @@
   <joint name="counter_0.697_0.200_3.231_object_42_2_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="counter_0.697_0.200_3.231_object_42_2"/>
-    <origin xyz="3.9974035766962768 -4.372869546205965 0.4331181520155335" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.975383137074549 -4.372869546205965 0.4331181520155335" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="counter_3.084_0.217_2.078_object_43_0_world_fixed_joint" type="fixed">
     <parent link="world"/>
@@ -9770,7 +9770,7 @@
   <joint name="counter_3.084_0.217_2.078_object_43_2_world_fixed_joint" type="fixed">
     <parent link="world"/>
     <child link="counter_3.084_0.217_2.078_object_43_2"/>
-    <origin xyz="4.000729186190085 -1.0442258012347942 0.4844599572950541" rpy="0.0 -0.0 -1.5707963267948966"/>
+    <origin xyz="3.9787087465683584 -1.0442258012347942 0.4844599572950541" rpy="0.0 -0.0 -1.5707963267948966"/>
   </joint>
   <joint name="counter_3.306_0.171_0.678_object_44_0_world_fixed_joint" type="fixed">
     <parent link="world"/>

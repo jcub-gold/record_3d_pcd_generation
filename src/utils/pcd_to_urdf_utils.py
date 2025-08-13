@@ -888,3 +888,5 @@ def resize_pcd(pcd_1, pcd_2, pcd_1_path, pcd_2_path):
 
 
 # todo countertops (extract depth and add)
+
+# NEW TODO: mesh results + handl foot panel/slights variations in heights (due to pcd noise idk if there is much I can do here)
