@@ -75,6 +75,12 @@ def main():
 
     base_dir = f"data/{args.scene_name}/multiview"
 
+    prepared = []             # list of (dirname, obj_dir) that have extracted frames
+    prompts_by_name = {}      # dirname -> object_prompts
+
+    # -------------------------
+    # PASS 1: extract frames for ALL objects first
+    # -------------------------
     for _, dirnames, _ in os.walk(base_dir):
         for dirname in dirnames:
             if not dirname.startswith("object_"):
@@ -99,27 +105,57 @@ def main():
             if os.path.isdir(input_dir):
                 shutil.rmtree(input_dir)
             extract_frames(video_path, input_dir)
+            print(f"[EXTRACT] Frames -> {input_dir}")
+            prepared.append((dirname, obj_dir))
 
-            frame_paths = _list_frames(input_dir)
-            first_idx = _frame_num_from_name(frame_paths[0])
+    # -------------------------
+    # PASS 2: collect prompts for ALL objects
+    # -------------------------
+    for dirname, obj_dir in prepared:
+        input_dir = os.path.join(obj_dir, "input")
+        if not os.path.isdir(input_dir):
+            print(f"[SKIP] No input frames in {obj_dir}; did extraction fail?")
+            continue
 
+        frame_paths = _list_frames(input_dir)
+        first_idx = _frame_num_from_name(frame_paths[0])
+
+        # uses your original input line inside _collect_prompts (unchanged)
+        try:
             object_prompts = _collect_prompts(first_idx, dirname)
-            out_dir = os.path.join(obj_dir, "images")
-            os.makedirs(out_dir, exist_ok=True)
-            get_object_masks(obj_dir, object_prompts, out_dir)
+        except ValueError as e:
+            print(f"[SKIP] {dirname}: {e}")
+            continue
 
-            generation_state_path = os.path.join(obj_dir, "generation_state")
-            frames = select_evenly_spaced(_list_frames(out_dir)[1: -1])
+        prompts_by_name[dirname] = object_prompts
 
-            if os.path.isdir(generation_state_path):
-                shutil.rmtree(generation_state_path)
-            os.makedirs(generation_state_path, exist_ok=True)
+    # -------------------------
+    # PASS 3: run segmentations + evenly-spaced selection
+    # -------------------------
+    for dirname, obj_dir in prepared:
+        if dirname not in prompts_by_name:
+            print(f"[SKIP] {dirname}: no prompts collected")
+            continue
 
-            for src in frames:
-                dst = os.path.join(generation_state_path, os.path.basename(src))
-                shutil.copy2(src, dst)
+        object_prompts = prompts_by_name[dirname]
 
-            print(f"[GEN] Copied {len(frames)} frames to: {generation_state_path}")
+        out_dir = os.path.join(obj_dir, "images")
+        os.makedirs(out_dir, exist_ok=True)
+        get_object_masks(obj_dir, object_prompts, out_dir)
+
+        generation_state_path = os.path.join(obj_dir, "generation_state")
+        masked = _list_frames(out_dir)
+        frames = select_evenly_spaced(masked[1:-1]) if len(masked) > 2 else masked
+
+        if os.path.isdir(generation_state_path):
+            shutil.rmtree(generation_state_path)
+        os.makedirs(generation_state_path, exist_ok=True)
+
+        for src in frames:
+            dst = os.path.join(generation_state_path, os.path.basename(src))
+            shutil.copy2(src, dst)
+
+        print(f"[GEN] Copied {len(frames)} frames to: {generation_state_path}")
 
 
 if __name__ == "__main__":
