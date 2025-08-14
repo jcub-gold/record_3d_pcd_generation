@@ -51,6 +51,7 @@ def place_vertical_asset(s, parent_asset, child_asset, child_width, child_height
     # we do not need to worry about axis alignment for the vertical axis
     lateral_anchor = 'left' if clamp == -1 else 'right'
     # place on top of the parent asset
+    ensure_asset_name(child_asset)
     if (child_asset['center'][1] > parent_asset['center'][1]):
         s.add_object(get_asset(child_asset['label'], child_width, child_height, child_depth), 
                     f"{child_asset['asset_name']}{name_add}",
@@ -112,6 +113,7 @@ def place_lateral_asset(s, parent_asset, child_asset, child_width, child_height,
     # print(parent_asset['center'][1])
 
     # place on left of the parent asset
+    ensure_asset_name(child_asset)
     if (child_asset['center'][aa[0]] * parent_asset['weight'] < parent_asset['center'][aa[0]] * parent_asset['weight']):
         transform[0,3] = transform[0,3] * -1
         s.add_object(get_asset(child_asset['label'], child_width, child_height, child_depth),
@@ -403,3 +405,29 @@ def is_point_in_aabb(point, aabb):
     min_bound = aabb.get_min_bound()  # np.array([x_min, y_min, z_min])
     max_bound = aabb.get_max_bound()  # np.array([x_max, y_max, z_max])
     return np.all(point >= min_bound) and np.all(point <= max_bound)
+
+
+def write_asset_cache(scene_name, placed_assets):
+    asset_info = {}
+    for a in placed_assets:
+        # ensure name reflects final dims
+        asset_info[f"object_{a['object_number']}"] = ensure_asset_name(a)
+    asset_info_path = os.path.join("data", scene_name, "cached_asset_info.json")
+    with open(asset_info_path, "w") as f:
+        json.dump(asset_info, f, indent=4)
+    print(f"💾 Wrote FINAL asset info for {len(asset_info)} objects to: {asset_info_path}")
+
+
+def format_asset_name(asset, nd=3):
+    # builds the canonical name from CURRENT dims
+    return (
+        f"{asset['label']}_{asset['width']:.2f}_"
+        f"{asset['height']:.2f}_{asset['depth']:.2f}_"
+        f"object_{asset['object_number']}"
+    )
+
+def ensure_asset_name(asset):
+    # compute-on-demand; only call right before s.add_object / connect_*
+    name = format_asset_name(asset)
+    asset['asset_name'] = name
+    return name

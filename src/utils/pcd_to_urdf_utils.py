@@ -10,7 +10,7 @@ import json
 from scene_synthesizer.assets import BoxAsset
 from sklearn.cluster import KMeans
 from collections import defaultdict
-from src.utils.pcd_to_urdf_utils_utils import get_depth_axis_from_pcd_extents, place_lateral_asset, place_vertical_asset, check_BB_overlap, check_extent_overlap, get_depth_delta, get_aligned_depth, get_not_aligned_depth, get_depth_from_counter, place_counter_top
+from src.utils.pcd_to_urdf_utils_utils import get_depth_axis_from_pcd_extents, place_lateral_asset, place_vertical_asset, check_BB_overlap, check_extent_overlap, get_depth_delta, get_aligned_depth, get_not_aligned_depth, get_depth_from_counter, place_counter_top, write_asset_cache, ensure_asset_name
 from src.utils.asset_utils import get_asset
 from src.utils.obb_utils import get_rotation_from_pca
 
@@ -98,7 +98,6 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
 
     pcd_data = []
     labels = []
-    asset_info = {}
     for fname, pcd in files:
         match = re.search(r'object_(\d+)', fname)
         assert match, f"Filename {fname} does not match expected pattern."
@@ -180,17 +179,11 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
         dict_data["asset_name"] = (
             f"{label}_{width:.3f}_{height:.3f}_{depth:.3f}_object_{obj_num}"
         )
-        asset_info[f"object_{obj_num}"] = dict_data["asset_name"]
         
         pcd_data.append(dict_data)
 
     if save_labels is not None:
         json.dump(save_labels, open(os.path.join(input_path, "cached_labels.json"), "w"), indent=4)
-
-    asset_info_path = os.path.join(input_path, "cached_asset_info.json")
-    with open(asset_info_path, "w") as f:
-        json.dump(asset_info, f, indent=4)
-    print(f"💾 Wrote asset info for {len(asset_info)} objects to: {asset_info_path}")
     label_keywords = []
     for label in labels:
         if label.split("_")[0] not in label_keywords:
@@ -206,6 +199,7 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
     along the Y-axis amongst a -45 degree to 45 degree sweep of rotations, along a 0.5 degree increment.
 """
 def align_pcd_scene_via_object_aabb_minimization(pcds):
+
     combined_pcd = o3d.geometry.PointCloud()
     for pcd in pcds:
         combined_pcd += pcd
@@ -248,7 +242,6 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=
     #     for asset in pcd_data:
     #         if asset['label'] == "counter":
     #             counters.append(asset)
-    
     output_path = f"simple_urdf_scenes/{scene_name}/{scene_name}.urdf"
     cache = {}
     cache['vertical_placement_pairs'] = []
@@ -278,6 +271,7 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=
 
 
     width, height, depth = parent_asset['width'], parent_asset['height'], parent_asset['depth']
+    ensure_asset_name(parent_asset)
     s.add_object(get_asset(parent_asset['label'], width, height, depth), parent_asset['asset_name'])
     placed_assets.append(parent_asset)
 
@@ -347,6 +341,9 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=
     print(f"{GREEN} Successfully generated URDF at {output_path}!{RESET}")
     with open(os.path.join("data", scene_name, "cached_vertical_pairs.json"), "w") as f:
         json.dump(cache, f, indent=4)
+        
+    write_asset_cache(scene_name, placed_assets)
+
     s.show()
     return
 
@@ -678,6 +675,7 @@ def try_to_place_upper_not_aligned(unplaced_assets, label, placed_assets, pcd_da
     # ------------------------------------------------------------
     # 5. Place ABOVE the parent (anchors = top/bottom)
     # ------------------------------------------------------------
+    ensure_asset_name(child_asset)
     s.add_object(
         get_asset(child_asset['label'], child_asset['width'], child_asset['height'], child_asset['depth']),
         child_asset["asset_name"],
@@ -768,6 +766,7 @@ def place_90_degree_rotated_child(s,
 
     if 'upper' not in child_asset['label']:
         vertical_addition = default_countertop_thickness
+    ensure_asset_name(child_asset)
     s.add_object(
         get_asset(child_asset['label'], child_asset['width'], child_asset['height'], child_asset['depth']),
         child_asset["asset_name"],
