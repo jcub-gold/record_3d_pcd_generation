@@ -35,14 +35,18 @@ if __name__ == "__main__":
             link_name = asset_names[obj] + "_drawer_0_0"
         elif 'cabinet' in asset_names[obj]:
             link_name = asset_names[obj] + "_door_0_0"
+        elif 'box' in asset_names[obj]:
+            link_name = asset_names[obj]
         else:
             continue
 
         mesh_path = ""
         for path in mesh_paths:
-            if obj in path:
+            if f"{obj}/" in path:
                 mesh_path = path
                 break
+        if mesh_path == "":
+            continue
 
         asset = ARM(urdf_path, mesh_path, link_name)
         asset.set_urdf()

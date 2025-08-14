@@ -7,6 +7,8 @@ import sys
 import glob
 import re
 from src.utils.simulate_frame_caching_utils import select_evenly_spaced
+from src.guis.point_prompting_gui import run_prompt_gui
+import json
 
 def extract_frames(video_path, output_dir):
     os.makedirs(output_dir, exist_ok=True)
@@ -32,51 +34,22 @@ def _list_frames(input_dir):
         raise FileNotFoundError(f"No image frames (.jpg/.jpeg/.png) found in {input_dir}")
     return frames
 
-def _parse_prompt_line(line, first_frame_idx):
-    toks = line.strip().split()
-
-    # Must have at least one point: start, type, x1, y1  ->  >= 4 tokens
-    if len(toks) < 4 or ((len(toks) - 2) % 2 != 0):
-        raise ValueError(
-            "Expected: <starting_frame> <prompt_type> <x1> <y1> [<x2> <y2> ...]"
-        )
-
-    starting_frame = int(toks[0])
-    prompt_type    = int(toks[1])
-    coords = list(map(int, toks[2:]))
-    points = [[coords[i], coords[i+1]] for i in range(0, len(coords), 2)]
-
-    starting_offset = starting_frame - first_frame_idx
-    if starting_offset < 0:
-        raise ValueError(
-            f"Starting frame {starting_frame} is before first available frame {first_frame_idx}"
-        )
-
-    prompts = [prompt_type] + points
-    return (starting_offset, prompts)
-
-def _collect_prompts(first_frame_idx, dirname):
-    object_prompts = []
-    while True:
-        line = input(f"For part of {dirname}, enter the its first frame appearance, the type of prompt, and coordinates. Press return once done: ").strip()
-        if not line:
-            break
-        tup = _parse_prompt_line(line, first_frame_idx)
-        object_prompts.append(tup)
-
-    if not object_prompts:
-        raise ValueError("No prompts provided.")
-    return object_prompts
-
 def main():
     parser = ArgumentParser("Get masks for thorough object scans")
     parser.add_argument("--scene_name", "-s", required=True, type=str)
     args = parser.parse_args(sys.argv[1:])
 
     base_dir = f"data/{args.scene_name}/multiview"
+    prompts_cache_path = os.path.join(base_dir, "prompts_by_name.json")
 
     prepared = []             # list of (dirname, obj_dir) that have extracted frames
     prompts_by_name = {}      # dirname -> object_prompts
+
+    # Try loading existing cache
+    if os.path.isfile(prompts_cache_path):
+        with open(prompts_cache_path, "r") as f:
+            prompts_by_name = json.load(f)
+        print(f"[CACHE] Loaded prompts from {prompts_cache_path}")
 
     # -------------------------
     # PASS 1: extract frames for ALL objects first
@@ -111,23 +84,28 @@ def main():
     # -------------------------
     # PASS 2: collect prompts for ALL objects
     # -------------------------
+    changed = False
     for dirname, obj_dir in prepared:
         input_dir = os.path.join(obj_dir, "input")
         if not os.path.isdir(input_dir):
             print(f"[SKIP] No input frames in {obj_dir}; did extraction fail?")
             continue
 
-        frame_paths = _list_frames(input_dir)
-        first_idx = _frame_num_from_name(frame_paths[0])
-
-        # uses your original input line inside _collect_prompts (unchanged)
-        try:
-            object_prompts = _collect_prompts(first_idx, dirname)
-        except ValueError as e:
-            print(f"[SKIP] {dirname}: {e}")
+        if dirname in prompts_by_name:
+            print(f"[CACHE] Using cached prompts for {dirname}")
             continue
 
+        # Need to collect prompts
+        object_prompts = run_prompt_gui(input_dir)
         prompts_by_name[dirname] = object_prompts
+        changed = True
+        print(f"[SAVE] Collected prompts for {dirname}")
+
+    # Save updated cache if needed
+    if changed:
+        with open(prompts_cache_path, "w") as f:
+            json.dump(prompts_by_name, f, indent=2)
+        print(f"[CACHE] Updated {prompts_cache_path}")
 
     # -------------------------
     # PASS 3: run segmentations + evenly-spaced selection
@@ -156,6 +134,7 @@ def main():
             shutil.copy2(src, dst)
 
         print(f"[GEN] Copied {len(frames)} frames to: {generation_state_path}")
+
 
 
 if __name__ == "__main__":
