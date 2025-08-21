@@ -223,3 +223,11 @@ cabinet_images
 mesh_tests
 data/second_floor_test_2
 mesh_scans
+extra/
+data/GC_basement
+data/GC_second_floor
+ground_truth_scenes
+material_0.png
+material.mtl
+output.obj
+test_5.obj

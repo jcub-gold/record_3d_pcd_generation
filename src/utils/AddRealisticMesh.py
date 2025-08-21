@@ -6,6 +6,8 @@ from trimesh.boolean import intersection
 from itertools import permutations, product
 from scipy.optimize import minimize
 import copy
+from src.utils.obb_utils import get_mesh_rotation_from_pca
+from trimesh import transformations as tf
 
 def to_homogeneous(mat3x3):
     mat4x4 = np.eye(4)
@@ -97,6 +99,15 @@ class AddRealisticMesh:
     def set_mesh(self):
         mesh = trimesh.load(self.mesh_path)
         urdf = self.urdf
+        # if mesh == None:
+        #     return
+        mesh, _ = align_mesh(mesh)
+        # mesh.export("test.obj")
+        # angle = get_mesh_rotation_from_pca(mesh)   # radians
+        # R = tf.rotation_matrix(-angle, [0, 1, 0])       # -angle -> align principal dir to +X
+        # mesh.apply_transform(R)
+        # print(angle)
+        # mesh.export("test.obj")
         
         mesh_aligned = match_axis_aligned_extents(mesh, urdf)
 

@@ -2,7 +2,9 @@ from src.utils.AddRealisticMesh import AddRealisticMesh as ARM
 import argparse
 import os
 import json
+import numpy as np
 import shutil
+from src.utils.clustering_utils import assign_missing_meshes
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Replace simple primitives with realistic mesh")
@@ -13,6 +15,12 @@ if __name__ == "__main__":
 
     input_mesh_paths = f"data/{scene_name}/output/"
     urdf_path = f"scenes/{scene_name}/{scene_name}.urdf"
+    asset_info_path = f'data/{scene_name}/cached_asset_info.json'
+
+    with open(asset_info_path) as f:
+        asset_info = json.load(f)
+    assert isinstance(asset_info, dict), f"Expected dict, got {type(asset_info)}"
+    assign_missing_meshes(asset_info, input_mesh_paths)
 
     mesh_paths = []
     for _, dirnames, _ in os.walk(input_mesh_paths):
@@ -25,7 +33,7 @@ if __name__ == "__main__":
     
 
 
-    with open(f'data/{scene_name}/cached_asset_info.json') as f:
+    with open(asset_info_path) as f:
         asset_names = json.load(f)
 
     for obj in asset_names.keys():
@@ -56,6 +64,11 @@ if __name__ == "__main__":
         # asset.debug_visualize(show_obj=True, show_urdf=True, show_warped=True, show_points=True, show_aabb=False)
         
         warped = asset.get_warped_mesh().copy()
+
+        warped = asset.get_mesh().copy()
+        inv_T = np.linalg.inv(asset.get_urdf_transformations())
+        warped.apply_transform(inv_T)
+
         warped_mesh_path = f"scenes/{scene_name}/{obj}_mesh.obj"
         warped.export(warped_mesh_path)
 
