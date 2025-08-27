@@ -37,6 +37,9 @@ if __name__ == "__main__":
         asset_names = json.load(f)
 
     for obj in asset_names.keys():
+        if obj != "object_10":
+            continue
+        print(f"Replacing simple geometry for {obj}...")
         # if obj != "object_8":
         #     continue
         if 'drawer' in asset_names[obj]:
@@ -59,17 +62,16 @@ if __name__ == "__main__":
         asset = ARM(urdf_path, mesh_path, link_name)
         asset.set_urdf()
         asset.set_mesh()
-        asset.extract_corners(sample_count=200000, weight_y_axis=0.05)
-        asset.warp()
-        # asset.debug_visualize(show_obj=True, show_urdf=True, show_warped=True, show_points=True, show_aabb=False)
-        
-        warped = asset.get_warped_mesh().copy()
+        asset.align_mesh()
 
-        warped = asset.get_mesh().copy()
-        inv_T = np.linalg.inv(asset.get_urdf_transformations())
-        warped.apply_transform(inv_T)
+        output_mesh = asset.get_mesh()
+        output_mesh_base_dir = f"scenes/{scene_name}/{obj}"
+        os.makedirs(output_mesh_base_dir, exist_ok=True)
+        output_mesh_path = f"scenes/{scene_name}/{obj}/{obj}_mesh.obj"
+        output_mesh.export(output_mesh_path)
 
-        warped_mesh_path = f"scenes/{scene_name}/{obj}_mesh.obj"
-        warped.export(warped_mesh_path)
+        output_mesh_path_ref = f"{obj}/{obj}_mesh.obj"
+        asset.replace_geometry(input_urdf=urdf_path, output_urdf=urdf_path, mesh_path=output_mesh_path_ref)
+    
+    print("[DONE]")
 
-        asset.replace_geometry(input_urdf=urdf_path, output_urdf=urdf_path, mesh_path=warped_mesh_path)

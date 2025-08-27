@@ -231,3 +231,7 @@ material_0.png
 material.mtl
 output.obj
 test_5.obj
+simple_urdf_scenes
+video.mp4
+g_o3d_viz.py
+genesis_viz.py

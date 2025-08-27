@@ -85,7 +85,7 @@ def get_mesh_rotation_from_aabb_min_xz(
         return best_val, best_th
 
     # --- coarse sweep over [0, π) ---
-    angles = np.linspace(0.0, np.pi, num=coarse_samples, endpoint=False)
+    angles = np.linspace(0.0, np.pi / 2, num=coarse_samples, endpoint=False)
     best_val, best_th = _sweep(angles)
 
     # --- refine around best angle ---
