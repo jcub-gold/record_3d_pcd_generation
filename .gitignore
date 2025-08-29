@@ -235,3 +235,5 @@ simple_urdf_scenes
 video.mp4
 g_o3d_viz.py
 genesis_viz.py
+quick_2.py
+combined_pcd.ply
