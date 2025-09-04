@@ -1,26 +1,22 @@
 import numpy as np
 import open3d as o3d
 import scene_synthesizer as synth
-from scene_synthesizer import procedural_assets as pa
 from tqdm import tqdm
 import copy
 import os
 import re
 import json
-from scene_synthesizer.assets import BoxAsset
-from sklearn.cluster import KMeans
-from collections import defaultdict
 from src.utils.pcd_to_urdf_utils_utils import get_depth_axis_from_pcd_extents, place_lateral_asset, place_vertical_asset, check_BB_overlap, check_extent_overlap, get_depth_delta, get_aligned_depth, get_not_aligned_depth, get_depth_from_counter, place_counter_top, write_asset_cache, ensure_asset_name
 from src.utils.asset_utils import get_asset
 from src.utils.obb_utils import get_rotation_from_pca
+from src.guis.frame_selection_gui import load_labels
 
 
 GREEN = "\033[32m"
 RESET = "\033[0m"
 
-possible_labels = ['drawer', 'lower_left_cabinet', 'lower_right_cabinet', 'upper_left_cabinet', 'upper_right_cabinet', 'box', 'sink', "counter"]
+possible_labels = load_labels()
 extent_labels = ['width', 'height', 'depth']
-
 default_countertop_thickness = 0.04
 default_drawer_depth = 0.024
 
