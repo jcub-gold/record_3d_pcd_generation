@@ -1,7 +1,5 @@
 # record_3d_pcd_generation
-Recreate Erics PCD generation and add pcd to simple urdf primitives heuristic
-
-TODO: add comments on erics portion of the code, update readme with full directions of the pipeline, create pcd to urdf simple geometries heuristic, get mesh generation portion working
+Real2Code2Real URDF generation pipeline.
 
 ## Setup Directions
 ### 1. Clone repo
@@ -26,11 +24,12 @@ bash download_ckpts.sh
 
 ### 1. Setup the data structure for the scene
 ```bash
-python3 -m src.real2code2real.setup_structure --scene_name=example_scene --num_objects=1 --num_states=1
+conda activate r2c2r
+```
+```bash
+python3 -m src.real2code2real.setup_structure --scene_name=example_scene
 ```
 - scene_name specifies the name of your scene
-- num_objects specifies the number of objects in your scene
-- num_states specifies the number of states per object
 
 ### 2.  Scan input data
 - Scan video with Record3d
@@ -49,67 +48,51 @@ data/scene_name/record3d_input/
 └── metadata.json
 ```
 
-### 3. Segment frames
+### 3. Generate the template URDF
 ```bash
-python3 -m src.real2code2real.get_masks --scene_name=example_scene --dataset_size=1200
+python3 -m src.real2code2real.generate_template_urdf --scene_name=example_scene --dataset_size=1200
 ```
 - dataset_size specifies how many input frames to down-sample and use
-- Run real2code2real/get_masks.py with the new dataset size and how many objects to segment. Then for each object, enter in:
-    - start_frame end_frame
-    - frame1 frame_state pixel1X pixel1Y pixel2X pixel2Y …
-    - frame2 frame_state pixel1X pixel1Y …
-    - Double enter once done filling in the current object
-    - frame_state = 1 means points are positive and will be included. frame_state = -1 means do not include any instance of the specified object in the segmented mas.draw boxes with pairs of points using frame_state = 0 (frame_state = 0 NOT recommended)
-    - Can check the pixels using labeled directory or using Jacob’s pixel selector
+- There will be two GUIs displayed for object labeling and segmentation
+    - In the first GUI, you will be prompted to enter the start frame number (first frame of appearance without occlussion) and the end frame number (last frame of appearance without occlusion) as well as the label for each object
+    - In the second GUI, you will be prompted to select points for segmentation for each object
 
-Example Run:
-![Example run](example.png)
 
-- At the end of generation, the input directory will look like:
+- In this step, you can also specify parameters for point cloud generation
+    - "--eps=0.03 --min_points=15 --nb_neighbors=15 --std_ratio=2"
+
+NOTE: You need one counter object in the scene to get the depth dimension for each object
+
+### 4. Scan indivual assets for mesh generation
+- Take rgb (non HDR) videos of opened assets desired for mesh generation
+- Save videos in the multiview directory under the associated object directory
 ```
-scene_name/
-├── depth/
-├── input/
-│   ├── 0.jpg
-│   ├── 1.jpg
-│   └── ...
-├── input_depth/
-│   ├── [m].exr
-│   ├── [m+1].exr
-│   └── ...
-├── labeled/
-│   ├── 0.jpg
-│   ├── 1.jpg
-│   └── ...
+data/scene_name/multiview/
 ├── object_1/
-│   ├── images/
-│   │   ├── [m].png
-│   │   ├── [m+1].png
-│   │   └── ...
-│   ├── input/
-│   │   ├── [m].jpg
-│   │   ├── [m+1].jpg
-│   │   └── ...
-│   ├── output/
-│   │   └── masked_video.mp4
-├── rgb/
-├── metadata.json
-└── new_metadata.json
+│   └── movie_1.mov
+├── object_8/
+│   └── movie_2.mov
 ```
 
-### 4. PCD Generation
+### 5. Prepare input for TRELLIS
 ```bash
-python3 -m src.real2code2real.generate_pcds --scene_name=example_scene --eps=0.03 --min_points=15 --nb_neighbors=15 --std_ratio=2 --load_cached_frames=True
+python3 -m src.real2code2real.prepare_mesh_input --scene_name=example_scene
 ```
-- choose frames for pcd generation or run script to select frames per object to be used for pcd generation (usally the first frame is bad and around 2 frames is recommended)
 
-### 5. Simple URDF Generation
+- Here you will be prompted to select points for segmentation again in each video
+
+### 6. Generate meshes
 ```bash
-python3 -m src.real2code2real.generate_simple_urdf --scene_name=example_scene --load_cached_labels=True
+conda activate trellis
 ```
-- label each object
+```bash
+python3 -m src.real2code2real.generate_realistic_mesh --scene_name=example_scene
+```
 
-### 6. Mesh Generation
-
-
-test
+### 7. Generate final urdf
+```bash
+conda activate r2c2r
+```
+```bash
+python3 -m src.real2code2real.generate_realistic_urdf --scene_name=example_scene
+```
