@@ -6,6 +6,7 @@ import cv2
 from scipy.spatial.transform import Rotation
 import OpenEXR
 import Imath
+import re
 
 """
     Function: get_number
@@ -108,3 +109,74 @@ def prepare_record3d_data(images_dir, depth_dir, metadata_path):
         output["frames"][frame] = [mask_img, depth_img, extrinsics]
 
     return output
+
+
+
+# select n evenly spaced frames from a list, ensuring first and last are included
+def select_evenly_spaced(lst, n=5):
+    if n < 2 or n > len(lst):
+        n=2
+    if n < 2 or n > len(lst):
+        raise ValueError("n must be at least 2 and at most the length of the list")
+    indices = [round(i * (len(lst) - 1) / (n - 1)) for i in range(n)]
+    return [lst[i] for i in indices]
+
+# select frames every 10 frames, ensuring first and last are included
+def select_custom_frames(lst):
+    if len(lst) == 0:
+        return []
+
+    lst = sorted([int(f) for f in lst])
+    selected = lst[::10]
+
+    # Ensure first and last are included
+    if lst[0] not in selected:
+        selected.insert(0, lst[0])
+    if lst[-1] not in selected:
+        selected.append(lst[-1])
+
+    # Remove duplicates and sort
+    selected = sorted(set(selected))
+
+    return [str(f) for f in selected]
+
+def extract_frame_numbers(base_dir):
+    output_path = base_dir + '/cached_frames.json'
+    base_dir = base_dir + '/record3d_input'
+    result = {}
+
+    # Match directories like object_1, object_2, etc.
+    pattern = re.compile(r"^object_\d+$")
+
+    for entry in os.listdir(base_dir):
+        obj_dir = os.path.join(base_dir, entry)
+        images_dir = os.path.join(obj_dir, "images")
+
+        # Check that it's a directory named object_n with an images/ subdirectory
+        if pattern.match(entry) and os.path.isdir(images_dir):
+            frame_numbers = []
+            for file_name in os.listdir(images_dir):
+                if file_name.endswith(".png"):
+                    try:
+                        frame_num = os.path.splitext(file_name)[0]  # Remove .png
+                        int_frame = int(frame_num)  # Validate it's numeric
+                        frame_numbers.append(str(int_frame))
+                    except ValueError:
+                        continue  # Skip if filename is not numeric
+
+            # Replace this line in the original:
+            frame_numbers.sort(key=lambda x: int(x))
+
+            # Add this:
+            good_frames = frame_numbers[1: -1]
+            result[entry] = select_evenly_spaced(good_frames)
+            
+            # if len(frame_numbers) >= 2:
+            #     result[entry] = [frame_numbers[1], frame_numbers[-2]]
+            # elif frame_numbers:
+            #     result[entry] = frame_numbers  # fallback if fewer than 5 frames
+
+
+    # Save the result to JSON
+    with open(output_path, "w") as f:
+        json.dump(result, f, indent=4)

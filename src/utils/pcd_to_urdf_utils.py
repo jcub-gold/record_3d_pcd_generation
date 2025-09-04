@@ -72,7 +72,7 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
         files = list(iter_pcd_files(aa_pcds_path))
 
     if load_cached_labels:
-        with open(os.path.join(input_path, "cached_labels.json"), "r") as f:
+        with open(os.path.join(input_path, "cache.json"), "r") as f:
             cache = json.load(f)
     else:
         string = "Either type full label or a number for the label list below:\n"
@@ -89,7 +89,7 @@ def prepare_pcd_data(pcds_path, save_labels=None, load_cached_labels=False):
         obj_num = int(match.group(1))
 
         if cache is not None:
-            label = cache[f"object_{obj_num}"]
+            label = cache[f"object_{obj_num}"]["label"]
         else:
             label_in = input(f"Enter label for {fname}: ")
             try:
@@ -227,7 +227,8 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=
     #     for asset in pcd_data:
     #         if asset['label'] == "counter":
     #             counters.append(asset)
-    output_path = f"simple_urdf_scenes/{scene_name}/{scene_name}.urdf"
+    output_path_1 = f"simple_urdf_scenes/{scene_name}/{scene_name}.urdf"
+    output_path_2 = f"scenes/{scene_name}/{scene_name}.urdf"
     cache = {}
     cache['vertical_placement_pairs'] = []
     unplaced_assets = {}
@@ -322,8 +323,9 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=
         for counter in unplaced_assets['counter']:
             place_counter_top(s, counter, pcd_data)
 
-    s.export(output_path)
-    print(f"{GREEN} Successfully generated URDF at {output_path}!{RESET}")
+    s.export(output_path_1)
+    s.export(output_path_2)
+    print(f"{GREEN} Successfully generated URDF at {output_path_1} and {output_path_2}!{RESET}")
     with open(os.path.join("data", scene_name, "cached_vertical_pairs.json"), "w") as f:
         json.dump(cache, f, indent=4)
         

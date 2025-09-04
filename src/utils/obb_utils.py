@@ -102,16 +102,16 @@ def get_mesh_rotation_from_aabb_min_xz(
 
 
 
-mesh_path = "data/basement_test_2/output copy/object_8/object_8_mesh.obj"
-mesh = trimesh.load(mesh_path)
-angle = get_mesh_rotation_from_pca(mesh)
-angle = get_mesh_rotation_from_aabb_min_xz(mesh)
-print(f"Rotation angle (deg): {angle * 180 / np.pi}")
+# mesh_path = "data/basement_test_2/output copy/object_8/object_8_mesh.obj"
+# mesh = trimesh.load(mesh_path)
+# angle = get_mesh_rotation_from_pca(mesh)
+# angle = get_mesh_rotation_from_aabb_min_xz(mesh)
+# print(f"Rotation angle (deg): {angle * 180 / np.pi}")
 
-# Create rotation matrix around Y axis (since XZ plane)
-rotation_matrix = trimesh.transformations.rotation_matrix(-angle, [0, 1, 0], mesh.centroid)
-mesh.apply_transform(rotation_matrix)
+# # Create rotation matrix around Y axis (since XZ plane)
+# rotation_matrix = trimesh.transformations.rotation_matrix(-angle, [0, 1, 0], mesh.centroid)
+# mesh.apply_transform(rotation_matrix)
 
-# Save rotated mesh
-output_path = "output.obj"
-mesh.export(output_path)
+# # Save rotated mesh
+# output_path = "output.obj"
+# mesh.export(output_path)
