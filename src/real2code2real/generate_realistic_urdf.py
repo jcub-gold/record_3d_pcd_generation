@@ -38,8 +38,8 @@ if __name__ == "__main__":
 
     for obj in asset_names.keys():
         print(f"Replacing simple geometry for {obj}...")
-        if obj != "object_10":
-            continue
+        # if obj != "object_10":
+        #     continue
         if 'drawer' in asset_names[obj]:
             link_name = asset_names[obj] + "_drawer_0_0"
         elif 'cabinet' in asset_names[obj]:

@@ -6,7 +6,7 @@ import subprocess
 import sys
 import glob
 import re
-from src.utils.simulate_frame_caching_utils import select_evenly_spaced
+from src.utils.data_utils import select_evenly_spaced
 from src.guis.point_prompting_gui import run_prompt_gui
 import json
 

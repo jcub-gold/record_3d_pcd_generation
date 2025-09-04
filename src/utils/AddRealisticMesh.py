@@ -122,7 +122,7 @@ class AddRealisticMesh:
         phi = _reduce_mod_90(theta)
         if abs(np.degrees(phi)) < deg_threshold:
             phi = 0.0
-        print(phi)
+        # print(phi)
 
         R = trimesh.transformations.rotation_matrix(-phi, [0, 1, 0])
         mesh.apply_transform(R)

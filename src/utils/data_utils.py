@@ -140,7 +140,7 @@ def select_custom_frames(lst):
 
     return [str(f) for f in selected]
 
-def extract_frame_numbers(base_dir):
+def extract_frame_numbers(base_dir, custom=False):
     output_path = base_dir + '/cached_frames.json'
     base_dir = base_dir + '/record3d_input'
     result = {}
@@ -170,6 +170,8 @@ def extract_frame_numbers(base_dir):
             # Add this:
             good_frames = frame_numbers[1: -1]
             result[entry] = select_evenly_spaced(good_frames)
+            if custom:
+                result[entry] = select_custom_frames(frame_numbers)
             
             # if len(frame_numbers) >= 2:
             #     result[entry] = [frame_numbers[1], frame_numbers[-2]]
