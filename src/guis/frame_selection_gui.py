@@ -4,12 +4,21 @@ import re
 import cv2
 import bisect
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Button, TextBox
+from matplotlib.widgets import Button, TextBox, RadioButtons
+import json
 
 _IMAGE_EXTS = {".jpg", ".jpeg", ".png"}
 # digits immediately before extension: 00012.jpg or frame_00012.png -> "00012"
 _DIGITS_BEFORE_EXT = re.compile(r"(\d+)(?=\.(?:jpe?g|png)$)", re.IGNORECASE)
 
+_CONFIG_DIR = "Configs"
+
+
+def load_labels():
+    labels_path = os.path.join(_CONFIG_DIR, "label_config.json")
+    with open(labels_path, "r") as f:
+        data = json.load(f)
+    return data["labels"]
 
 def _collect_frames(img_dir):
     """
@@ -52,44 +61,66 @@ def _nearest_existing(frames, n):
     return before if (n - before) <= (after - n) else after
 
 
-def run_frame_range_gui(img_dir: str, start_frame_num: int):
-    """
-    Display an image viewer for selecting a [start_frame, end_frame] range.
-
-    Args:
-      img_dir: path to directory of images
-      start_frame_num: desired starting frame number to display
-
-    Returns:
-      [start_frame_num, end_frame_num] (both guaranteed to exist in the folder).
-      If start > end, they will be swapped on finish.
-    """
+def run_frame_range_gui(img_dir: str, start_frame_num: int, title="Title"):
     frames, paths = _collect_frames(img_dir)
 
-    # Pick initial displayed frame: nearest to requested number (exact if present)
+    labels = load_labels()
+    if not labels:
+        raise ValueError("No labels provided/found for selection.")
+
     current_frame = _nearest_existing(frames, int(start_frame_num))
     idx = frames.index(current_frame)
+    current_label = labels[0]
 
-    # Matplotlib setup
+    # Figure + layout constants
     fig = plt.figure(figsize=(10, 7))
-    ax_img = fig.add_axes([0.05, 0.15, 0.70, 0.8])
 
-    # Controls area
-    ax_left10 = fig.add_axes([0.80, 0.75, 0.07, 0.06])
-    ax_left1  = fig.add_axes([0.88, 0.75, 0.07, 0.06])
-    ax_right1 = fig.add_axes([0.80, 0.66, 0.07, 0.06])
-    ax_right10= fig.add_axes([0.88, 0.66, 0.07, 0.06])
+    # Left: image viewport
+    ax_img = fig.add_axes([0.05, 0.13, 0.67, 0.82])
 
-    ax_start_label = fig.add_axes([0.80, 0.52, 0.15, 0.04]); ax_start_label.axis("off")
-    ax_start_box   = fig.add_axes([0.80, 0.48, 0.15, 0.05])
-    ax_end_label   = fig.add_axes([0.80, 0.40, 0.15, 0.04]); ax_end_label.axis("off")
-    ax_end_box     = fig.add_axes([0.80, 0.36, 0.15, 0.05])
+    # Right: control column (use consistent positions)
+    PANEL_LEFT = 0.65
+    PANEL_W    = 0.22
+    SP         = 0.02
+    BTN_H      = 0.06
+    BTN_W      = (PANEL_W - SP) / 2.0
 
-    ax_done = fig.add_axes([0.80, 0.22, 0.31, 0.07])
+    # Arrow rows
+    row1_y = 0.80
+    row2_y = 0.72
+    ax_left10 = fig.add_axes([PANEL_LEFT,             row1_y, BTN_W, BTN_H])
+    ax_left1  = fig.add_axes([PANEL_LEFT+BTN_W+SP,    row1_y, BTN_W, BTN_H])
+    ax_right1 = fig.add_axes([PANEL_LEFT,             row2_y, BTN_W, BTN_H])
+    ax_right10= fig.add_axes([PANEL_LEFT+BTN_W+SP,    row2_y, BTN_W, BTN_H])
 
-    # Load and show image
+    # Place a centered, bold title just above the first arrow row
+    ax_ctrl_title = fig.add_axes([PANEL_LEFT, row1_y + BTN_H + SP*0.5, PANEL_W, 0.06])
+    ax_ctrl_title.axis("off")
+    ax_ctrl_title.text(
+        0.5, 0.5, title,
+        ha="center", va="center",
+        fontsize=16, fontweight="bold"
+    )
+
+    # Start/End fields
+    ax_start_label = fig.add_axes([PANEL_LEFT, 0.63, PANEL_W, 0.03]); ax_start_label.axis("off")
+    ax_start_box   = fig.add_axes([PANEL_LEFT, 0.58, PANEL_W, 0.05])
+    ax_end_label   = fig.add_axes([PANEL_LEFT, 0.52, PANEL_W, 0.03]); ax_end_label.axis("off")
+    ax_end_box     = fig.add_axes([PANEL_LEFT, 0.47, PANEL_W, 0.05])
+
+    # Label dropdown header + button
+    ax_label_hdr   = fig.add_axes([PANEL_LEFT, 0.41, PANEL_W, 0.03]); ax_label_hdr.axis("off")
+    ax_label_btn   = fig.add_axes([PANEL_LEFT, 0.36, PANEL_W, 0.05])
+
+    # Dropdown menu size (adapt to number of labels, capped)
+    # Each radio item ~0.03 high; add a little padding
+    menu_items_h = 0.03 * max(1, len(labels))
+    menu_h = min(0.20, menu_items_h + 0.02)
+    ax_label_menu  = fig.add_axes([PANEL_LEFT, 0.16, PANEL_W, menu_h])  # sits above Done
+    ax_done        = fig.add_axes([PANEL_LEFT, 0.08, PANEL_W, 0.07])
+
+    # ---- image show ----
     img_artist = None
-
     def _show(idx_):
         nonlocal img_artist
         idx_ = max(0, min(idx_, len(frames) - 1))
@@ -104,116 +135,116 @@ def run_frame_range_gui(img_dir: str, start_frame_num: int):
         else:
             img_artist.set_data(img_rgb)
 
-        # 👇 show the actual filename + keep the (i/total)
         fname = os.path.basename(paths[frame_num])
         ax_img.set_title(f"{fname}  ({idx_+1}/{len(frames)})")
-
         ax_img.axis("off")
         fig.canvas.draw_idle()
         return idx_
-
-
     idx = _show(idx)
 
-    # Buttons
-    btn_l10 = Button(ax_left10, "<<")   # -10
-    btn_l1  = Button(ax_left1,  "<")    # -1
-    btn_r1  = Button(ax_right1, ">")    # +1
-    btn_r10 = Button(ax_right10, ">>")  # +10
-
+    # ---- navigation buttons ----
+    btn_l10 = Button(ax_left10, "<<");   btn_l1  = Button(ax_left1,  "<")
+    btn_r1  = Button(ax_right1, ">");    btn_r10 = Button(ax_right10, ">>")
     def move(delta):
         nonlocal idx
         idx = max(0, min(idx + delta, len(frames) - 1))
         idx = _show(idx)
-
     btn_l10.on_clicked(lambda _: move(-10))
-    btn_l1.on_clicked(lambda _: move(-1))
-    btn_r1.on_clicked(lambda _: move(+1))
+    btn_l1 .on_clicked(lambda _: move(-1))
+    btn_r1 .on_clicked(lambda _: move(+1))
     btn_r10.on_clicked(lambda _: move(+10))
 
-    # Labels + text boxes
+    # ---- start/end text boxes ----
     ax_start_label.text(0, 0.5, "Start frame:", va="center", fontsize=10)
     ax_end_label.text(0, 0.5, "End frame:", va="center", fontsize=10)
 
     start_box = TextBox(ax_start_box, "", initial=str(frames[idx]))
     end_box   = TextBox(ax_end_box,   "", initial=str(frames[idx]))
 
-    def _normalize_to_existing(textbox):
-        """Clamp/snap textbox value to nearest valid frame; write back as int."""
+    def _nearest_existing_int(txt):
         try:
-            val = int(round(float(textbox.text)))
+            val = int(round(float(txt)))
         except Exception:
-            val = frames[idx]
-        snapped = _nearest_existing(frames, val)
+            return frames[idx]
+        return _nearest_existing(frames, val)
+
+    def _normalize_to_existing(textbox):
+        snapped = _nearest_existing_int(textbox.text)
         if str(snapped) != textbox.text:
             textbox.set_val(str(snapped))
         return snapped
 
-    def on_submit_start(_):
-        _normalize_to_existing(start_box)
+    start_box.on_submit(lambda _: _normalize_to_existing(start_box))
+    end_box  .on_submit(lambda _: _normalize_to_existing(end_box))
 
-    def on_submit_end(_):
-        _normalize_to_existing(end_box)
+    # ---- label dropdown (radio menu that toggles) ----
+    ax_label_hdr.text(0, 0.5, "Label:", va="center", fontsize=10)
+    label_btn = Button(ax_label_btn, current_label)
 
-    start_box.on_submit(on_submit_start)
-    end_box.on_submit(on_submit_end)
+    rb = RadioButtons(ax_label_menu, labels, active=0)
+    ax_label_menu.set_visible(False)
+    ax_label_menu.set_title("Choose label")
+    menu_open = [False]
 
-    # Keyboard navigation
+    def toggle_menu(_=None):
+        menu_open[0] = not menu_open[0]
+        ax_label_menu.set_visible(menu_open[0])
+        fig.canvas.draw_idle()
+
+    def on_label_selected(lbl):
+        nonlocal current_label
+        current_label = lbl
+        label_btn.label.set_text(lbl)
+        ax_label_menu.set_visible(False)
+        menu_open[0] = False
+        fig.canvas.draw_idle()
+
+    label_btn.on_clicked(toggle_menu)
+    rb.on_clicked(on_label_selected)
+
+    # ---- keyboard ----
     def on_key(event):
         k = (event.key or "").lower()
-        if k == "left":
-            move(-1)
-        elif k == "right":
-            move(+1)
-        elif k == "shift+left":
-            move(-10)
-        elif k == "shift+right":
-            move(+10)
-        elif k == "enter":
-            finish()  # allow Enter to finish
-
+        if   k == "left":         move(-1)
+        elif k == "right":        move(+1)
+        elif k == "shift+left":   move(-10)
+        elif k == "shift+right":  move(+10)
+        elif k == "enter":        finish()
+        elif k == "escape" and menu_open[0]:
+            toggle_menu()
     fig.canvas.mpl_connect("key_press_event", on_key)
 
-    # Done
+    # ---- finish / return ----
     result = {"done": False, "pair": None}
-
     def finish(_=None):
         s = _normalize_to_existing(start_box)
         e = _normalize_to_existing(end_box)
         if s > e:
             s, e = e, s
-            # reflect the swap visually
-            start_box.set_val(str(s))
-            end_box.set_val(str(e))
+            start_box.set_val(str(s)); end_box.set_val(str(e))
         result["pair"] = [s, e]
         result["done"] = True
-        try:
-            plt.close(fig)
-        except Exception:
-            pass
+        try: plt.close(fig)
+        except Exception: pass
 
     btn_done = Button(ax_done, "Done")
     btn_done.on_clicked(finish)
 
-    # Help text
+
     fig.text(
         0.05, 0.05,
-        "Navigation: <, > = ±1   |   <<, >> = ±10   |   Shift+Arrow = ±10   |   Enter = Done",
+        "Navigation: <, > = ±1   |   <<, >> = ±10   |   Shift+Arrow = ±10   |   Enter = Done   |   Click label to select",
         fontsize=9,
     )
 
-    # Block until closed
     plt.show()
 
-    # If window closed without Done, still return current (snapped) values
     if not result["done"]:
         s = _nearest_existing(frames, int(start_box.text) if start_box.text.strip() else frames[idx])
         e = _nearest_existing(frames, int(end_box.text) if end_box.text.strip() else frames[idx])
-        if s > e:
-            s, e = e, s
-        return [s, e]
-
-    return result["pair"]
+        if s > e: s, e = e, s
+        return [s, e], current_label
+    return result["pair"], current_label
 
 
 if __name__ == "__main__":

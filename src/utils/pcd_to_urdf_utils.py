@@ -25,21 +25,6 @@ default_countertop_thickness = 0.04
 default_drawer_depth = 0.024
 
 """
-second_floor_test
-label_clusters = [3, 1, 1, 1, 1]
-extent_indices = [(0, 1, 2), (1,), (1,), (0, 1), (0,)]
-"""
-# # basement_test
-# label_clusters = [5, 1, 1, 2]
-# extent_indices = [(0, 1, 2), (0, 1, 2), (1,), (1,), ]
-# second_floor_test
-label_clusters = [1, 1, 3, 1, 1]
-extent_indices = [(1,), (0,), (0, 1, 2), (1,), (0, 1)]
-# # base_cabinet_test
-# label_clusters = [1, 1]
-# extent_indices = [(0, 1, 2), (1,)]
-
-"""
     Function: prepare_pcd_data
     --------------------------
     pcd_path: path to the .pcd file to be processed
