@@ -239,16 +239,55 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=
     s = synth.Scene()
     placed_assets = []
 
-    if unplaced_assets.get('drawer') is None:
-        print('No drawer asset in scene :(')
-        return 
-    # place the first asset, prioritize a drawer asset for depth calculation
-    parent_asset = unplaced_assets['drawer'].pop()
-    # print(parent_asset)
+    DEFAULT_DEPTH = 0.6
 
-    parent_asset['depth'] = .7 # hardcoded right now
+    # -------- collect eligible parents (any non-counter, NOT containing "upper") --------
+    parent_candidates = []
+    for k, lst in list(unplaced_assets.items()):
+        if k == "counter" or not isinstance(lst, list):
+            continue
+        for idx, a in enumerate(lst):
+            lab = (a.get("label") or a.get("name") or "")
+            if "upper" in lab.lower():
+                continue
+            parent_candidates.append((k, idx, a))
+
+    parent_asset = None
+    depth = None
+
+    # -------- try computing depth using all counters at once (your API) --------
     if unplaced_assets.get("counter") is not None:
-        parent_asset['depth'] = get_depth_from_counter(unplaced_assets["counter"], parent_asset)
+        for k, idx, p in parent_candidates:
+            try:
+                d = get_depth_from_counter(unplaced_assets["counter"], p)
+                if d is None:
+                    continue
+                depth = float(d)
+                parent_asset = p
+                # remove chosen parent so it isn't reused later
+                unplaced_assets[k].pop(idx)
+                break
+            except Exception:
+                # this parent didn't work with the provided counters; try next parent
+                continue
+
+    # -------- fallback if nothing worked --------
+    if parent_asset is None:
+        if parent_candidates:
+            k, idx, p = parent_candidates[0]
+            parent_asset = unplaced_assets[k].pop(idx)
+            depth = DEFAULT_DEPTH
+            if unplaced_assets.get("counter") is None:
+                print(f"[warn] No counter assets provided; falling back to depth {DEFAULT_DEPTH:.3f}.")
+            else:
+                print(f"[warn] No valid (parent, counters) pairing succeeded; "
+                    f"falling back to depth {DEFAULT_DEPTH:.3f}.")
+        else:
+            print("[error] No valid parent asset found (must not be a counter and must not contain 'upper').")
+            return
+
+    # -------- finalize --------
+    parent_asset["depth"] = depth
     print(f" DEPTH!!!!! {parent_asset['depth']}")
 
 
@@ -315,7 +354,7 @@ def pcd_to_urdf_simple_geometries(pcd_data, combined_center, labels, scene_name=
         # s.show()
 
     # place counters
-    if len(unplaced_assets['counter']) > 0:
+    if unplaced_assets.get("counter") is not None and len(unplaced_assets['counter']) > 0:
         for counter in unplaced_assets['counter']:
             place_counter_top(s, counter, pcd_data)
 
