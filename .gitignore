@@ -238,3 +238,5 @@ genesis_viz.py
 quick_2.py
 combined_pcd.ply
 src/real2code2real/get_masks.py
+src/real2code2real/generate_simple_urdf.py
+src/real2code2real/generate_pcds.py
