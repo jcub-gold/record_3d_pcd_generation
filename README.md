@@ -5,19 +5,19 @@ Real2Code2Real URDF generation pipeline.
 ### 1. Clone repo
 ```bash
 git clone https://github.com/jcub-gold/record_3d_pcd_generation
+git submodule init
+git submodule update
 ```
 ### 2. Install requirements
 ```bash
-mamba create -y -n r2c2r python=3.10 pip cmake ninja
-mamba activate r2c2r
-
-
-pip install -r requirements.txt
+conda env create -f r2c2r.yml
+conda env create -f trellis.yml
 ```
 ### 3. Download sam2 checkpoints
 ```bash
 cd submodules/sam2/checkpoints
 bash download_ckpts.sh
+cd../../..
 ```
 
 ## Pipeline Directions:

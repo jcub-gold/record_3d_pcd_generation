@@ -112,9 +112,8 @@ retrying==1.3.4
 rich==14.1.0
 rpds-py==0.23.1
 rtree==1.4.0
--e git+https://github.com/facebookresearch/sam2.git@2b90b9f5ceec907a1c18123530e92e794ad901a4#egg=SAM_2
--e git+https://github.com/jcub-gold/modified_scene_synthesizer@11c543499c63813f2ea2e5a8400544057a399110#egg=scene_synthesizer&subdirectory=../../../submodules/scene_synthesizer
-scikit-image==0.25.2
+-e ./submodules/sam2
+-e ./submodules/scene_synthesizer
 scikit-learn==1.6.1
 scipy==1.15.2
 scooby==0.10.1

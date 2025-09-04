@@ -1,4 +1,4 @@
-name: trellis_full
+name: trellis
 channels:
   - nvidia
   - conda-forge
