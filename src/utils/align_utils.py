@@ -1,6 +1,16 @@
 import open3d as o3d
 import numpy as np
 
+"""
+Function: remove_outliers_largest_cluster
+----------------------------------------
+pcd: open3d.geometry.PointCloud object
+eps: DBSCAN epsilon parameter for clustering
+min_points: minimum number of points for a cluster
+
+Removes outliers from the point cloud by keeping only the largest DBSCAN cluster.
+Returns the filtered point cloud.
+"""
 def remove_outliers_largest_cluster(pcd, eps=0.05, min_points=10):
 
     if len(np.asarray(pcd.points)) < min_points:
@@ -27,8 +37,19 @@ def remove_outliers_largest_cluster(pcd, eps=0.05, min_points=10):
     
     return largest_cluster_pcd
 
+"""
+Function: create_pcd_from_frame
+-------------------------------
+data: dictionary containing intrinsics and frames
+frame_index: index of the frame to process
+remove_outliers: dictionary of outlier removal parameters (optional, but recommended)
+shrink: number of pixels to shrink the mask by on each edge (default 10)
 
-def create_pcd_from_frame(data, frame_index, samples=5000, remove_outliers=None):
+
+Creates a point cloud from a single RGB-D frame, applies masking and optional but recommended outlier removal.
+Returns the processed open3d.geometry.PointCloud object.
+    """
+def create_pcd_from_frame(data, frame_index, remove_outliers=None, shrink=10):
 
     intrinsics = data["intrinsics"]
     frame = data["frames"][frame_index]
@@ -42,14 +63,9 @@ def create_pcd_from_frame(data, frame_index, samples=5000, remove_outliers=None)
     else:
         alpha_mask = np.ones(mask_img.shape[:2], dtype=bool)        
 
-    # depth_img[~alpha_mask] = 0
-
-    # Shrink mask by 5 pixels from each edge
-    shrink = 10
+    # Shrink mask by {shrink} pixels from each edge
     alpha_mask_shrunk = np.zeros_like(alpha_mask, dtype=bool)
     alpha_mask_shrunk[shrink:-shrink, shrink:-shrink] = alpha_mask[shrink:-shrink, shrink:-shrink]
-
-    # Apply the shrunk mask
     depth_img[~alpha_mask_shrunk] = 0
 
     rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(
