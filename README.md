@@ -17,7 +17,7 @@ conda env create -f trellis.yml
 ```bash
 cd submodules/sam2/checkpoints
 bash download_ckpts.sh
-cd../../..
+cd ../../..
 ```
 
 ## Pipeline Directions:
