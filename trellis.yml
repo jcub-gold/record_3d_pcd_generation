@@ -208,4 +208,4 @@ dependencies:
       - xatlas==0.0.11
       - xformers==0.0.27.post2+cu118
       - zipp==3.23.0
-prefix: /local/real/jngoldbe/miniforge3/envs/trellis_full
+prefix: /local/real/jngoldbe/miniforge3/envs/trellis
