@@ -6,6 +6,24 @@ import os
 import json
 from tqdm import tqdm
 
+"""
+Function: generate_pcds
+-----------------------
+scene_name: name of the scene folder under `data/` (e.g., "basement_test")
+eps: DBSCAN epsilon parameter used by `remove_outliers_largest_cluster` (distance threshold)
+min_points: minimum points per cluster for DBSCAN (used by `remove_outliers_largest_cluster`)
+nb_neighbors: `nb_neighbors` parameter for Open3D statistical outlier removal
+std_ratio: `std_ratio` parameter for Open3D statistical outlier removal
+save_frames: optional dict to populate and save as `data/{scene_name}/cached_frames.json`
+load_cached_frames: if True, load frame indices from `data/{scene_name}/cached_frames.json` instead of prompting
+
+Scans `data/{scene_name}/record3d_input/` for `object_{n}` folders, prepares per-frame data with
+`prepare_record3d_data`, and builds each object's point cloud by calling `create_pcd_from_frame`
+for the selected frames. Applies outlier filtering: keeps the largest DBSCAN cluster and then
+runs statistical outlier removal (parameters above). Writes final point clouds to
+`data/{scene_name}/pcds/object_{n}_pcd.ply`. If `save_frames` is provided it will be written
+to `data/{scene_name}/cached_frames.json`. This function performs I/O and prints progress via `tqdm`.
+"""
 def generate_pcds(scene_name, eps=0.05, min_points=10, nb_neighbors=10, std_ratio=3.0, save_frames=None, load_cached_frames=False):
     obj_data = {}
 

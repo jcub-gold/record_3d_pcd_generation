@@ -3,6 +3,16 @@ from submodules.TRELLIS.trellis.renderers import MeshRenderer, GaussianRenderer
 import imageio
 import os
 
+"""
+Function: save_object
+---------------------
+object_output: dictionary containing 'mesh' and 'gaussian' model outputs
+output_path: path to the output directory
+object_name: optional name prefix for output files (default "")
+is_glb: if True, exports as GLB format; if False, exports as OBJ format (default False)
+
+Renders and saves mesh and Gaussian sample videos, and exports the mesh in the specified format.
+"""
 def save_object(object_output, output_path, object_name="", is_glb=False):
     if object_name:
         object_name += "_"
