@@ -25,6 +25,7 @@ cd ../../..
 ### 1. Setup the data structure for the scene
 ```bash
 conda activate r2c2r
+python3 -m pip install -e submodules/scene_synthesizer
 ```
 ```bash
 python3 -m src.real2code2real.setup_structure --scene_name=example_scene
