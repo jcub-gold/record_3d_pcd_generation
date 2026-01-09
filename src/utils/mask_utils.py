@@ -15,9 +15,16 @@ else:
     device = torch.device("cpu")
 print(device)
 
-def get_labeled_images(labeled_dir, images_dir):
 
-    # Create a directory of all the labeled images to prompt SAM to create masks
+"""
+Function: get_labeled_images
+----------------------------
+labeled_dir: directory to save labeled images
+images_dir: directory containing input images
+
+Saves labeled images with grid overlays for manual annotation.
+"""
+def get_labeled_images(labeled_dir, images_dir):
     frame_names = [
         p for p in os.listdir(images_dir)
         if os.path.splitext(p)[-1] in [".jpg", ".jpeg", ".JPG", ".JPEG", ".png"]
@@ -40,6 +47,14 @@ def get_labeled_images(labeled_dir, images_dir):
             plt.savefig(f"{labeled_dir}/{frame}")
             plt.close()
 
+"""
+Function: get_masks
+-------------------
+images_dir: directory containing input images
+object_prompts: list of prompts for segmentation
+
+Runs SAM2 segmentation and returns mask results and inference state.
+"""
 def get_masks(images_dir, object_prompts):
     video_segments = {}  # video_segments contains the per-frame segmentation results
     predictor = build_sam2_video_predictor(model_cfg, sam2_checkpoint, device=device)
@@ -88,6 +103,13 @@ def get_masks(images_dir, object_prompts):
 
     return video_segments, inference_state
 
+"""
+Function: load_masks
+--------------------
+images_dir: directory containing input images
+
+Loads saved mask arrays from disk and returns a nested dictionary.
+"""
 def load_masks(images_dir):
     filepath = os.path.join(images_dir, "sam_masks.npz")
     loaded_data = np.load(filepath, allow_pickle=True)
@@ -103,22 +125,43 @@ def load_masks(images_dir):
     print(f"Dictionary loaded from {filepath}.")
     return nested_dict
 
-def standardize_names(images_dir, frame_names):
+"""
+Function: standardize_names
+---------------------------
+images_dir: directory containing input images
+frame_names: list of frame file names
 
-    # Rename each file
+Renames files to a standard numeric format (e.g., 0.jpg, 1.jpg, ...).
+"""
+def standardize_names(images_dir, frame_names):
     for i, file in enumerate(frame_names):
         old_path = os.path.join(images_dir, file)
         new_path = os.path.join(images_dir, f"{i}.jpg")
         os.rename(old_path, new_path)
 
-def unstandardize_names(output_dir, frame_names, extension):
+"""
+Function: unstandardize_names
+-----------------------------
+output_dir: directory containing output images
+frame_names: list of original frame file names
+extension: file extension (e.g., ".jpg", ".png")
 
+Restores original file names after processing.
+"""
+def unstandardize_names(output_dir, frame_names, extension):
     for i, file in reversed(list(enumerate(frame_names))):
         old_path = os.path.join(output_dir, f"{i}{extension}")
         new_path = os.path.join(output_dir, file.split(".")[0] + extension)
         os.rename(old_path, new_path)
 
-# Create video from a series of frames in {output_dir}/images
+"""
+Function: create_video
+----------------------
+base_dir: base directory containing images and output folders
+fps: frames per second for the video (default 30)
+
+Creates a video from processed image frames using ffmpeg.
+"""
 def create_video(base_dir, fps=30):
     images_dir = os.path.join(base_dir, "images")
     output_dir = os.path.join(base_dir, "output")
@@ -141,27 +184,38 @@ def create_video(base_dir, fps=30):
     except subprocess.CalledProcessError as e:
         print(f"Error occurred during video creation: {e}")
         
+"""
+Function: save_masked_image_as_rgba
+-----------------------------------
+image: numpy array of the image
+mask: numpy array of the mask
+save_path: path to save the RGBA image
 
+Saves an RGBA image with mask as alpha channel and background set to black.
+"""
 def save_masked_image_as_rgba(image, mask, save_path):
 
     mask = mask.astype(bool)
     
     # Create an RGBA image
     rgba_image = np.zeros((image.shape[0], image.shape[1], 4), dtype=np.uint8)
-    
-    # Set RGB channels
-    rgba_image[..., :3] = image  # Copy the RGB channels
-    
-    # Set alpha channel (255 for True, 0 for False)
+    rgba_image[..., :3] = image
     rgba_image[..., 3] = mask.astype(np.uint8) * 255
-    
-    # Set background to black where mask is False
-    rgba_image[~mask, :3] = 0
-    
-    # Save the image using Pillow
-    os.makedirs(os.path.dirname(save_path), exist_ok=True)  # Ensure directory exists
+    rgba_image[~mask, :3] = 0 # Set background to black where mask is False
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
     Image.fromarray(rgba_image).save(save_path)
 
+"""
+Function: get_object_masks
+--------------------------
+object_dir: directory containing object input and output folders
+prompts: list of prompts for segmentation
+background_dir: optional directory for background images
+
+Generates and saves object masks for each frame using SAM2 segmentation.
+Handles mask loading, mask generation, RGBA conversion, and video creation.
+Also standardizes and restores file names.
+"""
 def get_object_masks(object_dir, prompts, background_dir = ""):
 
     object_input_dir = os.path.join(object_dir, "input")

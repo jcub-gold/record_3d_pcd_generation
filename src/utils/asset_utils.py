@@ -1,17 +1,21 @@
-import numpy as np
-import open3d as o3d
-import scene_synthesizer as synth
 from scene_synthesizer import procedural_assets as pa
-from tqdm import tqdm
-import copy
-import os
-import re
-import json
 from scene_synthesizer.assets import BoxAsset
-from sklearn.cluster import KMeans
-from collections import defaultdict
 
+# NOTE: for any new asset, you must define a function get_{asset_name}_asset
 
+"""
+Function: get_asset
+-------------------
+asset_name: string name of the asset type (e.g., "sink", "drawer")
+width: width of the asset
+height: height of the asset
+depth: depth of the asset
+**kwargs: additional keyword arguments for the asset constructor
+
+Dynamically dispatches to the appropriate asset creation function based on asset_name.
+Returns the generated asset object.
+Raises ValueError if no matching asset function is found.
+"""
 def get_asset(asset_name, width, height, depth, **kwargs):
     func_name = f"get_{asset_name}_asset"
     func = globals().get(func_name)
@@ -19,9 +23,8 @@ def get_asset(asset_name, width, height, depth, **kwargs):
         raise ValueError(f"No asset function found for asset: '{asset_name}'")
     return func(width, height, depth, **kwargs)
 
-"""
-    Asset Generation Utilities
-"""
+
+# Asset Generation Utilities
 def get_sink_asset(width, height, depth, default_countertop_thickness=0.04):
     adjusted_height = height+default_countertop_thickness
     return pa.SinkCabinetAsset(width=width,

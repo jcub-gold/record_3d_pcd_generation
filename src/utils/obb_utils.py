@@ -3,6 +3,14 @@ import numpy as np
 import trimesh
 from scipy.spatial import ckdtree
 
+"""
+Function: get_rotation_from_pca
+------------------------------
+pcd: open3d.geometry.PointCloud object
+
+Computes the rotation angle about the Y axis by performing PCA on the XZ projection.
+Returns the angle (in radians) of the principal component in the XZ plane.
+"""
 def get_rotation_from_pca(pcd):
     points = np.asarray(pcd.points)
     xz_points = points[:, [0, 2]]  # Project to XZ plane
@@ -12,6 +20,14 @@ def get_rotation_from_pca(pcd):
     angle = np.arctan2(direction_1[1], direction_1[0])
     return angle
 
+"""
+Function: get_mesh_rotation_from_pca
+-----------------------------------
+mesh: trimesh.Trimesh object
+
+Computes the rotation angle about the Y axis by performing PCA on the mesh vertices' XZ projection.
+Returns the angle (in radians) of the principal component in the XZ plane.
+"""
 def get_mesh_rotation_from_pca(mesh: trimesh.Trimesh):
     points = np.asarray(mesh.vertices)  # Extract vertices from the mesh
     xz_points = points[:, [0, 2]]       # Project to XZ plane
@@ -21,7 +37,19 @@ def get_mesh_rotation_from_pca(mesh: trimesh.Trimesh):
     angle = np.arctan2(direction_1[1], direction_1[0])
     return angle
 
+"""
+Function: get_mesh_rotation_from_aabb_min_xz
+-------------------------------------------
+mesh: trimesh.Trimesh object
+metric: optimization metric - "area" (default) or "perimeter"
+coarse_samples: number of angles in the coarse sweep over [0, π)
+refine_steps: number of refinement iterations around the best angle
+refine_window_deg: +/- window (degrees) for each refinement iteration
 
+Returns angle θ (radians) about +Y axis that minimizes the XZ-plane AABB.
+Only the XZ projection is used. Periodicity is π (180°), so θ ∈ [0, π).
+Returns 0.0 for degenerate cases (few points or collinear points).
+"""
 def get_mesh_rotation_from_aabb_min_xz(
     mesh,
     *,
@@ -30,15 +58,7 @@ def get_mesh_rotation_from_aabb_min_xz(
     refine_steps: int = 2,       # how many times to refine around the best angle
     refine_window_deg: float = 5 # +/- window (degrees) for each refinement
 ) -> float:
-    """
-    Returns angle θ (radians) about +Y so that rotating the mesh by -θ
-    minimizes the XZ-plane AABB according to `metric`.
-
-    Notes:
-    - Only the XZ projection is used.
-    - Periodicity is π (180°), so the returned θ is in [0, π).
-    - For degenerate cases (few points / collinear), returns 0.0.
-    """
+    
     pts = np.asarray(mesh.vertices, dtype=np.float64)
     if pts.ndim != 2 or pts.shape[0] < 3:
         return 0.0

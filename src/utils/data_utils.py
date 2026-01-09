@@ -9,11 +9,11 @@ import Imath
 import re
 
 """
-    Function: get_number
-    --------------------
-    word: string containing a number
-    
-    Returns the integer value of the number found in the string.
+Function: get_number
+--------------------
+word: string containing a number
+
+Returns the integer value of the number found in the string.
 """
 def get_number(word):
     numbers = ""
@@ -24,11 +24,11 @@ def get_number(word):
     return int(numbers)
 
 """
-    Function: read_exr_depth
-    ------------------------
-    exr_path: path to the .exr file containing depth data
+Function: read_exr_depth
+------------------------
+exr_path: path to the .exr file containing depth data
 
-    Reads the depth data from an OpenEXR file and returns it as a numpy array.
+Reads the depth data from an OpenEXR file and returns it as a numpy array.
 """
 def read_exr_depth(exr_path):
     exr_file = OpenEXR.InputFile(exr_path)
@@ -42,14 +42,14 @@ def read_exr_depth(exr_path):
     return depth
 
 """
-    Function: prepare_record3d_data
-    -------------------------------
-    images_dir: path to object_{n}/images
-    depth_dir: path to input_depth
-    metadata_path: path to new_metadata.json
+Function: prepare_record3d_data
+-------------------------------
+images_dir: path to object_{n}/images
+depth_dir: path to input_depth
+metadata_path: path to new_metadata.json
 
-    Sorts the frames based on their number, reads the metadata,
-    and prepares the data for each frame including the image, depth map, and extrinsics.
+Sorts the frames based on their number, reads the metadata,
+and prepares the data for each frame including the image, depth map, and extrinsics.
 """
 def prepare_record3d_data(images_dir, depth_dir, metadata_path):
 
@@ -110,9 +110,15 @@ def prepare_record3d_data(images_dir, depth_dir, metadata_path):
 
     return output
 
+"""
+Function: select_evenly_spaced
+------------------------------
+lst: list of frames
+n: number of frames to select (default 5)
 
-
-# select n evenly spaced frames from a list, ensuring first and last are included
+Selects n evenly spaced frames from a list, ensuring first and last are included.
+Returns the selected frames.
+"""
 def select_evenly_spaced(lst, n=5):
     if n < 2 or n > len(lst):
         n=2
@@ -121,7 +127,14 @@ def select_evenly_spaced(lst, n=5):
     indices = [round(i * (len(lst) - 1) / (n - 1)) for i in range(n)]
     return [lst[i] for i in indices]
 
-# select frames every 10 frames, ensuring first and last are included
+"""
+Function: select_custom_frames
+------------------------------
+lst: list of frames
+
+Selects frames every 10 frames, ensuring first and last are included.
+Returns the selected frames as strings.
+"""
 def select_custom_frames(lst):
     if len(lst) == 0:
         return []
@@ -140,13 +153,20 @@ def select_custom_frames(lst):
 
     return [str(f) for f in selected]
 
+"""
+Function: extract_frame_numbers
+------------------------------
+base_dir: base directory containing object folders
+custom: if True, use custom frame selection (default is select_evenly_spaced)
+
+Extracts frame numbers from object folders and saves them to cached_frames.json.
+Returns nothing.
+"""
 def extract_frame_numbers(base_dir, custom=False):
     output_path = base_dir + '/cached_frames.json'
     base_dir = base_dir + '/record3d_input'
     result = {}
-
-    # Match directories like object_1, object_2, etc.
-    pattern = re.compile(r"^object_\d+$")
+    pattern = re.compile(r"^object_\d+$") # Hardcoded pattern but ok to assume this format
 
     for entry in os.listdir(base_dir):
         obj_dir = os.path.join(base_dir, entry)
@@ -163,22 +183,11 @@ def extract_frame_numbers(base_dir, custom=False):
                         frame_numbers.append(str(int_frame))
                     except ValueError:
                         continue  # Skip if filename is not numeric
-
-            # Replace this line in the original:
             frame_numbers.sort(key=lambda x: int(x))
-
-            # Add this:
             good_frames = frame_numbers[1: -1]
             result[entry] = select_evenly_spaced(good_frames)
             if custom:
                 result[entry] = select_custom_frames(frame_numbers)
-            
-            # if len(frame_numbers) >= 2:
-            #     result[entry] = [frame_numbers[1], frame_numbers[-2]]
-            # elif frame_numbers:
-            #     result[entry] = frame_numbers  # fallback if fewer than 5 frames
-
-
-    # Save the result to JSON
+    
     with open(output_path, "w") as f:
         json.dump(result, f, indent=4)

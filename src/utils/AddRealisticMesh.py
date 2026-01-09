@@ -1,43 +1,20 @@
 import trimesh
 import numpy as np
 import xml.etree.ElementTree as ET
-from matplotlib import pyplot as plt
-from trimesh.boolean import intersection
-from itertools import permutations, product
-from scipy.optimize import minimize
-import copy
+from itertools import product
 from src.utils.obb_utils import get_mesh_rotation_from_aabb_min_xz
-from trimesh import transformations as tf
 from scipy.spatial import cKDTree
-import open3d as o3d
 
-def to_homogeneous(mat3x3):
-    mat4x4 = np.eye(4)
-    mat4x4[:3, :3] = mat3x3
-    return mat4x4
+"""
+Class: AddRealisticMesh
+----------------------
+urdf_path: path to the URDF file
+mesh_path: path to the mesh file
+urdf_link_name: name of the URDF link to modify
 
-def _match_axis_aligned_extents(mesh_a: trimesh.Trimesh, mesh_b: trimesh.Trimesh) -> trimesh.Trimesh:
-    """
-    Rotates and scales mesh_a so its extents align with mesh_b's, assuming both are axis-aligned.
-    This permutes mesh_a's axes (no OBB or PCA needed).
-    """
-
-    # Get unsorted extents (lengths along x/y/z)
-    extents_a = mesh_a.extents
-    extents_b = mesh_b.extents
-    # Get axis sort orders: indices that would sort from largest to smallest
-    order_a = np.argsort(extents_a)[::-1]  # e.g. [2, 0, 1]
-    order_b = np.argsort(extents_b)[::-1]  # e.g. [1, 0, 2]
-    # Compute permutation matrix: which axes in A map to which in B
-    rot = np.zeros((3, 3))
-    for i in range(3):
-        src = order_a[i]
-        dst = order_b[i]
-        rot[dst, src] = 1
-    rot4 = to_homogeneous(rot)
-
-    return rot4
-
+Provides methods to load URDF and mesh, aligns the realistics mesh to the URDF mesh
+vias rotating and scaliung.
+"""
 class AddRealisticMesh:
     def __init__(self, urdf_path, mesh_path, urdf_link_name):
         self.urdf_path = urdf_path
@@ -52,6 +29,12 @@ class AddRealisticMesh:
         self.warped_mesh_corners = None
         self.urdf_transformations = np.eye(4)
 
+    """"
+    Function: set_urdf
+    ------------------
+    Loads the URDF file and extracts the box geometry for the specified link.
+    Applies any origin transforms from the URDF.
+    """
     def set_urdf(self):
         assert (self.urdf_path != None and self.urdf_link_name != None), "initialize urdf path or link name"
 
@@ -85,34 +68,40 @@ class AddRealisticMesh:
 
         self.urdf = trimesh.util.concatenate(boxes)
 
+    """
+    Function: set_mesh
+    ------------------
+    Loads the mesh from the specified mesh_path.
+    """
     def set_mesh(self):
         mesh = trimesh.load(self.mesh_path)
         self.mesh = mesh
 
+    """
+    Function: _center_meshes
+    ------------------------
+    Centers both the mesh and URDF box mesh on the world origin using their AABB centers,
+    saving the urdf transformation to later apply it's inverse the the realistic mesh.
+    """
     def _center_meshes(self):
-        """
-        1) AABB‐minimize self.mesh via align_mesh(…).
-        2) Center that aligned mesh on the world origin by shifting its bbox center to (0,0,0).
-        3) Center the URDF box‐mesh on the world origin in the same way.
-        """
         if self.mesh is None:
             raise RuntimeError("Call set_mesh() first.")
         if self.urdf is None:
             raise RuntimeError("Call set_urdf() first.")
-
-        # --- 1) AABB‐minimize the mesh ---
-        # mesh_aligned, _ = align_mesh(self.mesh)
-        # mesh_aligned = self.mesh.copy()
         mesh_aligned = self.mesh.copy()
-
-        # --- 2) Center the aligned mesh on origin ---
         mesh_centered, T = _center_on_origin(mesh_aligned)
         self.mesh = mesh_centered.copy()
-
-        # --- 3) Center the URDF mesh on origin the same way ---
         self.urdf, T = _center_on_origin(self.urdf.copy())
         self.urdf_transformations = T
 
+    """
+    Function: align_mesh
+    --------------------
+    deg_threshold: threshold in degrees for rotation snapping, rotations below this are set to zero
+    sample_count: number of samples for chamfer distance refinement
+
+    Aligns the mesh to the URDF box using axis alignment, scaling, and chamfer refinement.
+    """
     def align_mesh(self, deg_threshold=5.0, sample_count=100000):
         mesh = self.mesh
         urdf = self.urdf
@@ -143,27 +132,27 @@ class AddRealisticMesh:
 
         self.mesh = mesh
 
+    """
+    Function: replace_geometry
+    -------------------------
+    input_urdf: path to input URDF file
+    output_urdf: path to output URDF file
+    mesh_path: path to the realistic mesh file
+
+    Replaces the geometry of the specified URDF link with a realistic mesh and a simplified collision box.
+    """
     def replace_geometry(self, input_urdf: str, output_urdf: str, mesh_path: str):
-        """
-        Replace the geometry of the drawer link named by self.urdf_link_name
-        with a single realistic mesh, and rebuild a simplified collision box
-        whose dimensions are computed from the existing collision boxes under that link.
-        """
-        # Parse the URDF
         tree = ET.parse(input_urdf)
         root = tree.getroot()
-
-        # Find the drawer link dynamically
-        drawer_link = root.find(f".//link[@name='{self.urdf_link_name}']")
-        if drawer_link is None:
+        link = root.find(f".//link[@name='{self.urdf_link_name}']") # Find the link by name
+        if link is None:
             raise RuntimeError(f"Could not find link '{self.urdf_link_name}' in URDF.")
 
         # Gather all <collision><geometry><box size="..."> elements under this link
-        collisions = drawer_link.findall("collision")
+        collisions = link.findall("collision")
         if not collisions:
             raise RuntimeError(f"No <collision> elements found under link '{self.urdf_link_name}'.")
 
-        # Compute the axis-aligned bounding box (AABB) that encloses all existing boxes
         all_mins = []
         all_maxs = []
 
@@ -174,18 +163,12 @@ class AddRealisticMesh:
             box = geom.find("box")
             if box is None or "size" not in box.attrib:
                 continue
-
-            # Parse the size "sx sy sz"
             sx, sy, sz = map(float, box.get("size").split())
-
-            # Read the <origin xyz="ox oy oz"/> if present
             origin_tag = col.find("origin")
             if origin_tag is not None and "xyz" in origin_tag.attrib:
                 ox, oy, oz = map(float, origin_tag.get("xyz").split())
             else:
                 ox, oy, oz = 0.0, 0.0, 0.0
-
-            # Compute that box’s min & max corners in the link’s frame
             half = np.array([sx / 2.0, sy / 2.0, sz / 2.0])
             origin = np.array([ox, oy, oz])
             min_corner = origin - half
@@ -197,47 +180,40 @@ class AddRealisticMesh:
         if not all_mins:
             raise RuntimeError(f"Could not parse any <box size='...'> under collisions of '{self.urdf_link_name}'.")
 
-        # Find global min/max across x,y,z
         all_mins = np.vstack(all_mins)
         all_maxs = np.vstack(all_maxs)
         global_min = all_mins.min(axis=0)
         global_max = all_maxs.max(axis=0)
-
-        # Compute total size of the combined AABB
         total_size = global_max - global_min  # [dx, dy, dz]
         box_size_str = f"{total_size[0]:.6f} {total_size[1]:.6f} {total_size[2]:.6f}"
 
         # Remove all existing <visual> and <collision> nodes under this link
-        for child in list(drawer_link.findall("visual")):
-            drawer_link.remove(child)
-        for child in list(drawer_link.findall("collision")):
-            drawer_link.remove(child)
+        for child in list(link.findall("visual")):
+            link.remove(child)
+        for child in list(link.findall("collision")):
+            link.remove(child)
 
         # 1) Add new <visual> for the realistic mesh
-        visual = ET.SubElement(drawer_link, "visual")
+        visual = ET.SubElement(link, "visual")
         geometry = ET.SubElement(visual, "geometry")
         mesh = ET.SubElement(geometry, "mesh")
         mesh.set("filename", mesh_path)
 
-        # (Optional) attach a simple gray material
-        material = ET.SubElement(visual, "material")
+        material = ET.SubElement(visual, "material") 
         material.set("name", f"{self.urdf_link_name}_material")
         color = ET.SubElement(material, "color")
-        color.set("rgba", "0.8 0.8 0.8 1.0")
+        color.set("rgba", "0.8 0.8 0.8 1.0") # TODO: color can be input parameter, with the average color from segmented input image (might need an entirely different function to do this for the whole object)
 
         # 2) Add a single <collision> with a <box> of the computed size
-        collision = ET.SubElement(drawer_link, "collision")
+        collision = ET.SubElement(link, "collision")
         geometry = ET.SubElement(collision, "geometry")
         box = ET.SubElement(geometry, "box")
         box.set("size", box_size_str)
 
-        # Center the new collision box at the AABB center
         center = (global_min + global_max) / 2.0  # [cx, cy, cz]
         origin = ET.SubElement(collision, "origin")
         origin.set("xyz", f"{center[0]:.6f} {center[1]:.6f} {center[2]:.6f}")
         origin.set("rpy", "0 0 0")
-
-        # Write updated URDF
         tree.write(output_urdf, encoding="ASCII", xml_declaration=True)
 
  
@@ -257,46 +233,33 @@ class AddRealisticMesh:
     def get_urdf_transformations(self):
         return self.urdf_transformations
 
-# ——————————————————————————————
-# Helper functions (inside the same file)
-# ——————————————————————————————
-def _center_on_origin(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
-    """
-    Translate `mesh` so that its AABB center sits at (0,0,0).
-    We compute the axis‐aligned bounding box, take (min + max) / 2 for each axis,
-    and subtract that vector from every vertex. Returns a new Trimesh.
-    """
-    # 1) Compute axis‐aligned bounding box corners
-    aabb = mesh.bounds   # shape (2,3): [ [min_x, min_y, min_z], [max_x, max_y, max_z] ]
-    min_corner = aabb[0]
-    max_corner = aabb[1]
+# ————————————————
+# Helper functions
+# ————————————————
+"""
+Function: to_homogeneous
+-----------------------
+mat3x3: 3x3 numpy array representing a rotation matrix
 
-    # 2) Compute center = (min + max) / 2
-    center = (min_corner + max_corner) * 0.5
+Returns a 4x4 homogeneous transformation matrix with the input rotation.
+"""
+def to_homogeneous(mat3x3):
+    mat4x4 = np.eye(4)
+    mat4x4[:3, :3] = mat3x3
+    return mat4x4
 
-    # 3) Translate every vertex by –center
-    T = np.eye(4)
-    T[:3, 3] = -center
+"""
+Function: _match_axis_aligned_extents
+-------------------------------------
+mesh_a: trimesh.Trimesh object to be rotated/scaled
+mesh_b: trimesh.Trimesh object to match extents to
 
-    recentred = mesh.copy()
-    recentred.apply_transform(T)
-    return recentred, T
-
-def cumulative_distance_to_mesh(pts: np.ndarray,
-                                urdf_mesh: trimesh.Trimesh) -> float:
-    closest_pts, distances, face_id = urdf_mesh.nearest.on_surface(pts)
-    return float(np.sum(distances))
-
-def _match_axis_aligned_extents(mesh_a: trimesh.Trimesh, mesh_b: trimesh.Trimesh):
-    """
-    Rotates and scales mesh_a so its extents align with mesh_b's, assuming both are axis-aligned.
-    This permutes mesh_a's axes (no OBB or PCA needed).
-    """
-
-    # Get unsorted extents (lengths along x/y/z)
+Returns a 4x4 permutation matrix to align mesh_a's extents with mesh_b's by aligning mesh a's
+largest to smallest dimensions with mesh b's.
+"""
+def _match_axis_aligned_extents(mesh_a: trimesh.Trimesh, mesh_b: trimesh.Trimesh) -> trimesh.Trimesh:
     extents_a = mesh_a.extents
     extents_b = mesh_b.extents
-    # Get axis sort orders: indices that would sort from largest to smallest
     order_a = np.argsort(extents_a)[::-1]  # e.g. [2, 0, 1]
     order_b = np.argsort(extents_b)[::-1]  # e.g. [1, 0, 2]
     # Compute permutation matrix: which axes in A map to which in B
@@ -309,10 +272,45 @@ def _match_axis_aligned_extents(mesh_a: trimesh.Trimesh, mesh_b: trimesh.Trimesh
 
     return rot4
 
+"""
+Function: _center_on_origin
+---------------------------
+mesh: trimesh.Trimesh object to be centered
+
+Returns a copy of the mesh translated so its AABB center is at the origin,
+and the transformation matrix used.
+"""
+def _center_on_origin(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
+    aabb = mesh.bounds   # shape (2,3): [ [min_x, min_y, min_z], [max_x, max_y, max_z] ]
+    min_corner = aabb[0]
+    max_corner = aabb[1]
+    center = (min_corner + max_corner) * 0.5
+    T = np.eye(4)
+    T[:3, 3] = -center
+    recentred = mesh.copy()
+    recentred.apply_transform(T)
+    return recentred, T
+
+"""
+Function: _reduce_mod_90
+------------------------
+theta_rad: angle in radians
+
+Returns the angle reduced modulo 90 degrees, centered around zero.
+"""
 def _reduce_mod_90(theta_rad: float) -> float:
     half_pi = 0.5 * np.pi
     return ((theta_rad + np.pi/4) % half_pi) - np.pi/4
 
+"""
+Function: _points_on_mesh
+-------------------------
+mesh: trimesh.Trimesh object
+n_samples: number of points to sample
+use_vertices: if True (default false), use mesh vertices instead of sampling
+
+Returns a numpy array of sampled points on the mesh surface.
+"""
 def _points_on_mesh(mesh, n_samples=20000, use_vertices=False):
     V = np.asarray(mesh.vertices, dtype=np.float64)
     if use_vertices or getattr(mesh, "faces", None) is None or len(mesh.faces) == 0:
@@ -326,6 +324,14 @@ def _points_on_mesh(mesh, n_samples=20000, use_vertices=False):
             raise
         return V
 
+"""
+Function: _query_nn
+-------------------
+tree: cKDTree object
+X: Nx3 numpy array of query points
+
+Returns the nearest neighbor distances from X to the tree points.
+"""
 def _query_nn(tree, X):
     # Use multi-threading if available; gracefully fall back if not
     try:
@@ -333,6 +339,16 @@ def _query_nn(tree, X):
     except TypeError:
         return tree.query(X, k=1)[0]
 
+"""
+Function: _chamfer_distance
+---------------------------
+mesh_a: trimesh.Trimesh object
+mesh_b: trimesh.Trimesh object
+n_samples: number of points to sample
+squared: if True (defualt True), use squared distances
+
+Returns the mean bidirectional chamfer distance between two meshes.
+"""
 def _chamfer_distance(mesh_a, mesh_b, n_samples=20000, squared=True, use_vertices=False):
     P = np.ascontiguousarray(_points_on_mesh(mesh_a, n_samples, use_vertices), dtype=np.float64)
     Q = np.ascontiguousarray(_points_on_mesh(mesh_b, n_samples, use_vertices), dtype=np.float64)
@@ -352,6 +368,15 @@ def _chamfer_distance(mesh_a, mesh_b, n_samples=20000, squared=True, use_vertice
 
     return float(d_ab.mean() + d_ba.mean())
     
+"""
+Function: _refine_rotation_all_90_axes
+--------------------------------------
+mesh: trimesh.Trimesh object (already centered and aligned)
+urdf: trimesh.Trimesh object (target)
+sample_count: number of samples for chamfer distance
+
+Returns the best sign-flip rotation matrix (4x4) to minimize chamfer distance. This includes reflections.
+"""
 def _refine_rotation_all_90_axes(mesh, urdf, sample_count: int = 100000):
         """
         Instead of brute‐forcing all 24 axis swaps, we:
@@ -400,6 +425,14 @@ def _refine_rotation_all_90_axes(mesh, urdf, sample_count: int = 100000):
         best_R_hom[:3, :3] = best_R
         return best_R_hom
 
+"""
+Function: debug_visualize_trimesh
+---------------------------------
+meshes: list of trimesh.Trimesh objects
+center: if True, center each mesh at the origin
+
+Visualizes the provided meshes in a trimesh.Scene.
+"""
 def debug_visualize_trimesh(meshes, center=True):
     centered_meshes = []
     
